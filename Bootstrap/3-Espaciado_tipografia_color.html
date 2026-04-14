@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Utilidades</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué son las "utilidades" en Bootstrap
+
+      Bootstrap 5 incluye clases de utilidad: clases de CSS de
+      propósito único que hacen UNA sola cosa.
+
+      En lugar de escribir esto en tu CSS:
+        .mi-titulo { margin-bottom: 1rem; color: #dc3545; }
+
+      Bootstrap te da clases ya hechas:
+        class="mb-3 text-danger"
+
+      Ventajas:
+      - No escribís CSS para cosas simples.
+      - El código HTML es autoexplicativo.
+      - Los valores son consistentes en toda la app.
+
+      En este tema cubrimos las utilidades más usadas
+      en un ecommerce:
+      - Espaciado:   m-*, p-*
+      - Color:       text-*, bg-*
+      - Tipografía:  fs-*, fw-*, text-* (alineación)
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      PARTE 1: ESPACIADO — m-* y p-*
+
+      Bootstrap define espaciado con una escala de 0 a 5
+      basada en la variable $spacer (por defecto: 1rem = 16px).
+
+      ESCALA DE VALORES:
+      0 → 0px        (sin espacio)
+      1 → 0.25rem    (4px)
+      2 → 0.5rem     (8px)
+      3 → 1rem       (16px)   ← el más usado, espaciado "normal"
+      4 → 1.5rem     (24px)
+      5 → 3rem       (48px)   ← espacio grande entre secciones
+      auto → margin: auto     (solo para m-*, no p-*)
+
+      PREFIJOS:
+      m  → margin (espacio AFUERA del elemento)
+      p  → padding (espacio ADENTRO del elemento)
+
+      DIRECCIONES:
+      (sin dirección) → los 4 lados: mt + mb + ms + me
+      t  → top     (arriba)
+      b  → bottom  (abajo)
+      s  → start   (izquierda en LTR, derecha en RTL)
+      e  → end     (derecha en LTR, izquierda en RTL)
+      x  → eje horizontal: ms + me
+      y  → eje vertical:   mt + mb
+
+      COMBINACIÓN:
+      {propiedad}{dirección}-{valor}
+      mt-3  → margin-top: 1rem
+      pb-2  → padding-bottom: 0.5rem
+      px-4  → padding-left: 1.5rem + padding-right: 1.5rem
+      my-5  → margin-top: 3rem + margin-bottom: 3rem
+
+      RESPONSIVE:
+      Se puede combinar con breakpoints:
+      mt-3 mt-lg-5 → margin-top: 1rem en mobile,
+                     margin-top: 3rem en lg+
+    ========================================================= -->
+
+    <main class="container my-5">
+    <!--
+      my-5 → margin-top: 3rem + margin-bottom: 3rem
+      Separa el main del borde del viewport arriba y abajo.
+    -->
+
+
+      <h1 class="mb-2">Utilidades de espaciado, color y tipografía</h1>
+      <p class="text-muted mb-5">Tema 3 · StyleShop</p>
+      <!--
+        mb-2 en el h1 → reduce el espacio bajo el título
+                        (el default del navegador es mayor)
+        mb-5 en el p  → espacio generoso antes de la primera sección
+      -->
+
+
+      <!-- =======================================================
+        ESPACIADO EN LA NAVBAR DE STYLESHOP
+
+        Problema real: la navbar tiene el logo y los íconos
+        demasiado pegados al borde en mobile.
+        Solución: padding con utilidades de Bootstrap.
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Espaciado — navbar</h2>
+
+      <nav class="bg-dark mb-5">
+        <!--
+          Sin ningún padding, el contenido queda pegado al borde.
+          Usamos px-3 py-2 para dar respiro horizontal y vertical.
+        -->
+
+        <!-- ❌ Sin padding — el logo toca el borde -->
+        <div class="d-flex align-items-center mb-2">
+          <a href="#" class="text-white text-decoration-none fw-bold">
+            StyleShop
+          </a>
+        </div>
+
+        <!-- ✅ Con padding — espacio cómodo -->
+        <div class="d-flex align-items-center px-3 py-2">
+          <!--
+            px-3 → padding-left: 1rem + padding-right: 1rem
+            py-2 → padding-top: 0.5rem + padding-bottom: 0.5rem
+          -->
+          <a href="#" class="text-white text-decoration-none fw-bold">
+            StyleShop
+          </a>
+          <span class="ms-auto text-white-50 small">
+            <!--
+              ms-auto → margin-start: auto
+              Empuja este span hacia la derecha dentro del flex.
+              Es el mismo truco que margin-left: auto en flexbox.
+            -->
+            Carrito (3)
+          </span>
+        </div>
+
+      </nav>
+
+
+      <!-- =======================================================
+        ESPACIADO EN LA GRILLA DE PRODUCTOS
+
+        g-* en el row controla el gutter (espacio entre columnas).
+        Es un atajo para gy-* (vertical) y gx-* (horizontal).
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Espaciado — grilla de productos</h2>
+
+      <!-- g-0: sin espacio entre tarjetas -->
+      <p class="small text-muted">g-0 (sin espacio)</p>
+      <div class="row g-0 mb-3">
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+      </div>
+
+      <!-- g-3: espacio estándar -->
+      <p class="small text-muted">g-3 (estándar — el que usamos en StyleShop)</p>
+      <div class="row g-3 mb-3">
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+      </div>
+
+      <!-- gx-4 gy-2: espaciado asimétrico -->
+      <p class="small text-muted">gx-4 gy-2 (más espacio horizontal que vertical)</p>
+      <div class="row gx-4 gy-2 mb-5">
+        <!--
+          gx-4 → gutter horizontal: 1.5rem entre columnas
+          gy-2 → gutter vertical:   0.5rem entre filas
+          Útil cuando el diseño necesita más aire lateral que vertical.
+        -->
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+        <div class="col-4"><div class="border p-2 bg-light text-center small">Producto</div></div>
+      </div>
+
+
+      <!-- =========================================================
+        PARTE 2: COLOR — text-* y bg-*
+
+        Bootstrap define una paleta de colores semánticos.
+        "Semántico" significa que el nombre indica el significado,
+        no el color exacto.
+
+        COLORES DISPONIBLES:
+        primary   → azul     (acción principal, links)
+        secondary → gris     (elementos secundarios)
+        success   → verde    (confirmación, éxito)
+        danger    → rojo     (error, eliminar, alerta)
+        warning   → amarillo (advertencia)
+        info      → celeste  (información neutral)
+        light     → gris muy claro
+        dark      → casi negro
+        white     → blanco
+        muted     → gris medio (solo para texto, deprecated en BS5.3
+                                → usar text-secondary)
+        black     → negro puro
+        body      → color del texto base del documento
+
+        PREFIJOS:
+        text-{color} → color del texto
+        bg-{color}   → color de fondo
+
+        IMPORTANTE: estos colores se pueden personalizar
+        con variables CSS o Sass. En StyleShop vamos a
+        sobreescribir primary con nuestro azul noche (#1a1a2e).
+        Eso lo vemos en el Tema 5 (personalización).
+      ========================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Color — paleta semántica</h2>
+
+      <!-- Texto con colores semánticos -->
+      <div class="mb-4">
+        <p class="text-primary">text-primary → enlace, acción principal</p>
+        <p class="text-secondary">text-secondary → texto secundario, subtítulos</p>
+        <p class="text-success">text-success → precio con descuento, stock disponible</p>
+        <p class="text-danger">text-danger → error de formulario, producto sin stock</p>
+        <p class="text-warning">text-warning → advertencia, últimas unidades</p>
+        <p class="text-info">text-info → información adicional</p>
+        <p class="text-dark">text-dark → texto con alto contraste</p>
+        <p class="text-muted">text-muted → texto auxiliar, metadatos</p>
+        <!--
+          text-muted sigue funcionando en Bootstrap 5.3 pero
+          internamente ahora usa opacity. Para nuevo código,
+          preferir text-secondary o text-body-secondary.
+        -->
+      </div>
+
+
+      <!-- =======================================================
+        COLOR EN TARJETAS DE PRODUCTO DE STYLESHOP
+
+        Casos de uso reales donde text-* y bg-* resuelven
+        el diseño sin escribir CSS propio.
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Color — tarjetas de producto</h2>
+
+      <div class="row g-3 mb-5">
+
+        <!-- Producto normal -->
+        <div class="col-12 col-md-4">
+          <article class="border p-3">
+            <h3 class="h6">Remera básica</h3>
+            <p class="text-muted small mb-1">Ropa · Talles S al XL</p>
+            <!--
+              text-muted → color gris para metadatos del producto
+              small → reducción de tamaño (lo vemos en tipografía)
+            -->
+            <p class="fw-bold mb-2">$8.999</p>
+            <span class="badge bg-success">En stock</span>
+            <!--
+              bg-success → fondo verde para indicar disponibilidad
+              badge es un componente de Bootstrap (Tema 7)
+            -->
+          </article>
+        </div>
+
+        <!-- Producto sin stock -->
+        <div class="col-12 col-md-4">
+          <article class="border p-3">
+            <h3 class="h6 text-muted">Campera de cuero</h3>
+            <!--
+              text-muted en el título → feedback visual de
+              que el producto no está disponible
+            -->
+            <p class="text-muted small mb-1">Ropa · Talles M y L</p>
+            <p class="fw-bold text-muted mb-2">$62.999</p>
+            <span class="badge bg-secondary">Sin stock</span>
+            <!--
+              bg-secondary → gris, refuerza que no está disponible
+            -->
+          </article>
+        </div>
+
+        <!-- Producto en oferta -->
+        <div class="col-12 col-md-4">
+          <article class="border p-3">
+            <h3 class="h6">Vestido floral midi</h3>
+            <p class="text-muted small mb-1">Ropa · Talle único</p>
+            <div class="d-flex align-items-baseline gap-2 mb-2">
+              <p class="fw-bold text-danger mb-0">$22.999</p>
+              <!--
+                text-danger → rojo para el precio con descuento
+                Llama la atención sin necesitar CSS propio
+              -->
+              <p class="text-muted text-decoration-line-through small mb-0">$32.999</p>
+              <!--
+                text-decoration-line-through → utilidad de Bootstrap
+                para el precio original tachado
+              -->
+            </div>
+            <span class="badge bg-danger">-30% OFF</span>
+            <!--
+              bg-danger → rojo para el badge de descuento.
+              Mismo color que el precio → coherencia visual.
+            -->
+          </article>
+        </div>
+
+      </div>
+
+
+      <!-- =======================================================
+        FONDOS EN SECCIONES DE STYLESHOP
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Color — fondos de secciones</h2>
+
+      <!-- Banner de envío gratis -->
+      <div class="bg-dark text-white text-center py-3 mb-3">
+        <!--
+          bg-dark + text-white → fondo oscuro con texto blanco
+          py-3 → padding vertical para que el banner respire
+          text-center → centra el texto (lo vemos en tipografía)
+        -->
+        <p class="mb-0 small fw-bold">
+          ENVÍO GRATIS en compras mayores a $30.000
+        </p>
+      </div>
+
+      <!-- Alerta de stock bajo -->
+      <div class="bg-warning text-dark px-3 py-2 mb-3" style="border-radius: 6px">
+        <!--
+          bg-warning + text-dark → amarillo con texto oscuro
+          Bootstrap recomienda text-dark sobre bg-warning
+          porque el amarillo tiene poco contraste con texto blanco.
+        -->
+        <p class="mb-0 small">
+          ⚠ Últimas 2 unidades disponibles en talle M
+        </p>
+      </div>
+
+      <!-- Confirmación de compra -->
+      <div class="bg-success text-white px-3 py-2 mb-5" style="border-radius: 6px">
+        <!--
+          bg-success + text-white → verde con texto blanco.
+          Para confirmaciones y mensajes positivos.
+        -->
+        <p class="mb-0 small">
+          ✓ Tu pedido fue confirmado. Te enviamos un mail a tu correo.
+        </p>
+      </div>
+
+
+      <!-- =========================================================
+        PARTE 3: TIPOGRAFÍA — fs-*, fw-*, text-* (alineación)
+
+        Bootstrap incluye utilidades para controlar:
+        - Tamaño:    fs-* (font-size)
+        - Peso:      fw-* (font-weight)
+        - Estilo:    fst-* (font-style)
+        - Alineación: text-start / text-center / text-end
+        - Transformación: text-uppercase / text-lowercase / text-capitalize
+        - Decoración: text-decoration-*
+        - Truncado:  text-truncate (corta con ellipsis)
+
+        ESCALA fs-* (mapea a los headings de Bootstrap):
+        fs-1 → 2.5rem   (equivale a h1)
+        fs-2 → 2rem     (equivale a h2)
+        fs-3 → 1.75rem  (equivale a h3)
+        fs-4 → 1.5rem   (equivale a h4)
+        fs-5 → 1.25rem  (equivale a h5)
+        fs-6 → 1rem     (equivale a h6, el texto base)
+
+        PESOS fw-*:
+        fw-light    → 300
+        fw-normal   → 400
+        fw-medium   → 500
+        fw-semibold → 600
+        fw-bold     → 700
+        fw-bolder   → más pesado que el padre
+
+        SEPARACIÓN: lh-* (line-height)
+        lh-1   → 1
+        lh-sm  → 1.25
+        lh-base → 1.5
+        lh-lg  → 2
+
+        IMPORTANTE: fs-* cambia el tamaño visual pero NO
+        cambia la jerarquía semántica del HTML.
+        Un <p class="fs-1"> se ve grande pero sigue siendo
+        un párrafo para el navegador y los lectores de pantalla.
+        La semántica la define la etiqueta, no la clase.
+      ========================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Tipografía — tamaños y pesos</h2>
+
+      <!-- Escala de tamaños fs-* -->
+      <div class="mb-4">
+        <p class="fs-1 mb-1">fs-1 · Precio destacado en hero</p>
+        <p class="fs-2 mb-1">fs-2 · Título de sección</p>
+        <p class="fs-3 mb-1">fs-3 · Nombre de categoría</p>
+        <p class="fs-4 mb-1">fs-4 · Nombre de producto</p>
+        <p class="fs-5 mb-1">fs-5 · Precio estándar</p>
+        <p class="fs-6 mb-1">fs-6 · Texto base (por defecto)</p>
+        <p class="small mb-1">small · Metadata, talles, fechas</p>
+      </div>
+
+      <!-- Escala de pesos fw-* -->
+      <div class="mb-5">
+        <p class="fw-light mb-1">fw-light · Descripción larga del producto</p>
+        <p class="fw-normal mb-1">fw-normal · Texto del cuerpo</p>
+        <p class="fw-medium mb-1">fw-medium · Subtítulos</p>
+        <p class="fw-semibold mb-1">fw-semibold · Labels de formulario</p>
+        <p class="fw-bold mb-1">fw-bold · Precios, CTAs</p>
+      </div>
+
+
+      <!-- =======================================================
+        TIPOGRAFÍA EN UNA TARJETA DE PRODUCTO COMPLETA
+
+        Acá se ve cómo se combinan fs-*, fw-*, text-* y
+        las utilidades de color para construir una tarjeta
+        real sin escribir nada de CSS propio.
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Tipografía — tarjeta de producto completa</h2>
+
+      <div class="row g-3 mb-5">
+        <div class="col-12 col-md-4">
+
+          <article class="border p-3">
+
+            <img
+              src="imagenes/campera-400.jpg"
+              alt="Campera de cuero negra"
+              class="w-100 mb-3"
+              width="300"
+              height="300"
+            >
+
+            <p class="text-muted text-uppercase small mb-1 lh-1">
+              Indumentaria · Camperas
+            </p>
+            <!--
+              text-muted        → gris para categoría
+              text-uppercase    → TODO EN MAYÚSCULAS para la categoría
+              small             → tamaño reducido
+              mb-1              → poco espacio bajo la categoría
+              lh-1              → line-height: 1, compacto
+            -->
+
+            <h3 class="fs-5 fw-bold mb-1">Campera de cuero negra</h3>
+            <!--
+              fs-5 → tamaño mediano para el nombre del producto
+              fw-bold → negrita para jerarquía
+              mb-1 → poco espacio: nombre y precio van juntos visualmente
+            -->
+
+            <div class="d-flex align-items-baseline gap-2 mb-3">
+              <span class="fs-4 fw-bold text-danger">$43.999</span>
+              <!--
+                fs-4 + fw-bold → precio destacado, el elemento más importante
+                text-danger → rojo para precio con descuento
+              -->
+              <span class="small text-muted text-decoration-line-through">$62.999</span>
+              <!--
+                small + text-muted → precio original menos prominente
+                text-decoration-line-through → tachado
+              -->
+            </div>
+
+            <p class="small text-muted lh-sm mb-3">
+              Cuero ecológico premium. Forro interior polar.
+              Cierre metálico y bolsillos con broche.
+            </p>
+            <!--
+              small + text-muted → descripción discreta, no compite con el precio
+              lh-sm → line-height compacto para texto pequeño en bloque
+            -->
+
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="small text-success fw-medium">En stock · Talles S al XL</span>
+              <!--
+                text-success → verde para disponibilidad
+                fw-medium → un poco más de peso que el texto normal
+              -->
+              <a href="detalle.html?id=1" class="btn btn-dark btn-sm">Ver producto</a>
+            </div>
+
+          </article>
+
+        </div>
+      </div>
+
+
+      <!-- =======================================================
+        ALINEACIÓN DE TEXTO — text-start / center / end
+
+        Se usa bastante en:
+        - Centrar precios en versión mobile
+        - Alinear texto en el hero banner
+        - Centrar badges y labels en tarjetas angostas
+
+        También admite breakpoints:
+        text-start text-md-center → alineado a la izquierda
+        en mobile, centrado en md+
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Tipografía — alineación responsive</h2>
+
+      <div class="row g-3 mb-5">
+
+        <div class="col-12 col-md-4">
+          <div class="border p-3 text-start">
+            <p class="fw-bold mb-1">$8.999</p>
+            <p class="small text-muted mb-0">text-start (default)</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="border p-3 text-center">
+            <p class="fw-bold mb-1">$8.999</p>
+            <p class="small text-muted mb-0">text-center</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="border p-3 text-end">
+            <p class="fw-bold mb-1">$8.999</p>
+            <p class="small text-muted mb-0">text-end</p>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- =======================================================
+        TRUNCADO DE TEXTO — text-truncate
+
+        Problema real: los nombres de producto tienen largo variable.
+        En una grilla, un nombre largo rompe el layout.
+        text-truncate corta el texto con "…" cuando no entra.
+
+        Requiere que el elemento tenga display: block o inline-block
+        y un ancho definido (lo da el col-* del grid).
+      ======================================================= -->
+
+      <h2 class="h5 text-muted mb-3">Tipografía — text-truncate</h2>
+
+      <div class="row g-3 mb-5">
+
+        <div class="col-4">
+          <div class="border p-3">
+            <p class="text-truncate fw-bold mb-0">Campera de cuero negra premium edición limitada</p>
+            <!--
+              text-truncate → corta con "…" si el texto supera el ancho
+              Imprescindible en grillas de productos donde el nombre
+              puede tener cualquier longitud.
+            -->
+            <p class="small text-muted mt-1 mb-0">con text-truncate</p>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="border p-3">
+            <p class="fw-bold mb-0">Campera de cuero negra premium edición limitada</p>
+            <p class="small text-muted mt-1 mb-0">sin text-truncate</p>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  ESPACIADO m-* y p-*:
+  Propiedad: m (margin) · p (padding)
+  Dirección: t · b · s · e · x · y · (sin dirección = los 4 lados)
+  Valor:     0 (0px) · 1 (4px) · 2 (8px) · 3 (16px) · 4 (24px) · 5 (48px) · auto
+  Ejemplo:   mt-3 · px-4 · my-5 · ms-auto
+
+  GUTTERS g-*, gx-*, gy-*:
+  g-{n}  → espacio entre columnas Y entre filas
+  gx-{n} → solo entre columnas (horizontal)
+  gy-{n} → solo entre filas (vertical)
+  Misma escala de 0 a 5.
+
+  COLOR text-* y bg-*:
+  Colores semánticos: primary · secondary · success · danger
+                      warning · info · light · dark · white · muted
+  text-{color} → color del texto
+  bg-{color}   → color de fondo
+
+  Reglas de contraste:
+  bg-warning → usar text-dark (el amarillo no contrasta con blanco)
+  bg-dark    → usar text-white
+  bg-success, bg-danger, bg-primary → usar text-white
+
+  TIPOGRAFÍA:
+  fs-{1..6}          → tamaño de fuente (1 = mayor, 6 = base)
+  fw-light/normal/medium/semibold/bold → peso de fuente
+  fst-italic         → cursiva
+  lh-1/sm/base/lg    → line-height
+  text-start/center/end → alineación (admite breakpoints: text-md-center)
+  text-uppercase/lowercase/capitalize → transformación
+  text-decoration-none/underline/line-through → decoración
+  text-truncate      → corta con "…" (requiere ancho definido)
+  small              → 80% del tamaño del padre
+
+  PATRONES DE STYLESHOP:
+  Categoría del producto  → text-muted text-uppercase small
+  Nombre del producto     → fs-5 fw-bold
+  Precio con descuento    → fs-4 fw-bold text-danger
+  Precio original         → small text-muted text-decoration-line-through
+  Stock disponible        → text-success fw-medium small
+  Sin stock               → text-muted
+  Metadata (talles, fecha)→ text-muted small
+  Banner de envío gratis  → bg-dark text-white text-center py-3
+  Alerta de stock bajo    → bg-warning text-dark
+  Confirmación de compra  → bg-success text-white
+  Nombre largo en grilla  → text-truncate
+
+  CONEXIÓN CON ANGULAR (Módulo 3):
+  Las utilidades de Bootstrap se aplican igual en templates de Angular.
+  La diferencia es que algunos valores vienen de datos dinámicos:
+
+  HTML estático:
+  <span class="text-danger fw-bold">$22.999</span>
+
+  Angular con binding de clase condicional:
+  <span
+    [class.text-danger]="producto.tieneDescuento"
+    [class.fw-bold]="true"
+  >
+    {{ producto.precio | currency:'ARS':'symbol':'1.0-0' }}
+  </span>
+
+  O con ngClass para múltiples condiciones:
+  <span [ngClass]="{
+    'text-danger': producto.tieneDescuento,
+    'text-muted':  !producto.enStock,
+    'fw-bold':     true
+  }">
+    {{ producto.precio | currency:'ARS':'symbol':'1.0-0' }}
+  </span>
+
+  Las clases son las mismas. La lógica de cuándo aplicarlas
+  pasa del HTML estático al componente TypeScript.
+-->

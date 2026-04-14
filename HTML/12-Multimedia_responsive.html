@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Inicio</title>
+
+    <!-- =========================================================
+      PRELOAD: cargar recursos críticos antes de que se necesiten
+
+      El navegador procesa el HTML de arriba hacia abajo.
+      Normalmente descubre las imágenes cuando llega al <img> en el body.
+      Con <link rel="preload"> le avisamos antes de que llegue ahí:
+      "esta imagen la vas a necesitar pronto, empezá a descargarla ya".
+
+      Cuándo usar preload:
+      - La imagen del hero (banner principal) — es lo primero que ve el usuario
+      - Imágenes above-the-fold (visibles sin hacer scroll)
+      - Fuentes web críticas
+
+      Cuándo NO usar preload:
+      - Imágenes que están debajo del fold → para esas usar loading="lazy"
+      - Demasiados preloads compiten entre sí y pierden el efecto
+
+      as="image" → le dice al navegador que es una imagen (no un script ni CSS)
+      fetchpriority="high" → máxima prioridad de descarga
+    ========================================================= -->
+    <link
+      rel="preload"
+      as="image"
+      href="imagenes/hero-desktop.webp"
+      fetchpriority="high"
+    >
+
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: el problema que resuelve este tema
+
+      Una tienda online como StyleShop tiene imágenes en todos lados:
+      hero banner, grilla de productos, galería de detalle, lookbook.
+
+      El problema con una imagen simple:
+      <img src="hero.jpg" width="1920" height="800">
+
+      En desktop → se ve perfecta.
+      En mobile  → el navegador descarga 1920px de ancho para mostrar
+                   390px. Desperdicia datos, tiempo y batería del usuario.
+
+      Las soluciones de HTML5:
+
+      srcset    → "te doy varias versiones del mismo contenido,
+                   elegí la más apropiada para tu pantalla"
+
+      <picture> → "según las condiciones del dispositivo,
+                   mostrá una imagen completamente diferente"
+
+      loading="lazy" → "no descargues esta imagen hasta que el usuario
+                        esté a punto de llegar a ella con el scroll"
+
+      Juntos, estos tres mecanismos pueden reducir el peso
+      de las imágenes en mobile hasta un 80%.
+    ========================================================= -->
+
+
+    <main>
+
+      <!-- =========================================================
+        CASO 1: srcset en <img>
+        La forma más simple de imágenes responsive.
+        Mismo contenido, distintos tamaños.
+
+        srcset → lista de versiones de la imagen con su ancho real en píxeles.
+                 El navegador elige cuál descargar según:
+                 1. El ancho del viewport
+                 2. La densidad de pantalla (1x, 2x, 3x — pantallas Retina)
+                 3. Lo que indica el atributo sizes
+
+        sizes  → le dice al navegador cuánto espacio va a ocupar
+                 la imagen en cada breakpoint, ANTES de que cargue el CSS.
+                 Sin sizes, el navegador asume que la imagen ocupa
+                 el 100% del viewport — casi nunca es correcto.
+
+        Formato de srcset:
+        "ruta/imagen-400.jpg 400w" → la imagen tiene 400px de ancho real
+        "ruta/imagen-800.jpg 800w" → la imagen tiene 800px de ancho real
+
+        Formato de sizes:
+        "(max-width: 600px) 100vw" → en pantallas ≤600px la imagen ocupa 100% del viewport
+        "(max-width: 1200px) 50vw" → en pantallas ≤1200px ocupa 50%
+        "400px"                    → en el resto ocupa exactamente 400px
+        Las condiciones se evalúan de izquierda a derecha, gana la primera que matchea.
+      ========================================================= -->
+
+      <section aria-label="Productos destacados">
+        <h1>Destacados de la temporada</h1>
+
+        <article>
+          <img
+            src="imagenes/campera-400.jpg"
+            srcset="
+              imagenes/campera-400.jpg   400w,
+              imagenes/campera-800.jpg   800w,
+              imagenes/campera-1200.jpg 1200w
+            "
+            sizes="
+              (max-width: 600px)  100vw,
+              (max-width: 1200px)  50vw,
+              400px
+            "
+            alt="Campera de cuero negra con cierre plateado"
+            width="400"
+            height="400"
+            loading="lazy"
+          >
+          <!--
+            Qué hace el navegador con esto:
+
+            En mobile (390px de viewport, pantalla 2x):
+            → necesita una imagen de 390 * 2 = 780px de ancho
+            → mira srcset: la más cercana por arriba es 800w
+            → descarga campera-800.jpg (no la de 1200)
+
+            En desktop (1440px de viewport, pantalla 1x):
+            → sizes dice: en pantallas >1200px, la imagen ocupa 400px
+            → mira srcset: la más cercana por arriba es 400w
+            → descarga campera-400.jpg (la más liviana)
+
+            Sin srcset hubiera descargado campera-1200.jpg en ambos casos.
+
+            loading="lazy" → no descarga hasta que el usuario
+            se acerca a esta imagen con el scroll.
+            Para imágenes de la grilla de productos es ideal:
+            el usuario probablemente no llega a todas.
+          -->
+          <h2>Campera de cuero</h2>
+          <p>$62.999</p>
+        </article>
+
+      </section>
+
+
+      <!-- =========================================================
+        CASO 2: <picture> para art direction
+        Contenido diferente según el dispositivo.
+        No solo diferente tamaño — diferente recorte o imagen.
+
+        <picture> contiene:
+        - Uno o más <source> con condiciones
+        - Un <img> como fallback obligatorio
+
+        El navegador evalúa los <source> en orden.
+        Usa el primero que matchea.
+        Si ninguno matchea, usa el <img> del final.
+
+        Cuándo usar <picture> en vez de srcset:
+        - El banner en mobile necesita recorte vertical (retrato)
+          pero en desktop necesita recorte horizontal (paisaje)
+        - En mobile mostrás solo el producto, en desktop el modelo con el producto
+        - Querés servir WebP en navegadores que lo soportan
+          y JPG como fallback para los que no
+      ========================================================= -->
+
+      <section aria-label="Banner principal">
+
+        <picture>
+
+          <!-- =====================================================
+            <source media>: art direction
+            Imagen completamente diferente según el tamaño de pantalla.
+          ===================================================== -->
+
+          <source
+            media="(max-width: 600px)"
+            srcset="
+              imagenes/hero-mobile-390.webp  390w,
+              imagenes/hero-mobile-780.webp  780w
+            "
+            sizes="100vw"
+            type="image/webp"
+          >
+          <!--
+            media="(max-width: 600px)" → esta fuente aplica solo
+            en pantallas de hasta 600px. En mobile mostramos una
+            imagen recortada verticalmente: solo el producto,
+            sin el fondo de estudio fotográfico.
+
+            type="image/webp" → el formato WebP pesa hasta 30% menos
+            que JPG con la misma calidad visual. El navegador usa
+            este <source> si soporta WebP Y si matchea el media query.
+            Si no soporta WebP, pasa al siguiente <source> o al <img>.
+          -->
+
+          <source
+            media="(max-width: 1200px)"
+            srcset="
+              imagenes/hero-tablet-768.webp   768w,
+              imagenes/hero-tablet-1024.webp 1024w
+            "
+            sizes="100vw"
+            type="image/webp"
+          >
+          <!--
+            En tablet: imagen horizontal con modelo y producto,
+            recortada para el formato apaisado de la tablet.
+          -->
+
+          <source
+            srcset="
+              imagenes/hero-desktop-1440.webp 1440w,
+              imagenes/hero-desktop-1920.webp 1920w
+            "
+            sizes="100vw"
+            type="image/webp"
+          >
+          <!--
+            Sin media → aplica en el resto (desktop).
+            La imagen de desktop: banner panorámico de la colección completa.
+          -->
+
+          <img
+            src="imagenes/hero-desktop.jpg"
+            alt="Colección Otoño-Invierno 2025 de StyleShop: camperas, buzos y accesorios sobre fondo urbano"
+            width="1920"
+            height="800"
+            fetchpriority="high"
+          >
+          <!--
+            <img> es OBLIGATORIO dentro de <picture>.
+            Cumple dos roles:
+            1. Fallback: si ningún <source> matchea o el navegador
+               no soporta <picture>, usa este JPG.
+            2. Portador de atributos: width, height, alt, loading
+               siempre van en el <img>, nunca en <source>.
+
+            fetchpriority="high" → esta es la imagen del hero,
+            la primera que ve el usuario. Máxima prioridad.
+            NO usar loading="lazy" en imágenes above-the-fold.
+          -->
+
+        </picture>
+
+      </section>
+
+
+      <!-- =========================================================
+        CASO 3: <picture> para formatos modernos con fallback
+        Sin art direction — misma imagen, formato diferente.
+
+        WebP y AVIF son formatos modernos de imagen:
+        WebP  → hasta 30% más liviano que JPG, amplio soporte
+        AVIF  → hasta 50% más liviano que JPG, soporte creciente
+
+        Con <picture> podemos servir el mejor formato que soporte
+        el navegador, con JPG como fallback universal.
+      ========================================================= -->
+
+      <section aria-label="Galería del producto">
+        <h2>Campera de cuero — Galería</h2>
+
+        <figure>
+
+          <picture>
+            <!--
+              El navegador evalúa en orden:
+              1. ¿Soporta AVIF? → usa campera-frente.avif (más liviana)
+              2. ¿Soporta WebP? → usa campera-frente.webp (algo más pesada)
+              3. Ninguno        → usa campera-frente.jpg (fallback universal)
+            -->
+            <source
+              type="image/avif"
+              srcset="
+                imagenes/campera-frente-400.avif  400w,
+                imagenes/campera-frente-800.avif  800w
+              "
+              sizes="(max-width: 600px) 100vw, 600px"
+            >
+            <source
+              type="image/webp"
+              srcset="
+                imagenes/campera-frente-400.webp  400w,
+                imagenes/campera-frente-800.webp  800w
+              "
+              sizes="(max-width: 600px) 100vw, 600px"
+            >
+            <img
+              src="imagenes/campera-frente-800.jpg"
+              alt="Campera de cuero negra, vista frontal"
+              width="600"
+              height="600"
+              loading="lazy"
+            >
+          </picture>
+
+          <figcaption>Vista frontal — Campera de cuero ecológico</figcaption>
+
+        </figure>
+
+
+        <figure>
+          <picture>
+            <source
+              type="image/avif"
+              srcset="
+                imagenes/campera-espalda-400.avif  400w,
+                imagenes/campera-espalda-800.avif  800w
+              "
+              sizes="(max-width: 600px) 100vw, 600px"
+            >
+            <source
+              type="image/webp"
+              srcset="
+                imagenes/campera-espalda-400.webp  400w,
+                imagenes/campera-espalda-800.webp  800w
+              "
+              sizes="(max-width: 600px) 100vw, 600px"
+            >
+            <img
+              src="imagenes/campera-espalda-800.jpg"
+              alt="Campera de cuero negra, vista trasera"
+              width="600"
+              height="600"
+              loading="lazy"
+            >
+          </picture>
+          <figcaption>Vista trasera</figcaption>
+        </figure>
+
+      </section>
+
+
+      <!-- =========================================================
+        CASO 4: loading="lazy" en grilla de productos
+        El caso más impactante en performance para StyleShop.
+
+        Una grilla de 24 productos tiene 24 imágenes.
+        Sin lazy loading: el navegador descarga las 24 al cargar la página,
+        aunque el usuario solo vea las primeras 6.
+
+        Con loading="lazy": el navegador descarga solo las que están
+        cerca del viewport. Las demás esperan hasta que el usuario
+        hace scroll y se acerca a ellas.
+
+        loading="lazy"  → carga diferida. Para todo lo que está
+                          debajo del fold inicial.
+        loading="eager" → carga inmediata. Es el comportamiento
+                          por defecto. Se puede escribir explícitamente
+                          para dejar clara la intención.
+
+        REGLA PRÁCTICA para StyleShop:
+        Hero banner          → fetchpriority="high", sin lazy
+        Primeras 3-6 cards   → sin lazy (están above the fold)
+        Resto de la grilla   → loading="lazy"
+        Galería del producto → loading="lazy" (excepto la imagen principal)
+      ========================================================= -->
+
+      <section aria-label="Todos los productos">
+        <h2>Catálogo</h2>
+
+        <!-- Primeras cards: SIN lazy (above the fold) -->
+        <article>
+          <img
+            src="imagenes/remera-400.jpg"
+            srcset="imagenes/remera-400.jpg 400w, imagenes/remera-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Remera básica blanca de algodón"
+            width="300"
+            height="300"
+          >
+          <!--
+            Sin loading="lazy" → se descarga inmediatamente.
+            Esta card está above the fold en desktop.
+          -->
+          <h3>Remera básica</h3>
+          <p>$8.999</p>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/jean-400.jpg"
+            srcset="imagenes/jean-400.jpg 400w, imagenes/jean-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Jean slim fit azul oscuro"
+            width="300"
+            height="300"
+          >
+          <h3>Jean slim fit</h3>
+          <p>$24.999</p>
+        </article>
+
+
+        <!-- Cards siguientes: CON lazy (below the fold) -->
+        <article>
+          <img
+            src="imagenes/buzo-400.jpg"
+            srcset="imagenes/buzo-400.jpg 400w, imagenes/buzo-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Buzo oversize gris con capucha"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+          <!--
+            loading="lazy" → el navegador no descarga esta imagen
+            hasta que el usuario hace scroll y se acerca a ella.
+            El espacio queda reservado gracias a width y height —
+            el layout no salta cuando la imagen carga.
+          -->
+          <h3>Buzo oversize</h3>
+          <p>$18.999</p>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/vestido-400.jpg"
+            srcset="imagenes/vestido-400.jpg 400w, imagenes/vestido-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Vestido floral midi con cinturón"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+          <h3>Vestido floral midi</h3>
+          <p>$32.999</p>
+        </article>
+
+        <!-- El resto de los productos siguen el mismo patrón con loading="lazy" -->
+
+      </section>
+
+    </main>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  srcset="img-400.jpg 400w, img-800.jpg 800w"
+              → varias versiones del mismo contenido.
+                El navegador elige según viewport y densidad de pantalla.
+
+  sizes="(max-width: 600px) 100vw, 50vw"
+              → cuánto espacio ocupa la imagen en cada breakpoint.
+                Sin sizes el navegador asume 100vw — casi siempre incorrecto.
+
+  <picture>   → contenedor para art direction o formatos alternativos.
+                Evalúa <source> en orden, usa el primero que matchea.
+                Siempre necesita un <img> como fallback al final.
+
+  <source media="(max-width: 600px)">
+              → imagen diferente según el tamaño de pantalla.
+                Para recortes distintos entre mobile y desktop.
+
+  <source type="image/webp">
+              → formato diferente según soporte del navegador.
+                Para servir WebP/AVIF con fallback JPG.
+
+  loading="lazy"   → carga diferida. Para imágenes below the fold.
+  loading="eager"  → carga inmediata (por defecto).
+  fetchpriority="high" → máxima prioridad. Para el hero y primeras imágenes.
+
+  width y height en <img> → SIEMPRE incluirlos.
+                             Reservan el espacio antes de que cargue la imagen.
+                             Evitan el layout shift (CLS) que penaliza el SEO.
+
+  REGLA PRÁCTICA — qué usar en cada caso:
+
+  Misma imagen, distintos tamaños   → srcset + sizes en <img>
+  Imagen diferente según dispositivo → <picture> con <source media>
+  Formato moderno con fallback       → <picture> con <source type>
+  Todo junto                         → <picture> con <source> múltiples + <img>
+
+  Hero banner                        → fetchpriority="high", sin lazy
+  Primeras imágenes (above the fold) → sin lazy
+  Resto de la grilla y galería       → loading="lazy"
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  En Angular los src y srcset pueden ser dinámicos:
+  [src]="producto.imagenUrl"
+  [attr.srcset]="producto.srcset"
+  [attr.loading]="esPrioritaria ? 'eager' : 'lazy'"
+
+  La estructura <picture> + <source> + <img> sigue siendo
+  exactamente igual — Angular solo controla los valores,
+  no la estructura HTML.
+-->

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Catálogo</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      LISTAS NO ORDENADAS: <ul>
+
+      Para ítems donde el ORDEN NO importa.
+      "Si puedo mezclar el orden y el significado no cambia → <ul>"
+
+      Por defecto muestra bullets (•), pero CSS los puede cambiar
+      o eliminar completamente — muchos menús de navegación son
+      <ul> sin ningún bullet visible.
+    ========================================================= -->
+
+    <h2>Categorías</h2>
+
+    <ul>
+      <!--
+        Menú de categorías: da igual si "Remeras" aparece antes
+        o después de "Camperas" — no hay un orden obligatorio.
+        → Lista no ordenada.
+      -->
+      <li>Remeras</li>
+      <li>Camperas</li>
+      <li>Pantalones</li>
+      <li>Accesorios</li>
+    </ul>
+
+
+    <!-- =========================================================
+      LISTAS ORDENADAS: <ol>
+
+      Para ítems donde el ORDEN SÍ importa.
+      "Si cambio el orden y el significado se pierde → <ol>"
+
+      Por defecto muestra números (1, 2, 3...).
+      También puede mostrar letras o números romanos con CSS.
+    ========================================================= -->
+
+    <h2>Cómo comprar en StyleShop</h2>
+
+    <ol>
+      <!--
+        Pasos de compra: el orden es obligatorio.
+        No podés pagar antes de agregar al carrito.
+        → Lista ordenada.
+      -->
+      <li>Elegí tu producto y talle</li>
+      <li>Agregá al carrito</li>
+      <li>Completá tus datos de envío</li>
+      <li>Elegí el método de pago</li>
+      <li>Confirmá tu compra</li>
+    </ol>
+
+
+    <!-- =========================================================
+      LISTAS ANIDADAS
+
+      Un <li> puede contener otra lista adentro.
+      Útil para submenús, subcategorías, pasos con sub-pasos.
+      Funciona con <ul> dentro de <ul>, <ol> dentro de <ol>,
+      o cualquier combinación.
+    ========================================================= -->
+
+    <h2>Ropa por género</h2>
+
+    <ul>
+      <li>
+        Mujer
+        <ul>
+          <!--
+            Lista anidada: subcategorías de "Mujer".
+            El navegador las indenta automáticamente.
+            CSS puede controlar ese indentado.
+          -->
+          <li>Vestidos</li>
+          <li>Blusas</li>
+          <li>Jeans</li>
+        </ul>
+      </li>
+      <li>
+        Hombre
+        <ul>
+          <li>Camisas</li>
+          <li>Pantalones</li>
+          <li>Buzos</li>
+        </ul>
+      </li>
+      <li>Niños</li>
+    </ul>
+
+
+    <!-- =========================================================
+      ENLACES: <a>
+
+      href  → destino del enlace. Puede ser:
+              - URL absoluta: https://... (otro sitio)
+              - URL relativa: productos.html (dentro del mismo proyecto)
+              - Ancla: #seccion (dentro de la misma página)
+              - Acción: mailto:, tel:
+
+      target="_blank" → abre en pestaña nueva.
+                        Siempre acompañar con rel="noopener noreferrer"
+                        por seguridad: evita que la nueva pestaña pueda
+                        acceder al contexto de la página original.
+
+      Sin href → el <a> no es un enlace funcional. Si necesitás un
+                 elemento clickeable sin destino, usá <button>.
+    ========================================================= -->
+
+    <h2>Navegación</h2>
+
+    <!-- Enlace interno: navega dentro del mismo proyecto -->
+    <a href="index.html">Inicio</a>
+
+    <!-- Enlace interno a otra página del proyecto -->
+    <a href="productos.html">Ver todos los productos</a>
+
+    <!-- Enlace a una sección dentro de la misma página -->
+    <a href="#categorias">Ir a categorías</a>
+    <!--
+      El # apunta a un elemento con id="categorias" en esta página.
+      Lo usaremos cuando veamos atributo id en temas siguientes.
+    -->
+
+    <!-- Enlace externo: abre en pestaña nueva de forma segura -->
+    <a href="https://www.instagram.com/styleshop" target="_blank" rel="noopener noreferrer">
+      Seguinos en Instagram
+    </a>
+
+    <!-- Enlace de email -->
+    <a href="mailto:contacto@styleshop.com">Contactanos por email</a>
+
+    <!-- Enlace de teléfono — en mobile abre el marcador -->
+    <a href="tel:+5491112345678">+54 9 11 1234-5678</a>
+
+    <!--
+      ERROR COMÚN: usar <a> para acciones que no navegan a ningún lado.
+      
+      MAL →  <a href="#">Agregar al carrito</a>
+      BIEN → <button type="button">Agregar al carrito</button>
+
+      Si no hay destino de navegación, es una acción → <button>.
+      Esto importa para accesibilidad y para el comportamiento del teclado.
+    -->
+
+
+    <!-- =========================================================
+      IMÁGENES: <img>
+
+      src → ruta de la imagen. Puede ser relativa o absoluta.
+      alt → texto alternativo. NO es opcional.
+
+      El atributo alt es la pieza más importante de accesibilidad
+      en imágenes. Cumple tres funciones:
+      
+      1. LECTORES DE PANTALLA: leen el alt en voz alta para
+         usuarios con discapacidad visual.
+      2. IMAGEN ROTA: si la imagen no carga, el navegador muestra
+         el texto del alt — el usuario sabe qué debería haber ahí.
+      3. SEO: Google indexa el alt para entender de qué trata
+         la imagen y posicionar mejor la página.
+
+      width y height en HTML → reservan el espacio antes de que
+      cargue la imagen, evitando el "salto" del contenido (CLS).
+      Los valores exactos los ajusta CSS después.
+    ========================================================= -->
+
+    <h2>Producto destacado</h2>
+
+    <!-- Imagen de producto: alt descriptivo y específico -->
+    <img
+      src="imagenes/campera-cuero-negra.jpg"
+      alt="Campera de cuero negra con cierre plateado, vista frontal"
+      width="400"
+      height="400"
+    >
+    <!--
+      Buen alt: describe la imagen como se la describirías a alguien
+      por teléfono. Específico, útil, sin "imagen de" ni "foto de".
+      
+      MAL alt →  alt="campera"
+      MAL alt →  alt="imagen de producto"
+      MAL alt →  alt="img_producto_023_final_v2.jpg"
+      BIEN alt → alt="Campera de cuero negra con cierre plateado, vista frontal"
+    -->
+
+    <!-- Imagen de logo: alt con el nombre de la marca -->
+    <img
+      src="imagenes/logo-styleshop.svg"
+      alt="StyleShop"
+      width="160"
+      height="48"
+    >
+    <!--
+      Para logos el alt es el nombre de la marca — no "logo de StyleShop".
+      El lector de pantalla ya sabe que es una imagen; no hace falta aclararlo.
+    -->
+
+    <!-- Imagen puramente decorativa: alt vacío -->
+    <img
+      src="imagenes/separador-decorativo.png"
+      alt=""
+      width="800"
+      height="4"
+    >
+    <!--
+      alt=""  → le dice al lector de pantalla que ignore esta imagen.
+      Es intencional y correcto cuando la imagen es solo decorativa
+      y no aporta información al contenido.
+
+      NUNCA omitir el atributo alt completamente — eso es un error.
+      alt=""  → imagen decorativa, ignorar (correcto)
+      sin alt → error de accesibilidad (incorrecto)
+    -->
+
+    <!-- Imagen dentro de un enlace -->
+    <a href="detalle.html">
+      <img
+        src="imagenes/remera-basica.jpg"
+        alt="Remera básica blanca de algodón — ver detalle"
+        width="300"
+        height="300"
+      >
+    </a>
+    <!--
+      Cuando una imagen está dentro de un <a>, el alt describe
+      el destino del enlace además de la imagen.
+      El usuario necesita saber a dónde va si hace clic.
+    -->
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  <ul>          → lista sin orden (menús, características, categorías)
+  <ol>          → lista con orden (pasos, rankings, instrucciones)
+  <li>          → ítem de cualquier lista. Solo puede vivir dentro de ul u ol.
+  Anidado       → lista dentro de un <li> para subcategorías o submenús
+
+  <a href="">   → enlace de navegación. Con destino siempre.
+  target+rel    → pestaña nueva siempre con rel="noopener noreferrer"
+  sin destino   → usar <button>, no <a href="#">
+
+  <img src alt> → src es la ruta, alt es OBLIGATORIO siempre
+  alt=""        → imagen decorativa, correcto y necesario
+  sin alt       → error de accesibilidad
+-->

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Inicio</title>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué son los Core Web Vitals
+
+      Google mide la experiencia del usuario con tres métricas
+      llamadas Core Web Vitals. Afectan el posicionamiento en
+      los resultados de búsqueda — no son solo técnicas, son SEO.
+
+      LCP — Largest Contentful Paint
+      ¿Cuánto tarda en aparecer el elemento más grande visible?
+      En StyleShop: la imagen del hero banner.
+      Meta: menos de 2.5 segundos.
+      Qué afecta desde HTML: preload, fetchpriority, srcset.
+
+      CLS — Cumulative Layout Shift
+      ¿Cuánto se mueve el contenido mientras carga la página?
+      En StyleShop: imágenes sin width/height que "empujan" el texto.
+      Meta: menos de 0.1.
+      Qué afecta desde HTML: width y height en <img>, preload de fuentes.
+
+      INP — Interaction to Next Paint
+      ¿Cuánto tarda la página en responder a una interacción?
+      En StyleShop: clic en "Agregar al carrito".
+      Meta: menos de 200ms.
+      Qué afecta desde HTML: defer/async en scripts.
+
+      Este tema cubre las herramientas HTML que mejoran estas métricas.
+      No hay framework, no hay CSS — solo atributos y etiquetas.
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      1. PRECONNECT: avisarle al navegador con qué servidores
+         externos vamos a hablar antes de que los necesite.
+
+      El navegador necesita hacer tres pasos antes de descargar
+      un recurso de un servidor externo:
+      1. DNS lookup  → resolver el nombre de dominio a una IP
+      2. TCP handshake → establecer la conexión
+      3. TLS handshake → negociar el cifrado (en HTTPS)
+
+      Esto puede tomar entre 100ms y 500ms dependiendo de la red.
+      Con rel="preconnect" le decimos: "va a haber conexión con
+      este servidor, empezá los tres pasos ahora mientras
+      el HTML sigue cargando."
+
+      En StyleShop usamos servidores externos para:
+      - Google Fonts (tipografías)
+      - CDN de imágenes
+      - API de Angular/Django en producción
+    ========================================================= -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--
+      Google Fonts usa dos dominios:
+      fonts.googleapis.com → sirve el CSS con las URLs de las fuentes
+      fonts.gstatic.com    → sirve los archivos de fuente reales
+
+      crossorigin → necesario cuando el servidor usa CORS
+                    (Cross-Origin Resource Sharing).
+                    fonts.gstatic.com sirve fuentes con CORS
+                    → siempre agregar crossorigin en ese preconnect.
+    -->
+
+    <link rel="preconnect" href="https://cdn.styleshop.com">
+    <!--
+      Si StyleShop usa un CDN para servir las imágenes de productos,
+      preconnect al CDN mejora la carga de la primera imagen visible.
+    -->
+
+    <link rel="dns-prefetch" href="https://api.styleshop.com">
+    <!--
+      dns-prefetch → solo hace el paso 1 (DNS lookup).
+      Más liviano que preconnect pero menos efectivo.
+      Usar para dominios con los que vamos a conectar
+      más adelante en la página, no de inmediato.
+
+      Jerarquía de prioridad:
+      preconnect  → DNS + TCP + TLS (para recursos críticos e inmediatos)
+      dns-prefetch → solo DNS (para recursos que se necesitan después)
+    -->
+
+
+    <!-- =========================================================
+      2. PRELOAD: decirle al navegador qué recursos críticos
+         necesita descargar antes de que los descubra solo.
+
+      El navegador procesa el HTML línea por línea.
+      Sin preload descubre los recursos cuando llega a ellos:
+      - La imagen del hero: cuando llega al <img> en el body
+      - La fuente: cuando termina de parsear el CSS
+      - El CSS crítico: cuando llega al <link rel="stylesheet">
+
+      Con preload le avisamos al inicio del <head>:
+      "estos recursos los vas a necesitar, empezá a descargarlos ya."
+
+      as="image"      → imagen
+      as="font"       → fuente tipográfica
+      as="style"      → hoja de estilos
+      as="script"     → archivo JavaScript
+      as="fetch"      → datos (JSON, API response)
+
+      crossorigin → obligatorio para fuentes (siempre),
+                    necesario para fetch con CORS.
+    ========================================================= -->
+
+    <!-- Preload de la imagen hero — mejora directamente el LCP -->
+    <link
+      rel="preload"
+      as="image"
+      href="imagenes/hero-desktop-1440.webp"
+      imagesrcset="
+        imagenes/hero-mobile-780.webp   780w,
+        imagenes/hero-tablet-1024.webp 1024w,
+        imagenes/hero-desktop-1440.webp 1440w
+      "
+      imagesizes="100vw"
+      fetchpriority="high"
+    >
+    <!--
+      imagesrcset e imagesizes → versión de preload para
+      imágenes responsive. Le dicen al navegador exactamente
+      qué versión del srcset va a necesitar según el viewport,
+      para que descargue la correcta desde el principio.
+
+      Sin imagesrcset: el preload descarga la versión desktop
+      incluso en mobile — contraproducente.
+      Con imagesrcset: descarga la versión correcta para cada dispositivo.
+
+      fetchpriority="high" → máxima prioridad de descarga.
+      El navegador la pone primero en la cola.
+    -->
+
+    <!-- Preload de fuente tipográfica -->
+    <link
+      rel="preload"
+      as="font"
+      href="fuentes/inter-regular.woff2"
+      type="font/woff2"
+      crossorigin
+    >
+    <!--
+      Las fuentes causan FOUT (Flash of Unstyled Text):
+      el texto se muestra primero con la fuente del sistema
+      y luego "salta" a la fuente correcta cuando carga.
+
+      Con preload la fuente empieza a descargarse al inicio
+      del head — cuando el CSS la necesita, ya está lista.
+
+      crossorigin → SIEMPRE en preload de fuentes, aunque sean
+                    del mismo dominio. El navegador las descarga
+                    en modo CORS y si no tiene crossorigin
+                    descarga dos veces (un bug conocido).
+
+      type="font/woff2" → el formato. woff2 es el más moderno y
+                           comprimido, con soporte universal en 2025.
+    -->
+
+    <!-- Preload del CSS crítico si está en archivo externo -->
+    <link
+      rel="preload"
+      as="style"
+      href="css/critico.css"
+      onload="this.rel='stylesheet'"
+    >
+    <!--
+      Técnica avanzada para CSS no bloqueante:
+      1. El preload descarga el CSS sin bloquearlo
+      2. onload cambia rel a "stylesheet" cuando termina
+      3. El navegador aplica los estilos
+
+      Úsable para CSS no crítico (footer, modales, páginas secundarias).
+      El CSS del hero y la navbar siempre debe ser bloqueante o inline.
+    -->
+
+    <!-- Fallback para navegadores sin JavaScript -->
+    <noscript>
+      <link rel="stylesheet" href="css/critico.css">
+    </noscript>
+
+
+    <!-- =========================================================
+      3. FETCHPRIORITY: controlar la prioridad de descarga
+         de recursos individuales.
+
+      El navegador asigna prioridades automáticamente.
+      fetchpriority permite anularlas cuando el navegador se equivoca.
+
+      fetchpriority="high"   → descargar antes que otros recursos
+                               del mismo tipo.
+      fetchpriority="low"    → descargar después. Para recursos
+                               importantes pero no urgentes.
+      fetchpriority="auto"   → dejar que el navegador decida (default).
+
+      Casos de uso en StyleShop:
+
+      HIGH:
+      - Imagen del hero (LCP)
+      - Primera imagen visible de la grilla
+
+      LOW:
+      - Imágenes below the fold (aunque también usamos lazy)
+      - Scripts de analytics y tracking
+      - Fuentes secundarias
+
+      IMPORTANTE: no abusar de fetchpriority="high".
+      Si todo es "high", nada es high — vuelven a competir igual.
+      Máximo 1-2 recursos con high por página.
+    ========================================================= -->
+
+    <!-- Google Fonts — con preconnect ya establecido arriba -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <!--
+      display=swap → mientras la fuente carga, el navegador
+                     muestra el texto con la fuente fallback
+                     (no lo oculta). Mejor para el usuario
+                     aunque haya un pequeño flash de fuente.
+
+      Alternativas:
+      display=block    → oculta el texto hasta que la fuente carga.
+                         Malo para UX — texto invisible.
+      display=optional → si la fuente no carga rápido, usa la fallback.
+                         Mejor para performance, sin flash.
+                         Recomendado con preload de la fuente.
+    -->
+
+
+    <!-- =========================================================
+      4. SCRIPTS: defer y async
+         Cómo cargar JavaScript sin bloquear el renderizado del HTML.
+
+      El problema sin defer/async:
+      El navegador parsea el HTML línea por línea.
+      Cuando encuentra un <script>, PARA de parsear,
+      descarga el script, lo ejecuta, y recién ahí continúa.
+      Si el script tarda 2 segundos, la página se congela 2 segundos.
+
+      DEFER:
+      - Descarga el script en paralelo mientras parsea el HTML
+      - Ejecuta el script DESPUÉS de que el HTML esté completamente parseado
+      - Mantiene el orden de ejecución entre múltiples scripts
+      - Para scripts que necesitan el DOM completo
+      - Recomendado para la mayoría de los scripts
+
+      ASYNC:
+      - Descarga el script en paralelo mientras parsea el HTML
+      - Ejecuta el script APENAS termina de descargarse (interrumpe el parseo)
+      - No garantiza orden de ejecución entre scripts
+      - Para scripts independientes que no necesitan el DOM ni otros scripts
+      - Ideal para analytics, chat widgets, scripts de terceros
+
+      Sin ninguno (bloqueante):
+      - Bloquea el parseo del HTML
+      - Solo para scripts que deben ejecutarse antes de mostrar el HTML
+      - En la práctica: casi nunca
+    ========================================================= -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <a href="index.html">
+        <img src="imagenes/logo-styleshop.svg" alt="StyleShop" width="160" height="48">
+      </a>
+      <nav aria-label="Navegación principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+
+      <!-- Hero: fetchpriority="high" sin lazy → LCP -->
+      <section aria-label="Banner principal">
+        <picture>
+          <source
+            media="(max-width: 600px)"
+            srcset="imagenes/hero-mobile-780.webp 780w"
+            type="image/webp"
+          >
+          <source
+            srcset="
+              imagenes/hero-desktop-1440.webp 1440w,
+              imagenes/hero-desktop-1920.webp 1920w
+            "
+            type="image/webp"
+          >
+          <img
+            src="imagenes/hero-desktop.jpg"
+            alt="Colección Otoño-Invierno 2025 de StyleShop"
+            width="1920"
+            height="800"
+            fetchpriority="high"
+          >
+          <!--
+            Sin loading="lazy" → carga inmediata.
+            fetchpriority="high" → máxima prioridad.
+            Esta imagen ES el LCP de StyleShop.
+            Hacer todo lo posible para que cargue rápido.
+          -->
+        </picture>
+
+        <h1>Las últimas tendencias están acá</h1>
+        <a href="productos.html">Ver colección</a>
+      </section>
+
+
+      <!-- Primeras cards: sin lazy, fetchpriority="high" solo en la primera -->
+      <section aria-label="Productos destacados">
+        <h2>Destacados</h2>
+
+        <article>
+          <img
+            src="imagenes/campera-400.jpg"
+            srcset="imagenes/campera-400.jpg 400w, imagenes/campera-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Campera de cuero negra"
+            width="300"
+            height="300"
+            fetchpriority="high"
+          >
+          <!--
+            Primera imagen de la grilla: puede ser el LCP en mobile
+            si el hero no entra en pantalla. fetchpriority="high".
+            Sin lazy: está above the fold.
+          -->
+          <h3>Campera de cuero</h3>
+          <p>$62.999</p>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/remera-400.jpg"
+            srcset="imagenes/remera-400.jpg 400w, imagenes/remera-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Remera básica blanca"
+            width="300"
+            height="300"
+          >
+          <!--
+            Segunda imagen: sin lazy (above the fold en desktop),
+            sin fetchpriority="high" (no es el LCP).
+            El navegador decide su prioridad sola — "auto".
+          -->
+          <h3>Remera básica</h3>
+          <p>$8.999</p>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/jean-400.jpg"
+            srcset="imagenes/jean-400.jpg 400w, imagenes/jean-800.jpg 800w"
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 300px"
+            alt="Jean slim fit azul"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+          <!--
+            Tercera imagen en adelante: loading="lazy".
+            En mobile probablemente esté below the fold.
+            El navegador la descarga cuando el usuario se acerca.
+          -->
+          <h3>Jean slim fit</h3>
+          <p>$24.999</p>
+        </article>
+
+      </section>
+
+    </main>
+
+    <footer>
+      <p>© 2025 StyleShop. Todos los derechos reservados.</p>
+    </footer>
+
+
+    <!-- =========================================================
+      SCRIPTS AL FINAL DEL BODY + DEFER/ASYNC
+
+      Posición recomendada de los scripts en StyleShop:
+    ========================================================= -->
+
+    <!--
+      Script propio de StyleShop: defer
+      Necesita el DOM completo para funcionar (agrega event listeners,
+      lee data-*, manipula elementos). Defer garantiza que el HTML
+      esté completamente parseado antes de ejecutarlo.
+    -->
+    <script src="js/styleshop.js" defer></script>
+
+    <!--
+      Google Analytics: async
+      Script de terceros, independiente, no necesita el DOM
+      ni otros scripts de StyleShop.
+      Async: descarga en paralelo y ejecuta apenas termina.
+    -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+      fetchpriority="low"
+    >
+    </script>
+    <!--
+      fetchpriority="low" en el script de analytics →
+      el navegador lo descarga después de los recursos críticos.
+      Google Analytics no bloquea la visualización del sitio —
+      puede esperar.
+    -->
+
+    <!--
+      Script de chat widget (Intercom, Zendesk, etc.): async + defer
+      Completamente independiente, puede llegar tarde.
+      No afecta la funcionalidad del sitio si tarda.
+    -->
+    <script
+      async
+      defer
+      src="https://widget.chat.com/loader.js"
+      fetchpriority="low"
+    >
+    </script>
+    <!--
+      async + defer juntos → en navegadores que soportan async,
+      usa async. En los que no, usa defer como fallback.
+      Para scripts de terceros es una combinación segura.
+    -->
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  CORE WEB VITALS QUE AFECTA EL HTML:
+  LCP (Largest Contentful Paint) → preload + fetchpriority="high" en hero
+  CLS (Cumulative Layout Shift)  → width y height en TODAS las imágenes
+  INP (Interaction to Next Paint) → defer en scripts propios
+
+  PRECONNECT / DNS-PREFETCH:
+  <link rel="preconnect">   → DNS + TCP + TLS. Para servidores críticos e inmediatos.
+  <link rel="dns-prefetch"> → Solo DNS. Para servidores que se usan después.
+  crossorigin               → obligatorio en preconnect con CORS (fonts.gstatic.com)
+
+  PRELOAD:
+  <link rel="preload" as="image">  → imagen crítica (hero, LCP)
+  <link rel="preload" as="font">   → fuente crítica. Siempre con crossorigin.
+  <link rel="preload" as="style">  → CSS con carga no bloqueante
+  imagesrcset + imagesizes         → preload responsive-aware
+
+  FETCHPRIORITY:
+  "high"  → máximo 1-2 por página. Hero image, primera card.
+  "low"   → scripts de analytics, imágenes decorativas.
+  "auto"  → default. El navegador decide.
+
+  SCRIPTS:
+  defer   → descarga en paralelo, ejecuta después del HTML.
+             Para scripts propios que necesitan el DOM.
+  async   → descarga en paralelo, ejecuta apenas termina.
+             Para scripts de terceros independientes.
+  Sin nada → bloquea el parseo. Casi nunca usar.
+
+  POSICIÓN DE LOS SCRIPTS:
+  Al final del <body> + defer → para scripts propios
+  Al final del <body> + async → para scripts de terceros
+
+  REGLAS PRÁCTICAS PARA STYLESHOP:
+  Hero image          → preload + fetchpriority="high" + sin lazy
+  Primera card        → fetchpriority="high" + sin lazy
+  Cards 2-3           → sin lazy (above the fold desktop)
+  Resto de la grilla  → loading="lazy"
+  Todas las imágenes  → width y height siempre (evita CLS)
+  Scripts propios     → defer al final del body
+  Analytics/terceros  → async + fetchpriority="low" al final del body
+
+  HERRAMIENTA DE AUDITORÍA:
+  Lighthouse (DevTools → pestaña Lighthouse → Analyze page load)
+  Mide LCP, CLS, INP y da recomendaciones específicas.
+  PageSpeed Insights (pagespeed.web.dev) → misma info, online.
+
+  CONEXIÓN CON ANGULAR (Fase 3-4):
+  Angular genera el HTML final — estas técnicas se aplican
+  en el index.html del proyecto Angular y en los templates:
+
+  angular.json → budgets para controlar el tamaño de los bundles
+  NgOptimizedImage (directiva de Angular 15+):
+  <img ngSrc="campera.jpg" width="400" height="400" priority>
+  → Equivale a fetchpriority="high" + preload automático
+  → Fuerza width y height (evita CLS)
+  → Genera srcset automáticamente
+  → loading="lazy" por defecto en imágenes no priority
+
+  En la Fase 4 vamos a ver NgOptimizedImage como la forma
+  Angular-nativa de aplicar todo lo que aprendimos en este tema.
+-->

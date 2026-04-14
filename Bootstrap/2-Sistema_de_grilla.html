@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Productos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: cómo piensa Bootstrap el layout
+
+      Bootstrap divide el ancho disponible en 12 columnas iguales.
+      Siempre 12 — ese es el número base de todo el sistema.
+
+      ¿Por qué 12?
+      12 es divisible por 1, 2, 3, 4, 6 y 12.
+      Eso permite layouts de 2, 3, 4 o 6 columnas iguales,
+      o combinaciones asimétricas (8+4, 9+3, 7+5).
+
+      La jerarquía siempre es:
+      container → row → col
+
+      CONTAINER → define el ancho máximo y centra el contenido
+      ROW       → crea una fila. Internamente es un flexbox.
+                  Cada row tiene sus propios 12 espacios.
+      COL       → ocupa una cantidad de esos 12 espacios.
+
+      Si la suma de los col en una row supera 12,
+      el excedente se mueve a la siguiente línea automáticamente.
+      Eso es lo que hace la grilla responsive sin media queries.
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      CONTAINER: el contenedor principal
+
+      .container        → ancho máximo fijo según el breakpoint.
+                          Se centra automáticamente con margin: auto.
+                          Tiene padding lateral (gutter) por defecto.
+
+      .container-fluid  → siempre 100% del viewport.
+                          Sin ancho máximo. Para banners y secciones
+                          que deben ocupar todo el ancho.
+
+      .container-{breakpoint} → fluido hasta ese breakpoint,
+                                 luego fijo.
+                                 container-md → fluido en xs y sm,
+                                 fijo a partir de md.
+
+      Anchos máximos de .container según breakpoint:
+      xs  (<576px)   → 100% (sin max-width)
+      sm  (≥576px)   → 540px
+      md  (≥768px)   → 720px
+      lg  (≥992px)   → 960px
+      xl  (≥1200px)  → 1140px
+      xxl (≥1400px)  → 1320px
+    ========================================================= -->
+
+    <!-- Navbar: container para centrar el contenido -->
+    <header>
+      <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <!--
+          Por ahora solo ponemos las clases de layout.
+          Los componentes Navbar los vemos en el Tema 8.
+          El foco de este tema es el sistema de grilla.
+        -->
+        <div class="container">
+          <!--
+            .container dentro de la navbar → el contenido
+            de la nav tiene el mismo ancho máximo que el resto
+            de la página. Se ve alineado con todo lo demás.
+          -->
+          <a class="navbar-brand" href="index.html">StyleShop</a>
+        </div>
+      </nav>
+    </header>
+
+
+    <main>
+
+      <!-- =========================================================
+        CONTAINER-FLUID: para secciones de ancho completo
+      ========================================================= -->
+
+      <section class="container-fluid p-0">
+        <!--
+          El hero banner ocupa todo el ancho del viewport.
+          container-fluid → sin max-width, 100% del ancho.
+          p-0 → elimina el padding lateral del container
+                (lo vemos en detalle en Tema 3 — espaciados).
+        -->
+        <img
+          src="imagenes/hero-desktop.webp"
+          alt="Colección Otoño-Invierno 2025 — StyleShop"
+          class="w-100"
+          width="1920"
+          height="600"
+          fetchpriority="high"
+        >
+        <!--
+          w-100 → width: 100%. La imagen ocupa todo el ancho
+          del container-fluid.
+        -->
+      </section>
+
+
+      <!-- =========================================================
+        CONTAINER + ROW + COL: la grilla de productos
+
+        Estructura base:
+        <div class="container">        ← ancho máximo, centrado
+          <div class="row">            ← fila de 12 espacios
+            <div class="col-*">        ← columna que ocupa * espacios
+            <div class="col-*">
+          </div>
+        </div>
+      ========================================================= -->
+
+      <section class="container mt-5">
+        <!--
+          mt-5 → margin-top. Lo vemos en Tema 3.
+          Por ahora: separa visualmente la sección del hero.
+        -->
+
+        <h1 class="mb-4">Todos los productos</h1>
+
+        <!-- =====================================================
+          COLUMNAS DE ANCHO FIJO
+
+          col-{n} → ocupa exactamente n de los 12 espacios.
+          El ancho es fijo en TODOS los breakpoints.
+          No responde al tamaño de pantalla.
+
+          Solo útil cuando el layout nunca debe cambiar,
+          lo cual es raro en un ecommerce real.
+          Sirve para entender el sistema antes de ver responsive.
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mb-3">Ejemplo: columnas fijas (no responsive)</h2>
+
+        <div class="row mb-5">
+
+          <div class="col-4">
+            <!--
+              col-4 → ocupa 4 de 12 espacios = 33.33% del ancho.
+              En mobile, tablet y desktop: siempre 33%.
+            -->
+            <div class="border p-3 text-center bg-light">
+              col-4 (33%)
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="border p-3 text-center bg-light">
+              col-4 (33%)
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="border p-3 text-center bg-light">
+              col-4 (33%)
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- =====================================================
+          COLUMNAS RESPONSIVE: col-{breakpoint}-{n}
+
+          Acá está el verdadero poder de la grilla de Bootstrap.
+          Las clases responsivas le dicen al navegador:
+          "a partir de este breakpoint, ocupá estos espacios".
+
+          BREAKPOINTS DE BOOTSTRAP 5:
+          (sin prefijo) → xs: aplica desde 0px en adelante
+          sm            → aplica desde 576px en adelante
+          md            → aplica desde 768px en adelante
+          lg            → aplica desde 992px en adelante
+          xl            → aplica desde 1200px en adelante
+          xxl           → aplica desde 1400px en adelante
+
+          Las clases se acumulan: una col puede tener varias.
+          col-12 col-sm-6 col-md-4 col-lg-3 significa:
+          - xs (0-575px)    → 12/12 = 100% (una por fila)
+          - sm (576-767px)  → 6/12  = 50%  (dos por fila)
+          - md (768-991px)  → 4/12  = 33%  (tres por fila)
+          - lg (992px+)     → 3/12  = 25%  (cuatro por fila)
+
+          Este es el patrón estándar de grilla de productos
+          en ecommerce. Lo vas a ver en MercadoLibre, Zara, H&M.
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mb-3">Grilla de productos — Responsive</h2>
+
+        <div class="row g-4">
+          <!--
+            g-4 → gutter (espacio entre columnas y filas).
+            Sin g-*, las columnas están pegadas entre sí.
+            g-4 agrega 1.5rem de espacio en todos lados.
+            Lo vemos en detalle en Tema 3.
+          -->
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <!--
+              mobile  → 12 cols = 100%  → 1 producto por fila
+              sm      →  6 cols = 50%   → 2 productos por fila
+              md      →  4 cols = 33%   → 3 productos por fila
+              lg+     →  3 cols = 25%   → 4 productos por fila
+            -->
+            <article class="border p-3">
+              <img
+                src="imagenes/campera-400.jpg"
+                alt="Campera de cuero negra"
+                class="w-100"
+                width="300"
+                height="300"
+                fetchpriority="high"
+              >
+              <h3 class="h6 mt-2">Campera de cuero</h3>
+              <p class="fw-bold">$62.999</p>
+              <a href="detalle.html?id=1" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <article class="border p-3">
+              <img
+                src="imagenes/remera-400.jpg"
+                alt="Remera básica blanca"
+                class="w-100"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mt-2">Remera básica</h3>
+              <p class="fw-bold">$8.999</p>
+              <a href="detalle.html?id=2" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <article class="border p-3">
+              <img
+                src="imagenes/jean-400.jpg"
+                alt="Jean slim fit azul"
+                class="w-100"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mt-2">Jean slim fit</h3>
+              <p class="fw-bold">$24.999</p>
+              <a href="detalle.html?id=3" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <article class="border p-3">
+              <img
+                src="imagenes/buzo-400.jpg"
+                alt="Buzo oversize gris"
+                class="w-100"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mt-2">Buzo oversize</h3>
+              <p class="fw-bold">$18.999</p>
+              <a href="detalle.html?id=4" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <article class="border p-3">
+              <img
+                src="imagenes/vestido-400.jpg"
+                alt="Vestido floral midi"
+                class="w-100"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mt-2">Vestido floral midi</h3>
+              <p class="fw-bold">$32.999</p>
+              <a href="detalle.html?id=5" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <article class="border p-3">
+              <img
+                src="imagenes/camisa-400.jpg"
+                alt="Camisa de lino beige"
+                class="w-100"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mt-2">Camisa de lino</h3>
+              <p class="fw-bold">$15.999</p>
+              <a href="detalle.html?id=6" class="btn btn-dark w-100">Ver producto</a>
+            </article>
+          </div>
+
+        </div>
+        <!-- fin row de productos -->
+
+
+        <!-- =====================================================
+          COLUMNAS AUTOMÁTICAS: col sin número
+
+          col (sin número) → Bootstrap divide el espacio
+          disponible en partes iguales entre todos los col
+          de la misma row.
+
+          3 col en una row → cada uno ocupa 4 espacios (12/3)
+          4 col en una row → cada uno ocupa 3 espacios (12/4)
+
+          Útil cuando no importa el ancho exacto de cada columna,
+          solo que sean iguales.
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mt-5 mb-3">
+          Ejemplo: columnas automáticas iguales
+        </h2>
+
+        <div class="row g-3 mb-5">
+          <div class="col">
+            <div class="border p-3 text-center bg-light">Envíos gratis</div>
+          </div>
+          <div class="col">
+            <div class="border p-3 text-center bg-light">12 cuotas</div>
+          </div>
+          <div class="col">
+            <div class="border p-3 text-center bg-light">30 días de cambios</div>
+          </div>
+          <!--
+            Tres col sin número → Bootstrap los hace iguales (4+4+4).
+            Si agregamos un cuarto, pasan a ser 3+3+3+3.
+            No hay que cambiar nada más.
+          -->
+        </div>
+
+
+        <!-- =====================================================
+          LAYOUT ASIMÉTRICO: detalle de producto
+
+          En detalle.html el layout es:
+          - Columna izquierda: galería de imágenes (más ancha)
+          - Columna derecha: información y botón de compra (más angosta)
+
+          col-lg-8 + col-lg-4 = 12 ✓ (layout asimétrico)
+          En mobile: ambas a col-12 (una debajo de la otra)
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mt-5 mb-3">
+          Ejemplo: layout asimétrico (detalle de producto)
+        </h2>
+
+        <div class="row g-4 mb-5">
+
+          <div class="col-12 col-lg-8">
+            <!--
+              mobile → 12/12 = 100% (ocupa toda la fila)
+              lg+    →  8/12 = 66%  (galería de imágenes)
+            -->
+            <div class="border p-3 bg-light text-center" style="height: 300px">
+              Galería de imágenes (col-12 col-lg-8)
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <!--
+              mobile → 12/12 = 100% (debajo de la galería)
+              lg+    →  4/12 = 33%  (panel de compra)
+            -->
+            <div class="border p-3 bg-light" style="height: 300px">
+              <p>Campera de cuero</p>
+              <p class="fw-bold fs-4">$62.999</p>
+              <button class="btn btn-dark w-100">Agregar al carrito</button>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- =====================================================
+          LAYOUT DE CHECKOUT: tres secciones
+
+          checkout.html tiene:
+          - Columna izquierda: datos de envío y pago (más ancha)
+          - Columna derecha: resumen del pedido (más angosta)
+
+          col-lg-7 + col-lg-5 = 12 ✓
+          O con un sidebar más angosto:
+          col-lg-8 + col-lg-4 = 12 ✓
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mt-5 mb-3">
+          Ejemplo: layout de checkout
+        </h2>
+
+        <div class="row g-4 mb-5">
+
+          <div class="col-12 col-lg-7">
+            <div class="border p-4 bg-light">
+              <h3 class="h6">Datos de envío</h3>
+              <p class="text-muted">Formulario de checkout (col-12 col-lg-7)</p>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="border p-4 bg-light">
+              <h3 class="h6">Resumen del pedido</h3>
+              <p class="text-muted">3 productos · $106.997</p>
+              <button class="btn btn-success w-100">Confirmar compra</button>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- =====================================================
+          COLUMNAS ANIDADAS (nested grid)
+
+          Una col puede contener su propio row con sus propias col.
+          El row interno divide en 12 el ancho de la col padre.
+          Útil para layouts complejos dentro de una sección.
+        ===================================================== -->
+
+        <h2 class="h5 text-muted mt-5 mb-3">
+          Ejemplo: grilla anidada (footer de StyleShop)
+        </h2>
+
+        <div class="row g-4">
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <!--
+              mobile → 100%
+              md     → 50% (dos columnas)
+              lg     → 25% (cuatro columnas)
+            -->
+            <div class="border p-3 bg-light">
+              <strong>StyleShop</strong>
+              <p class="small">Moda que te define desde 2020.</p>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="border p-3 bg-light">
+              <strong>Navegación</strong>
+              <ul class="list-unstyled small">
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Productos</a></li>
+                <li><a href="#">Contacto</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="border p-3 bg-light">
+              <strong>Atención al cliente</strong>
+              <ul class="list-unstyled small">
+                <li><a href="#">Preguntas frecuentes</a></li>
+                <li><a href="#">Cambios y devoluciones</a></li>
+                <li><a href="#">Seguimiento de pedidos</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="border p-3 bg-light">
+              <strong>Legal</strong>
+              <ul class="list-unstyled small">
+                <li><a href="#">Términos y condiciones</a></li>
+                <li><a href="#">Política de privacidad</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        <!-- fin footer grid -->
+
+      </section>
+      <!-- fin container principal -->
+
+    </main>
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  CONTAINERS:
+  .container          → ancho máximo fijo según breakpoint. Centrado.
+  .container-fluid    → 100% del viewport siempre.
+  .container-{bp}     → fluido hasta el breakpoint, fijo después.
+
+  FILAS:
+  .row                → crea una fila flex de 12 columnas.
+  .g-{n}              → gutter: espacio entre columnas y filas.
+  .gx-{n}             → gutter solo horizontal.
+  .gy-{n}             → gutter solo vertical.
+
+  COLUMNAS:
+  .col-{n}            → n espacios de 12. Fijo en todos los breakpoints.
+  .col-{bp}-{n}       → n espacios a partir del breakpoint bp.
+  .col                → espacio igual automático entre todos los col del row.
+
+  BREAKPOINTS:
+  (sin prefijo) → 0px+    (xs, mobile first)
+  sm            → 576px+
+  md            → 768px+
+  lg            → 992px+
+  xl            → 1200px+
+  xxl           → 1400px+
+
+  PATRONES DE STYLESHOP:
+  Grilla de productos   → col-12 col-sm-6 col-md-4 col-lg-3
+  Detalle de producto   → col-12 col-lg-8 + col-12 col-lg-4
+  Checkout              → col-12 col-lg-7 + col-12 col-lg-5
+  Footer                → col-12 col-md-6 col-lg-3 (×4)
+
+  MOBILE FIRST:
+  Bootstrap es mobile first. Las clases sin breakpoint
+  aplican desde 0px en adelante. Las clases con breakpoint
+  sobreescriben a partir de ese punto.
+
+  col-12 col-md-6 significa:
+  "100% de ancho por defecto (mobile),
+  50% a partir de 768px (md)"
+  NO al revés.
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  Las clases de grilla son exactamente iguales en Angular.
+  La diferencia es que los col se generan dinámicamente:
+
+  HTML estático:
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">...</div>
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">...</div>
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">...</div>
+
+  Angular equivalente:
+  <div
+    *ngFor="let producto of productos"
+    class="col-12 col-sm-6 col-md-4 col-lg-3"
+  >
+    <app-producto-card [producto]="producto"></app-producto-card>
+  </div>
+
+  Mismo HTML, mismo CSS, misma grilla —
+  solo cambia cómo se generan las columnas.
+-->

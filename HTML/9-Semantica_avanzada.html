@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Campera de cuero</title>
+  </head>
+
+  <body>
+
+    <header>
+      <img src="imagenes/logo-styleshop.svg" alt="StyleShop" width="160" height="48">
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+
+      <!-- =========================================================
+        CONTEXTO: página de detalle de producto
+
+        Esta es detalle.html — la página más rica en contenido
+        de StyleShop. Acá aparecen todos los elementos de este tema:
+
+        <figure>      → galería de fotos del producto
+        <figcaption>  → descripción de cada foto
+        <aside>       → productos relacionados, información extra
+        <details>     → FAQ, información de talle, cuidado de la prenda
+        <summary>     → el título clickeable de cada <details>
+      ========================================================= -->
+
+
+      <article>
+        <!--
+          El producto completo es un <article>:
+          tiene sentido por sí solo, podría existir fuera de contexto.
+        -->
+
+        <h1>Campera de cuero ecológico</h1>
+
+
+        <!-- =========================================================
+          <figure>
+
+          Contenido que está REFERENCIADO desde el texto principal
+          pero que podría moverse a otro lugar sin romper el flujo.
+          No es solo "una imagen" — es una unidad de contenido
+          autocontenida que ilustra algo del texto.
+
+          Casos típicos:
+          - Imágenes con epígrafe
+          - Bloques de código con descripción
+          - Gráficos, tablas ilustrativas, diagramas
+
+          La diferencia con un <img> suelto:
+          <img> solo      → imagen decorativa o funcional sin contexto
+          <figure>        → imagen que ilustra algo del contenido,
+                            con posibilidad de tener epígrafe
+
+          <figure> puede contener múltiples imágenes si forman
+          una unidad (como una galería de un mismo producto).
+        ========================================================= -->
+
+        <figure>
+          <!--
+            Imagen principal del producto.
+            Está referenciada desde la descripción ("ver foto") —
+            tiene relación directa con el contenido del artículo.
+            → <figure> con <figcaption>.
+          -->
+          <img
+            src="imagenes/campera-cuero-frente.jpg"
+            alt="Campera de cuero ecológico negra, vista frontal"
+            width="600"
+            height="600"
+          >
+
+          <!-- =========================================================
+            <figcaption>
+
+            Epígrafe o descripción del <figure>.
+            Siempre va dentro del <figure>, puede ir
+            antes o después del contenido (convención: después).
+
+            NO es lo mismo que alt:
+            alt         → descripción para lectores de pantalla
+                          y cuando la imagen no carga.
+                          Describe QUÉ hay en la imagen.
+            figcaption  → epígrafe visible para todos los usuarios.
+                          Agrega contexto o información adicional
+                          que el alt no necesita tener.
+
+            En StyleShop: el alt describe la imagen objetivamente,
+            el figcaption puede agregar información de marketing
+            o instrucciones de uso.
+          ========================================================= -->
+
+          <figcaption>
+            Campera de cuero ecológico — Colección Otoño-Invierno 2025.
+            Disponible en negro y marrón.
+          </figcaption>
+
+        </figure>
+
+
+        <!-- Galería: múltiples imágenes del mismo producto -->
+        <figure>
+          <!--
+            Las tres vistas del producto forman una unidad —
+            van en el mismo <figure>.
+          -->
+
+          <img
+            src="imagenes/campera-cuero-frente.jpg"
+            alt="Campera de cuero negra, vista frontal"
+            width="200"
+            height="200"
+          >
+          <img
+            src="imagenes/campera-cuero-espalda.jpg"
+            alt="Campera de cuero negra, vista trasera"
+            width="200"
+            height="200"
+          >
+          <img
+            src="imagenes/campera-cuero-detalle.jpg"
+            alt="Detalle del cierre y bolsillos de la campera"
+            width="200"
+            height="200"
+          >
+
+          <figcaption>
+            Vista frontal, trasera y detalle del cierre plateado.
+          </figcaption>
+
+        </figure>
+
+
+        <!-- Sección de compra -->
+        <section>
+          <h2>Elegí tu talle y comprá</h2>
+
+          <p>
+            <span class="precio-original">$89.999</span>
+            <span class="precio-descuento">$62.999</span>
+            <span class="descuento-badge">30% OFF</span>
+          </p>
+
+          <form action="/api/carrito/" method="POST">
+            <fieldset>
+              <legend>Talle</legend>
+              <label><input type="radio" name="talle" value="s"> S</label>
+              <label><input type="radio" name="talle" value="m" checked> M</label>
+              <label><input type="radio" name="talle" value="l"> L</label>
+              <label><input type="radio" name="talle" value="xl"> XL</label>
+            </fieldset>
+            <input type="hidden" name="producto_id" value="1">
+            <!--
+              type="hidden" → campo invisible para el usuario.
+                              Se usa para enviar datos que el formulario
+                              necesita pero el usuario no tiene que ver ni
+                              modificar: IDs de producto, tokens CSRF, etc.
+                              Django lo recibe igual que cualquier otro campo.
+            -->
+            <button type="submit">Agregar al carrito</button>
+          </form>
+        </section>
+
+
+        <!-- =========================================================
+          <details> y <summary>
+
+          <details> → sección colapsable. Por defecto está cerrada.
+                      El usuario hace clic para expandirla.
+                      No necesita JavaScript — el navegador
+                      maneja el abrir/cerrar nativamente.
+
+          <summary> → el título clickeable del <details>.
+                      Siempre es el primer hijo de <details>.
+                      Si no hay <summary>, el navegador muestra
+                      "Detalles" como texto por defecto.
+
+          open      → atributo que hace que el <details> empiece abierto.
+                      Sin este atributo, empieza cerrado.
+
+          Cuándo usar <details>:
+          - FAQ: cada pregunta es un <details>
+          - Información secundaria que algunos usuarios quieren ver
+          - Guías de talle, instrucciones de cuidado, términos
+          - Filtros avanzados que se pueden mostrar u ocultar
+
+          Cuándo NO usar <details>:
+          - Contenido crítico que todos deben ver (precio, nombre)
+          - Navegación principal
+          - Cuando necesitás animaciones complejas al abrir/cerrar
+            → para eso Angular con animaciones (Fase 4)
+        ========================================================= -->
+
+        <section>
+          <h2>Información del producto</h2>
+
+          <details open>
+            <!--
+              open → esta sección empieza expandida porque es
+              la más importante: la descripción del producto.
+              El usuario la ve sin necesidad de hacer clic.
+            -->
+            <summary>Descripción</summary>
+            <p>
+              La campera de cuero ecológico de StyleShop combina estética
+              urbana con materiales sustentables. Su forro interior de
+              microfibra garantiza comodidad en climas fríos, mientras que
+              el exterior de PU de alta densidad imita la textura y durabilidad
+              del cuero natural.
+            </p>
+            <p>
+              Cierre central YKK plateado, dos bolsillos frontales con cierre
+              y un bolsillo interior para mayor seguridad.
+            </p>
+          </details>
+
+          <details>
+            <!--
+              Sin open → empieza cerrada. El usuario la abre si le interesa.
+              La guía de talles es información que algunos necesitan,
+              otros no — ideal para <details>.
+            -->
+            <summary>Guía de talles</summary>
+
+            <!--
+              <figure> dentro de <details> para la tabla de talles.
+              La tabla ilustra la información de talle → es un <figure>.
+            -->
+            <figure>
+              <img
+                src="imagenes/guia-talles-campera.jpg"
+                alt="Tabla de medidas: S corresponde a talle 38-40, M a 40-42, L a 42-44, XL a 44-46"
+                width="400"
+                height="200"
+              >
+              <figcaption>
+                Medidas en centímetros. Si estás entre dos talles,
+                te recomendamos elegir el mayor.
+              </figcaption>
+            </figure>
+
+          </details>
+
+          <details>
+            <summary>Cuidado de la prenda</summary>
+            <ul>
+              <li>Limpiar con paño húmedo — no lavar en lavarropas</li>
+              <li>No usar secadora ni plancha directa</li>
+              <li>Guardar colgada para mantener la forma</li>
+              <li>Aplicar crema para cuero ecológico cada 3 meses</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Política de cambios y devoluciones</summary>
+            <p>
+              Tenés 30 días desde la recepción del producto para solicitar
+              un cambio o devolución. El producto debe estar sin uso,
+              con etiquetas originales y en su empaque original.
+            </p>
+            <p>
+              Para iniciar el proceso escribinos a
+              <a href="mailto:cambios@styleshop.com">cambios@styleshop.com</a>
+              con tu número de pedido.
+            </p>
+          </details>
+
+        </section>
+
+      </article>
+
+
+      <!-- =========================================================
+        <aside>
+
+        Contenido RELACIONADO pero NO esencial al contenido principal.
+        Si lo quitaras, el contenido principal seguiría siendo
+        completamente comprensible e íntegro.
+
+        Casos típicos en StyleShop:
+        - Productos relacionados o recomendados
+        - Publicidad o banners laterales
+        - Biografía del autor en un blog
+        - Widget de redes sociales
+        - Filtros laterales en la página de productos
+
+        La diferencia clave con <section>:
+        <section> → contenido que forma parte del flujo principal
+        <aside>   → contenido complementario, tangencial al flujo
+
+        NO significa "columna derecha" o "sidebar" —
+        eso es layout y lo maneja CSS.
+        <aside> es semántica: "este contenido es complementario".
+        Puede estar visualmente en cualquier lugar de la página.
+      ========================================================= -->
+
+      <aside>
+        <!--
+          Productos relacionados: complementan la experiencia
+          pero no son parte del detalle de la campera.
+          Si los quitáramos, la página de detalle sería igual de completa.
+          → <aside>
+        -->
+        <h2>También te puede interesar</h2>
+
+        <article>
+          <img
+            src="imagenes/jean-slim.jpg"
+            alt="Jean slim fit azul oscuro"
+            width="200"
+            height="200"
+          >
+          <h3>Jean slim fit</h3>
+          <p>$24.999</p>
+          <a href="detalle.html?id=3">Ver producto</a>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/buzo-oversize.jpg"
+            alt="Buzo oversize gris con capucha"
+            width="200"
+            height="200"
+          >
+          <h3>Buzo oversize</h3>
+          <p>$18.999</p>
+          <a href="detalle.html?id=7">Ver producto</a>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/remera-basica.jpg"
+            alt="Remera básica blanca de algodón"
+            width="200"
+            height="200"
+          >
+          <h3>Remera básica</h3>
+          <p>$8.999</p>
+          <a href="detalle.html?id=2">Ver producto</a>
+        </article>
+
+      </aside>
+
+    </main>
+
+
+    <footer>
+      <p>© 2025 StyleShop. Todos los derechos reservados.</p>
+    </footer>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  <figure>      → unidad de contenido ilustrativa referenciada desde el texto.
+                  Puede contener imágenes, código, tablas, gráficos.
+                  No es obligatorio que tenga <figcaption>.
+
+  <figcaption>  → epígrafe visible del <figure>. Va adentro, al final.
+                  Distinto al alt: alt describe, figcaption contextualiza.
+
+  <details>     → sección colapsable nativa, sin JavaScript.
+                  Empieza cerrada salvo que tenga el atributo open.
+                  Ideal para FAQ, guías, información secundaria.
+
+  <summary>     → título clickeable del <details>.
+                  Siempre primer hijo. Sin él el navegador pone "Detalles".
+
+  <aside>       → contenido complementario, no esencial al flujo principal.
+                  Semántica, no layout. Puede estar en cualquier posición visual.
+
+  LAS DOS PREGUNTAS CLAVE:
+
+  Para <figure>:
+  "¿Esta imagen ilustra algo del texto y tiene contexto propio?"
+  Sí → <figure> (con o sin <figcaption>)
+  No → <img> suelto
+
+  Para <aside>:
+  "¿Si saco este bloque, el contenido principal sigue siendo completo?"
+  Sí → <aside>
+  No → <section> (es parte del flujo principal)
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  <details open>  → el atributo open lo manejará Angular con property binding:
+                    [open]="seccionAbierta"
+  Los productos del <aside> → se renderizan con *ngFor desde el servicio
+  Los <figure> de la galería → Angular maneja la imagen activa con binding
+-->

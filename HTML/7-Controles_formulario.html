@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Contacto</title>
+  </head>
+
+  <body>
+
+    <main>
+
+      <!-- =========================================================
+        CONTEXTO: en qué páginas de StyleShop aparecen estos controles
+
+        <select>    → filtros de productos (categoría, talle, color)
+                      selector de provincia en checkout
+                      método de pago
+        <textarea>  → formulario de contacto (mensaje)
+                      reseña de producto
+                      notas del pedido en checkout
+        <fieldset>  → agrupa datos de envío en checkout
+                      agrupa datos de pago
+                      agrupa filtros en la barra lateral
+      ========================================================= -->
+
+
+      <!-- =========================================================
+        <fieldset> y <legend>
+
+        <fieldset> → agrupa campos de formulario que pertenecen
+                     al mismo tema o contexto.
+                     Traza una línea alrededor del grupo (por defecto).
+                     CSS puede quitar esa línea o cambiarla.
+
+        <legend>   → título del grupo. Siempre es el primer hijo
+                     del <fieldset>. Los lectores de pantalla lo leen
+                     antes de cada campo del grupo, dando contexto:
+                     "Datos de contacto — Nombre"
+                     "Datos de contacto — Email"
+
+        Cuándo usar <fieldset>:
+        - Cuando hay dos o más grupos temáticos en el mismo formulario.
+        - Cuando los campos solo tienen sentido dentro de un contexto.
+        - En checkout: "Datos de envío" y "Datos de pago" son
+          grupos claramente distintos → dos <fieldset>.
+
+        Cuándo NO usar <fieldset>:
+        - Para un formulario de un solo tema (login, buscador).
+        - Solo por decoración o para agrupar visualmente con CSS
+          → para eso usá <div> o <section>.
+      ========================================================= -->
+
+      <h1>Contactanos</h1>
+
+      <form action="/api/contacto/" method="POST">
+
+
+        <fieldset>
+          <legend>Tus datos</legend>
+          <!--
+            Todo lo que está dentro de este fieldset pertenece
+            al grupo "Tus datos". El lector de pantalla lo anuncia
+            antes de leer cada campo.
+          -->
+
+          <label for="nombre">Nombre completo</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="María García"
+          >
+
+          <label for="email-contacto">Correo electrónico</label>
+          <input
+            type="text"
+            id="email-contacto"
+            name="email"
+            placeholder="maria@email.com"
+          >
+
+          <label for="telefono">Teléfono (opcional)</label>
+          <input
+            type="text"
+            id="telefono"
+            name="telefono"
+            placeholder="+54 9 11 1234-5678"
+          >
+
+        </fieldset>
+
+
+        <fieldset>
+          <legend>Tu consulta</legend>
+          <!--
+            Segundo grupo: los datos de la consulta en sí.
+            Separar en dos fieldsets deja claro que son
+            dos bloques de información distintos.
+          -->
+
+
+          <!-- =========================================================
+            <select> y <option>
+
+            Lista desplegable. El usuario elige UNA opción
+            de una lista predefinida.
+
+            Cuándo usar <select> en vez de <input type="radio">:
+            - Más de 4 o 5 opciones → <select> (ocupa menos espacio)
+            - Menos de 4 opciones   → radio buttons (más visible)
+
+            value en <option> → el dato que recibe el servidor.

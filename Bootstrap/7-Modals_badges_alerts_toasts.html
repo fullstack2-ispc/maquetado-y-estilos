@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Componentes de feedback</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body class="bg-light">
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: componentes de feedback
+
+      Este tema cubre cuatro componentes de Bootstrap que
+      comunican información al usuario:
+
+      BADGE  → etiqueta inline, pegada a un elemento.
+               "Nuevo", "-30%", cantidad de ítems en el carrito.
+               No requiere JavaScript.
+
+      ALERT  → bloque de texto con color semántico.
+               Mensaje de error, confirmación, advertencia.
+               Puede cerrarse con un botón (requiere JS de Bootstrap).
+
+      TOAST  → notificación flotante, aparece y desaparece.
+               "Producto agregado al carrito".
+               Requiere JavaScript de Bootstrap para mostrarlo.
+
+      MODAL  → ventana superpuesta al contenido.
+               "Vista rápida" del producto, confirmación de acción.
+               Requiere JavaScript de Bootstrap.
+
+      Todos usan los mismos colores semánticos que vimos
+      en el Tema 3: primary, success, danger, warning, etc.
+    ========================================================= -->
+
+    <main class="container my-5">
+
+      <h1 class="mb-2">Componentes de feedback</h1>
+      <p class="text-muted mb-5">Tema 5 · StyleShop</p>
+
+
+      <!-- =====================================================
+        BADGES
+
+        Un badge es una etiqueta pequeña que va pegada
+        a otro elemento. Siempre inline, nunca en bloque.
+
+        CLASES:
+        badge           → display: inline-block, padding, border-radius
+        bg-{color}      → color de fondo semántico
+        rounded-pill    → bordes completamente redondeados
+
+        El badge hereda el tamaño de fuente del padre.
+        Para que sea pequeño, debe ir dentro de un elemento
+        de texto o con la clase small.
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Badges</h2>
+
+      <!-- Badges en tarjetas de producto -->
+      <div class="row g-3 mb-4">
+
+        <!-- Badge sobre imagen -->
+        <div class="col-6 col-md-3">
+          <div class="position-relative border bg-white p-3">
+            <img
+              src="imagenes/campera-400.jpg"
+              alt="Campera"
+              class="w-100"
+              width="300" height="200"
+              style="object-fit: cover; height: 120px"
+            >
+            <!--
+              position-relative en el contenedor +
+              position-absolute en el badge → flota sobre la imagen.
+              Patrón estándar para badges de descuento y "Nuevo".
+            -->
+            <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+              -30%
+            </span>
+            <!--
+              top-0 end-0 → esquina superior derecha
+              m-2 → separación del borde de la imagen
+            -->
+            <p class="mb-0 mt-2 small fw-medium">Campera de cuero</p>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+          <div class="position-relative border bg-white p-3">
+            <img
+              src="imagenes/vestido-400.jpg"
+              alt="Vestido"
+              class="w-100"
+              style="object-fit: cover; height: 120px"
+              width="300" height="200"
+            >
+            <span class="badge bg-dark position-absolute top-0 start-0 m-2">
+              Nuevo
+            </span>
+            <!--
+              start-0 → esquina superior izquierda.
+              Alternativa cuando hay otro badge en la derecha.
+            -->
+            <p class="mb-0 mt-2 small fw-medium">Vestido floral</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Badge en el ícono del carrito -->
+      <div class="mb-4">
+        <p class="small text-muted mb-2">Badge en el carrito de la navbar:</p>
+        <div class="d-inline-flex align-items-center gap-2 bg-dark text-white px-3 py-2 rounded">
+          <div class="position-relative">
+            <!--
+              position-relative en el ícono del carrito →
+              el badge se posiciona relativo al ícono,
+              no al contenedor de la navbar.
+            -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+              fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
+            </svg>
+            <span class="badge bg-danger rounded-pill position-absolute"
+              style="top: -8px; right: -8px; font-size: 0.6rem">
+              3
+            </span>
+            <!--
+              rounded-pill → el badge circular es el estándar
+              para cantidades sobre íconos.
+              Valores negativos en top/right → sobresale del ícono.
+              font-size inline → override puntual para badges
+              sobre íconos, que necesitan ser más pequeños.
+            -->
+          </div>
+          <span class="small">Carrito</span>
+        </div>
+      </div>
+
+      <!-- Badges en listado de categorías -->
+      <div class="mb-5">
+        <p class="small text-muted mb-2">Badges de cantidad en categorías:</p>
+        <ul class="list-unstyled">
+          <li class="d-flex justify-content-between py-1 border-bottom">
+            <span>Remeras</span>
+            <span class="badge bg-secondary rounded-pill">24</span>
+            <!--
+              rounded-pill → estándar para badges de cantidad.
+              bg-secondary → gris neutro, no compite con el contenido.
+            -->
+          </li>
+          <li class="d-flex justify-content-between py-1 border-bottom">
+            <span>Pantalones</span>
+            <span class="badge bg-secondary rounded-pill">18</span>
+          </li>
+          <li class="d-flex justify-content-between py-1">
+            <span>Vestidos</span>
+            <span class="badge bg-secondary rounded-pill">12</span>
+          </li>
+        </ul>
+      </div>
+
+
+      <!-- =====================================================
+        ALERTS
+
+        Un alert es un bloque de texto con fondo de color
+        para comunicar el resultado de una acción.
+
+        CLASES:
+        alert           → display: block, padding, border, border-radius
+        alert-{color}   → variante semántica (mismos colores que badge)
+        alert-dismissible → agrega espacio para el botón de cierre
+        fade show       → animación de desvanecimiento al cerrar
+
+        BOTÓN DE CIERRE:
+        btn-close       → ícono ×, estilizado por Bootstrap
+        data-bs-dismiss="alert" → JS de Bootstrap lo escucha
+                                   y cierra el alert padre
+
+        Los alerts no aparecen solos: son HTML estático
+        que se muestra/oculta con JavaScript (o *ngIf en Angular).
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Alerts</h2>
+
+      <!-- Alerta de éxito: orden confirmada -->
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <!--
+        role="alert" → accesibilidad: los lectores de pantalla
+        lo anuncian inmediatamente cuando aparece en el DOM.
+        fade show → clases para la animación de Bootstrap.
+        Sin estas clases el alert desaparece sin transición.
+      -->
+        <strong>¡Pedido confirmado!</strong>
+        Tu orden #12345 fue recibida. Te enviamos un email con los detalles.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Cerrar">
+        </button>
+        <!--
+          data-bs-dismiss="alert" → Bootstrap escucha este atributo.
+          Al hacer clic, agrega la clase .fade y remueve .show,
+          lo que dispara la animación CSS de salida.
+          Después de la animación, remueve el elemento del DOM.
+        -->
+      </div>
+
+      <!-- Alerta de error: pago rechazado -->
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error en el pago.</strong>
+        Tu tarjeta fue rechazada. Verificá los datos e intentá de nuevo.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Cerrar">
+        </button>
+      </div>
+
+      <!-- Alerta de advertencia: stock bajo -->
+      <div class="alert alert-warning" role="alert">
+        <!--
+          Sin alert-dismissible → el usuario no puede cerrarla.
+          Para alertas de información importante que no deben
+          desaparecer hasta que el usuario tome una acción.
+        -->
+        <strong>Últimas unidades.</strong>
+        Quedan solo 2 prendas en talle M. Comprá antes que se agoten.
+      </div>
+
+      <!-- Alerta de información: nuevo método de pago -->
+      <div class="alert alert-info d-flex align-items-start gap-2 mb-5" role="alert">
+        <!--
+          d-flex + align-items-start + gap-2 → alineamos un ícono
+          o símbolo con el texto del alert.
+        -->
+        <span class="fw-bold fs-5">ℹ</span>
+        <div>
+          <strong>Ahora aceptamos transferencia bancaria.</strong>
+          Obtené un 5% de descuento adicional pagando por transferencia.
+        </div>
+      </div>
+
+
+      <!-- =====================================================
+        TOASTS
+
+        Un toast es una notificación flotante que aparece
+        en una esquina de la pantalla y (opcionalmente)
+        desaparece sola después de unos segundos.
+
+        CUÁNDO USARLO:
+        - "Producto agregado al carrito"
+        - "Producto guardado en favoritos"
+        - Cualquier feedback no crítico que no requiere
+          que el usuario tome una acción.
+
+        DIFERENCIA CON ALERT:
+        Alert → en el flujo de la página, ocupa espacio.
+        Toast → superpuesto, en una esquina, no desplaza contenido.
+
+        ESTRUCTURA:
+        .toast-container → posiciona el grupo de toasts
+        .toast           → el toast en sí
+        .toast-header    → encabezado opcional (título + botón cerrar)
+        .toast-body      → contenido principal
+
+        JAVASCRIPT REQUERIDO:
+        Los toasts no se muestran solos.
+        Hay que inicializarlos con:
+        new bootstrap.Toast(elemento).show()
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Toasts</h2>
+
+      <!-- Botón que dispara el toast -->
+      <button
+        type="button"
+        class="btn btn-dark mb-3"
+        onclick="mostrarToast()"
+      >
+        Simular "agregar al carrito"
+      </button>
+
+      <!--
+        toast-container → wrapper que define la POSICIÓN del toast.
+        Clases de posición: top-0/bottom-0 + start-0/end-0
+        + p-3 para separación del borde.
+
+        bottom-0 end-0 → esquina inferior derecha.
+        Estándar para notificaciones de acciones del usuario.
+      -->
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <!--
+        position-fixed → el toast siempre está en la esquina,
+        no importa el scroll. Es la única excepción válida al
+        uso de position-fixed en Bootstrap.
+      -->
+
+        <div id="toast-carrito" class="toast align-items-center text-bg-dark border-0"
+          role="status" aria-live="polite" aria-atomic="true">
+        <!--
+          text-bg-dark → Bootstrap 5.2+. Combina bg-dark + text-white
+          con contraste correcto garantizado.
+          role="status" + aria-live="polite" → accesibilidad:
+          el lector de pantalla lo anuncia cuando aparece,
+          sin interrumpir lo que estaba leyendo.
+          aria-atomic="true" → lee el toast completo, no por partes.
+        -->
+
+          <div class="d-flex">
+            <div class="toast-body">
+              ✓ Campera de cuero agregada al carrito.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast" aria-label="Cerrar">
+            </button>
+            <!--
+              btn-close-white → versión blanca del botón cerrar,
+              para usar sobre fondos oscuros.
+              me-2 m-auto → alinea el botón verticalmente al centro.
+            -->
+          </div>
+
+        </div>
+      </div>
+
+      <div class="mb-5"></div>
+
+
+      <!-- =====================================================
+        MODAL: vista rápida del producto
+
+        Un modal es un panel superpuesto que bloquea
+        la interacción con el resto de la página.
+
+        CUÁNDO USARLO:
+        - Vista rápida de producto (sin ir a otra página)
+        - Confirmación de acción irreversible (eliminar del carrito)
+        - Formulario de login sin salir del catálogo
+
+        CUÁNDO NO USARLO:
+        - Para información que el usuario necesita ver junto
+          con el contenido de la página → usar Offcanvas.
+        - Para notificaciones → usar Toast o Alert.
+        - Para contenido muy largo → ir a una página nueva.
+
+        ESTRUCTURA:
+        .modal              → wrapper externo, oculto por defecto
+        .modal-dialog       → controla el ancho y posición
+        .modal-content      → el panel blanco visible
+        .modal-header       → título y botón cerrar
+        .modal-body         → contenido principal
+        .modal-footer       → botones de acción
+
+        DISPARADOR (en cualquier lugar de la página):
+        data-bs-toggle="modal"   → le dice a Bootstrap que abre modal
+        data-bs-target="#id"     → qué modal abre (por id)
+
+        TAMAÑOS:
+        modal-sm  → 300px
+        (default) → 500px
+        modal-lg  → 800px
+        modal-xl  → 1140px
+        modal-fullscreen → pantalla completa
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Modal — vista rápida de producto</h2>
+
+      <!-- Botón disparador del modal -->
+      <button
+        type="button"
+        class="btn btn-outline-dark mb-5"
+        data-bs-toggle="modal"
+        data-bs-target="#modal-vista-rapida"
+      >
+        Vista rápida — Campera de cuero
+      </button>
+      <!--
+        data-bs-toggle="modal" → Bootstrap escucha este atributo.
+        data-bs-target="#modal-vista-rapida" → el id del modal a abrir.
+        El modal puede estar en cualquier parte del HTML.
+        Convención: poner todos los modales antes del </body>.
+      -->
+
+
+      <!-- El modal en sí -->
+      <div class="modal fade" id="modal-vista-rapida"
+        tabindex="-1"
+        aria-labelledby="modal-vista-rapida-titulo"
+        aria-hidden="true">
+      <!--
+        modal fade → oculto por defecto, con animación de fade.
+        tabindex="-1" → el modal recibe foco al abrirse
+                         sin estar en el orden de tab normal.
+        aria-labelledby → apunta al id del título del modal.
+                           Accesibilidad: el lector lo anuncia.
+        aria-hidden="true" → el modal está oculto para lectores
+                              de pantalla hasta que se abre.
+      -->
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <!--
+          modal-lg → ancho 800px para mostrar imagen + info lado a lado.
+          modal-dialog-centered → centra el modal verticalmente.
+          Sin esto, aparece en la parte superior de la pantalla.
+        -->
+
+          <div class="modal-content">
+
+            <div class="modal-header border-0 pb-0">
+            <!--
+              border-0 → sacamos el borde inferior del header.
+              pb-0 → el padding lo maneja el body.
+              Opción estética: header más limpio para vista rápida.
+            -->
+              <h2 class="modal-title fs-5 fw-bold"
+                id="modal-vista-rapida-titulo">
+                Vista rápida
+              </h2>
+              <button type="button" class="btn-close"
+                data-bs-dismiss="modal" aria-label="Cerrar">
+              </button>
+              <!--
+                data-bs-dismiss="modal" → Bootstrap escucha esto
+                y cierra el modal al hacer clic.
+              -->
+            </div>
+
+            <div class="modal-body">
+
+              <div class="row g-4">
+
+                <!-- Columna izquierda: imagen -->
+                <div class="col-12 col-md-6">
+                  <img
+                    src="imagenes/campera-400.jpg"
+                    alt="Campera de cuero negra"
+                    class="w-100 rounded"
+                    width="400" height="400"
+                    style="object-fit: cover"
+                  >
+                </div>
+
+                <!-- Columna derecha: información y compra -->
+                <div class="col-12 col-md-6">
+
+                  <p class="text-muted text-uppercase small mb-1">
+                    Camperas · Cuero
+                  </p>
+                  <h3 class="fs-4 fw-bold mb-2">Campera de cuero negra</h3>
+
+                  <div class="d-flex align-items-baseline gap-2 mb-3">
+                    <span class="fs-3 fw-bold text-danger">$43.999</span>
+                    <span class="text-muted text-decoration-line-through small">$62.999</span>
+                    <span class="badge bg-danger">-30%</span>
+                  </div>
+
+                  <p class="small text-muted mb-3">
+                    Cuero ecológico premium. Forro interior polar.
+                    Cierre metálico YKK y bolsillos con broche.
+                  </p>
+
+                  <!-- Selector de talle -->
+                  <div class="mb-3">
+                    <label for="talle-modal" class="form-label small fw-medium">
+                      Talle
+                    </label>
+                    <select class="form-select form-select-sm" id="talle-modal">
+                      <option>S</option>
+                      <option selected>M</option>
+                      <option>L</option>
+                      <option>XL</option>
+                    </select>
+                  </div>
+
+                  <div class="d-grid gap-2">
+                  <!--
+                    d-grid → convierte el contenedor en grid.
+                    Hace que los botones hijos ocupen el 100%
+                    del ancho sin necesidad de w-100 en cada uno.
+                    gap-2 → espacio entre botones.
+                  -->
+                    <button class="btn btn-dark">
+                      Agregar al carrito
+                    </button>
+                    <a href="detalle.html?id=1" class="btn btn-outline-secondary">
+                      Ver detalle completo
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- fin modal -->
+
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // Mostrar el toast al hacer clic en el botón de prueba
+      function mostrarToast() {
+        const toastEl = document.getElementById('toast-carrito');
+        // new bootstrap.Toast(el, opciones) → crea la instancia
+        // delay: 3000 → se oculta solo después de 3 segundos
+        const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+        toast.show();
+        // En Angular, este código va en el CartService:
+        // agregarProducto(producto) {
+        //   this.items.push(producto);
+        //   const toast = new bootstrap.Toast(this.toastEl.nativeElement);
+        //   toast.show();
+        // }
+      }
+    </script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  BADGE:
+  .badge                 → etiqueta inline pequeña
+  .bg-{color}            → color de fondo semántico
+  .rounded-pill          → forma píldora (para cantidades)
+  position-absolute      → flota sobre imágenes (con position-relative en el padre)
+  Uso: descuentos, "Nuevo", cantidad en carrito, stock
+
+  ALERT:
+  .alert                 → bloque con fondo de color
+  .alert-{color}         → variante semántica
+  .alert-dismissible     → espacio para botón de cierre
+  .fade.show             → animación Bootstrap al cerrar
+  data-bs-dismiss="alert"→ JS de Bootstrap cierra el alert
+  role="alert"           → accesibilidad
+  Uso: errores, confirmaciones, advertencias en el flujo
+
+  TOAST:
+  .toast-container       → wrapper con posicionamiento
+  .toast                 → la notificación
+  .toast-header          → encabezado opcional
+  .toast-body            → contenido
+  position-fixed         → esquina de la pantalla
+  new bootstrap.Toast(el).show() → JS para mostrarlo
+  role="status" + aria-live="polite" → accesibilidad
+  Uso: feedback de acciones (agregar al carrito, guardar)
+
+  MODAL:
+  .modal.fade            → panel superpuesto, oculto por defecto
+  .modal-dialog          → controla ancho y posición
+  .modal-dialog-centered → centra verticalmente
+  .modal-content         → panel blanco visible
+  .modal-header/body/footer → secciones
+  .modal-lg / .modal-xl  → tamaños
+  data-bs-toggle="modal" + data-bs-target="#id" → disparador
+  data-bs-dismiss="modal"→ botón de cierre
+  .d-grid.gap-2          → botones de ancho completo en modal-footer
+  Uso: vista rápida de producto, confirmaciones
+
+  DIFERENCIAS CLAVE:
+  Alert  → en el flujo de la página, para mensajes importantes
+  Toast  → flotante, temporal, para feedback de acciones
+  Modal  → bloquea la página, para acciones o info compleja
+
+  CONEXIÓN CON ANGULAR (Módulos 3 y 5):
+  Badge con cantidad dinámica:
+  <span class="badge bg-danger rounded-pill">
+    {{ cartService.totalItems }}
+  </span>
+
+  Alert condicional:
+  <div class="alert alert-danger" *ngIf="errorPago">
+    {{ errorPago }}
+  </div>
+
+  Toast desde servicio:
+  // En el componente, con ViewChild:
+  @ViewChild('toastCarrito') toastEl!: ElementRef;
+  // Al agregar producto:
+  new bootstrap.Toast(this.toastEl.nativeElement).show();
+
+  Modal desde Angular:
+  // Preferir la librería ng-bootstrap o Angular CDK Dialog
+  // para integración nativa con el ciclo de vida de Angular.
+  // El HTML de la estructura del modal es idéntico.
+-->

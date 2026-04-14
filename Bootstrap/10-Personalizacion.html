@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Personalización</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+
+    <!--
+      =========================================================
+      ANTES DE ARRANCAR: cómo personaliza Bootstrap 5
+
+      Bootstrap 5 usa CSS Custom Properties (variables CSS).
+      Esto significa que podemos sobreescribir los valores
+      por defecto de Bootstrap SIN tocar su archivo fuente
+      y SIN necesitar Sass ni un proceso de compilación.
+
+      Hay DOS niveles de personalización:
+
+      NIVEL 1: Variables globales en :root
+      Bootstrap define variables en :root que afectan
+      TODA la biblioteca:
+        --bs-primary    → el color azul de Bootstrap
+        --bs-body-font-family → la tipografía del body
+        --bs-border-radius → el border-radius de los componentes
+      Sobreescribir estas en :root afecta todos los componentes.
+
+      NIVEL 2: Variables de componente
+      Cada componente de Bootstrap tiene sus propias variables.
+      La card tiene --bs-card-border-radius.
+      El botón tiene --bs-btn-border-radius.
+      Sobreescribir estas solo afecta ese componente.
+
+      CUÁNDO USAR CADA NIVEL:
+      :root            → cambios globales de identidad visual
+                         (colores de marca, tipografía, radios)
+      Selector componente → ajuste puntual de un componente
+
+      ALTERNATIVA (más potente, más compleja):
+      Compilar Bootstrap con Sass y sobreescribir las variables
+      Sass ($primary, $font-family-sans-serif, etc.).
+      Necesita Node.js y un bundler. Lo vemos en el Módulo 8.
+      Para este tema: CSS puro, sin Sass.
+    ========================================================= -->
+
+    <style>
+      /* ===========================================================
+        PASO 1: DEFINIR LA PALETA DE STYLESHOP
+
+        Primero definimos las variables propias de StyleShop
+        separadas de Bootstrap. Buena práctica: prefijo --ss-
+        para distinguirlas de las variables de Bootstrap (--bs-).
+      =========================================================== */
+
+      :root {
+        /* Paleta de colores de marca */
+        --ss-azul-noche:    #1a1a2e;  /* color principal — navbar, botones */
+        --ss-coral:         #e94560;  /* acento — precios, badges, hover    */
+        --ss-coral-oscuro:  #c73652;  /* hover del coral                    */
+        --ss-gris-fondo:    #f8f8f8;  /* fondo general de la página         */
+        --ss-gris-borde:    #e8e8e8;  /* bordes de tarjetas y separadores   */
+
+        /* Tipografía */
+        --ss-fuente:        'Inter', system-ui, -apple-system, sans-serif;
+        --ss-fuente-titulo: 'Playfair Display', Georgia, serif;
+
+        /* Espaciado y forma */
+        --ss-radio:         4px;   /* border-radius más anguloso que BS (6px) */
+        --ss-radio-tarjeta: 8px;
+      }
+
+
+      /* ===========================================================
+        PASO 2: SOBREESCRIBIR LAS VARIABLES GLOBALES DE BOOTSTRAP
+
+        Bootstrap lee sus propias variables en :root.
+        Si sobreescribimos en :root DESPUÉS de importar Bootstrap,
+        las nuevas valores ganan (cascada CSS normal).
+
+        El orden de los <style> y <link> en el <head> importa:
+        Bootstrap primero → nuestro CSS después.
+        Así el nuestro sobreescribe al de Bootstrap.
+      =========================================================== */
+
+      :root {
+        /* Color primario: reemplaza el azul de Bootstrap
+           por el azul noche de StyleShop */
+        --bs-primary:       var(--ss-azul-noche);
+        --bs-primary-rgb:   26, 26, 46;
+        /*
+          --bs-primary-rgb → Bootstrap usa este valor en
+          rgba() para los estados con opacidad (focus ring,
+          fondo de botón activo, etc.).
+          Debe ser el RGB del color en --bs-primary, sin #.
+        */
+
+        /* Color de énfasis (links, outline de botones primary) */
+        --bs-primary-text-emphasis: var(--ss-azul-noche);
+
+        /* Fondo del body */
+        --bs-body-bg: var(--ss-gris-fondo);
+
+        /* Tipografía del body */
+        --bs-body-font-family: var(--ss-fuente);
+
+        /* Border radius global: más anguloso */
+        --bs-border-radius:    var(--ss-radio);
+        --bs-border-radius-lg: var(--ss-radio-tarjeta);
+        --bs-border-radius-xl: 12px;
+
+        /* Color de borde */
+        --bs-border-color: var(--ss-gris-borde);
+      }
+
+
+      /* ===========================================================
+        PASO 3: PERSONALIZAR EL COLOR DE ACENTO (--ss-coral)
+
+        Bootstrap no tiene un color "coral" predefinido.
+        Lo creamos como una clase utilitaria personalizada
+        que sigue la convención de Bootstrap.
+
+        También podemos sobreescribir --bs-danger porque
+        en StyleShop el coral cumple la función del danger
+        (precios, descuentos, alertas de stock).
+      =========================================================== */
+
+      :root {
+        /* Reemplaza el rojo de Bootstrap por nuestro coral */
+        --bs-danger:       var(--ss-coral);
+        --bs-danger-rgb:   233, 69, 96;
+        --bs-danger-text-emphasis: var(--ss-coral-oscuro);
+      }
+
+      /* Clase utilitaria propia para el coral */
+      .text-coral  { color: var(--ss-coral) !important; }
+      .bg-coral    { background-color: var(--ss-coral) !important; }
+      .btn-coral {
+        /*
+          Creamos un botón personalizado siguiendo la estructura
+          de variables de Bootstrap para botones.
+          Más correcto que sobreescribir con !important.
+        */
+        --bs-btn-color:        #fff;
+        --bs-btn-bg:           var(--ss-coral);
+        --bs-btn-border-color: var(--ss-coral);
+        --bs-btn-hover-bg:          var(--ss-coral-oscuro);
+        --bs-btn-hover-border-color: var(--ss-coral-oscuro);
+        --bs-btn-active-bg:          var(--ss-coral-oscuro);
+        --bs-btn-focus-shadow-rgb:   233, 69, 96;
+      }
+
+
+      /* ===========================================================
+        PASO 4: PERSONALIZAR COMPONENTES ESPECÍFICOS
+
+        Cada componente de Bootstrap tiene variables propias.
+        Las sobreescribimos en el selector del componente,
+        no en :root, para no afectar otros componentes.
+      =========================================================== */
+
+      /* --- NAVBAR --- */
+      .navbar {
+        --bs-navbar-padding-y: 1rem;
+        /*
+          --bs-navbar-padding-y → aumentamos el alto de la navbar
+          de 0.5rem (default) a 1rem. Más espaciosa.
+        */
+      }
+
+      /* --- CARD DE PRODUCTO --- */
+      .card {
+        --bs-card-border-radius:  var(--ss-radio-tarjeta);
+        --bs-card-border-color:   var(--ss-gris-borde);
+        --bs-card-border-width:   1px;
+        --bs-card-spacer-y:       1rem;   /* padding vertical del card-body */
+        --bs-card-spacer-x:       1rem;   /* padding horizontal del card-body */
+      }
+
+      /* Hover de tarjeta de producto */
+      .card-producto {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card-producto:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        /*
+          box-shadow con rgba → sombra sutil.
+          Excepción al "sin sombras" del CSS base:
+          acá la sombra tiene función de feedback de interacción.
+        */
+      }
+
+      /* --- BOTONES --- */
+      .btn {
+        --bs-btn-border-radius: var(--ss-radio);
+        --bs-btn-font-weight: 500;
+        /*
+          font-weight 500 en todos los botones de StyleShop.
+          Más presencia que 400 sin llegar al bold.
+        */
+      }
+
+      /* Botón oscuro: el CTA principal de StyleShop */
+      .btn-dark {
+        --bs-btn-bg:              var(--ss-azul-noche);
+        --bs-btn-border-color:    var(--ss-azul-noche);
+        --bs-btn-hover-bg:        #0f0f1c;  /* más oscuro que el base */
+        --bs-btn-hover-border-color: #0f0f1c;
+      }
+
+      /* --- FORMULARIOS --- */
+      .form-control,
+      .form-select {
+        --bs-border-radius: var(--ss-radio);
+        /*
+          Aplica el radio de StyleShop a todos los inputs.
+          Sin esto, los inputs tendrían el radio de Bootstrap (6px).
+        */
+      }
+
+      /* Focus: reemplaza el azul de Bootstrap por el coral */
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--ss-coral);
+        box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.2);
+        /*
+          0.25rem = 4px → mismo tamaño que el focus ring de Bootstrap.
+          rgba con 0.2 → sutil, no invasivo.
+        */
+      }
+
+      /* --- BADGES --- */
+      .badge {
+        --bs-badge-border-radius: var(--ss-radio);
+        --bs-badge-font-weight:   600;
+      }
+
+      /* --- ACCORDION --- */
+      .accordion {
+        --bs-accordion-border-color: var(--ss-gris-borde);
+        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.2);
+        /*
+          Cuando el botón del accordion recibe foco,
+          el outline es coral en lugar del azul de Bootstrap.
+        */
+      }
+
+      /* --- MODAL --- */
+      .modal-content {
+        --bs-modal-border-radius: var(--ss-radio-tarjeta);
+        --bs-modal-border-color:  var(--ss-gris-borde);
+      }
+
+      /* --- OFFCANVAS --- */
+      .offcanvas {
+        --bs-offcanvas-width: 380px;
+        /*
+          Default de Bootstrap: 400px.
+          StyleShop: 380px, un poco más compacto.
+        */
+      }
+
+
+      /* ===========================================================
+        PASO 5: TIPOGRAFÍA DISPLAY PARA TÍTULOS
+
+        Bootstrap tiene la clase de utilidad .font-monospace.
+        No tiene una para fuente serif.
+        La agregamos nosotros para los títulos editoriales
+        del home y de las páginas de categoría.
+      =========================================================== */
+
+      .font-display {
+        font-family: var(--ss-fuente-titulo);
+        letter-spacing: -0.02em;   /* tracking negativo — estilo editorial */
+      }
+
+      .display-styleshop {
+        font-family: var(--ss-fuente-titulo);
+        font-size: clamp(2rem, 5vw, 4rem);
+        /*
+          clamp(min, preferred, max) → tamaño fluido.
+          En mobile: 2rem.
+          En pantallas grandes: hasta 4rem.
+          El 5vw es el valor preferido que escala con el viewport.
+          Esto es CSS puro, no Bootstrap.
+        */
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+
+
+      /* ===========================================================
+        PASO 6: IMAGEN DE PRODUCTO — objeto-fit consistente
+
+        En toda la app, las imágenes de producto tienen el
+        mismo tratamiento. Lo definimos una vez acá.
+      =========================================================== */
+
+      .img-producto {
+        width: 100%;
+        aspect-ratio: 3 / 4;      /* proporción retrato estándar en moda */
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      /*
+        aspect-ratio → el navegador calcula el alto automáticamente.
+        Sin esto, cada imagen con diferente tamaño rompe la grilla.
+        3/4 es la proporción estándar en fotografía de moda.
+      */
+
+    </style>
+
+    <!-- Google Fonts: cargamos las fuentes de StyleShop -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!--
+      preconnect → el navegador abre la conexión con Google Fonts
+      antes de que el CSS la necesite. Mejora el tiempo de carga.
+      display=swap → el texto se muestra con la fuente del sistema
+      mientras carga la fuente web. Sin parpadeo.
+    -->
+  </head>
+
+  <body>
+
+    <main class="container my-5">
+
+      <h1 class="mb-2">Personalización con CSS variables</h1>
+      <p class="text-muted mb-5">Tema 8 · StyleShop</p>
+
+
+      <!-- =====================================================
+        DEMOSTRACIÓN: Bootstrap por defecto vs StyleShop
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-4">Bootstrap por defecto vs StyleShop</h2>
+
+      <div class="row g-4 mb-5">
+
+        <!-- Columna izquierda: lo que hace Bootstrap por defecto -->
+        <div class="col-12 col-md-6">
+          <h3 class="h6 text-muted mb-3">Bootstrap puro (sin personalizar)</h3>
+
+          <!--
+            Para mostrar Bootstrap "original" dentro de nuestra página
+            personalizada, tendríamos que anular las sobreescrituras.
+            En clase: abrir bootstrap.min.css en el navegador
+            y mostrar los valores originales de las variables.
+          -->
+          <p class="text-muted small mb-3">
+            Valores por defecto: azul #0d6efd, Inter/system-ui,
+            border-radius 6px, botones redondeados.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button style="
+              background: #0d6efd;
+              border: 1px solid #0d6efd;
+              color: white;
+              border-radius: 6px;
+              padding: 6px 12px;
+              font-weight: 400
+            ">
+              btn-primary original
+            </button>
+            <button style="
+              background: #dc3545;
+              border: 1px solid #dc3545;
+              color: white;
+              border-radius: 6px;
+              padding: 6px 12px;
+            ">
+              btn-danger original
+            </button>
+          </div>
+
+          <input type="text" placeholder="Input original"
+            style="
+              border-radius: 6px;
+              border: 1px solid #dee2e6;
+              padding: 6px 12px;
+              display: block;
+              width: 100%;
+              margin-bottom: 8px
+            "
+          >
+
+          <span style="
+            background: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+          ">
+            badge original
+          </span>
+        </div>
+
+        <!-- Columna derecha: StyleShop personalizado -->
+        <div class="col-12 col-md-6">
+          <h3 class="h6 text-muted mb-3">StyleShop personalizado</h3>
+          <p class="text-muted small mb-3">
+            Azul noche #1a1a2e, coral #e94560, Inter,
+            border-radius 4px, botones más angulosos.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-dark">btn-dark StyleShop</button>
+            <button class="btn btn-coral">btn-coral StyleShop</button>
+          </div>
+
+          <input type="text" class="form-control mb-2"
+            placeholder="Input StyleShop (focus en coral)">
+
+          <span class="badge bg-danger">badge StyleShop</span>
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+        TIPOGRAFÍA: fuente display editorial
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Tipografía de marca</h2>
+
+      <div class="mb-5 p-4 bg-white border">
+
+        <!-- Título editorial con Playfair Display -->
+        <p class="display-styleshop mb-2">
+          Colección Verano 2025
+        </p>
+        <p class="text-muted mb-4">
+          <code>.display-styleshop</code> — Playfair Display 700,
+          tamaño fluido con clamp()
+        </p>
+
+        <!-- Combinación título serif + cuerpo sans-serif -->
+        <h3 class="font-display fs-3 mb-1">Campera de cuero negra</h3>
+        <!--
+          font-display → Playfair Display (serif editorial)
+          Solo para títulos de producto en la página de detalle.
+          El precio y la descripción usan Inter (sans-serif).
+        -->
+        <p class="text-muted small">
+          <code>.font-display</code> — Playfair Display, para nombre
+          del producto en la vista de detalle.
+        </p>
+
+        <p class="fs-5 fw-bold mb-0 text-coral">$43.999</p>
+        <p class="text-muted small"><code>.text-coral</code> — color de acento custom</p>
+
+      </div>
+
+
+      <!-- =====================================================
+        TARJETA DE PRODUCTO: resultado final con todo aplicado
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Tarjeta de producto — identidad visual completa</h2>
+
+      <div class="row g-3 mb-5">
+
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card card-producto h-100 border-0 shadow-sm">
+          <!--
+            border-0 → sacamos el borde del card (lo manejan
+            las variables CSS que definimos arriba).
+            shadow-sm → sombra sutil siempre visible
+            (no solo en hover — para que se destaque del fondo).
+            card-producto → nuestra clase custom con el hover.
+          -->
+
+            <div class="position-relative overflow-hidden">
+            <!--
+              overflow-hidden → necesario para que la imagen
+              no sobresalga al aplicar el zoom del hover.
+            -->
+              <img
+                src="imagenes/campera-400.jpg"
+                alt="Campera de cuero negra"
+                class="img-producto"
+                width="400" height="533"
+              >
+              <!--
+                img-producto → nuestra clase con aspect-ratio: 3/4
+                Todas las imágenes del catálogo tienen la misma altura.
+              -->
+              <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                -30%
+              </span>
+            </div>
+
+            <div class="card-body d-flex flex-column">
+
+              <p class="text-muted text-uppercase small mb-1"
+                style="letter-spacing: 0.05em; font-size: 0.7rem">
+                Camperas · Cuero
+              </p>
+
+              <h3 class="fs-6 fw-medium mb-2">Campera de cuero negra</h3>
+
+              <div class="d-flex align-items-baseline gap-2 mb-3">
+                <span class="fw-bold text-coral">$43.999</span>
+                <span class="text-muted text-decoration-line-through small">$62.999</span>
+              </div>
+
+              <button class="btn btn-dark btn-sm w-100 mt-auto">
+                Agregar al carrito
+              </button>
+
+            </div>
+          </article>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+          <article class="card card-producto h-100 border-0 shadow-sm">
+            <div class="position-relative overflow-hidden">
+              <img
+                src="imagenes/vestido-400.jpg"
+                alt="Vestido floral midi"
+                class="img-producto"
+                width="400" height="533"
+              >
+              <span class="badge bg-dark position-absolute top-0 start-0 m-2">
+                Nuevo
+              </span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <p class="text-muted text-uppercase small mb-1"
+                style="letter-spacing: 0.05em; font-size: 0.7rem">
+                Vestidos · Floral
+              </p>
+              <h3 class="fs-6 fw-medium mb-2">Vestido floral midi</h3>
+              <div class="d-flex align-items-baseline gap-2 mb-3">
+                <span class="fw-bold text-coral">$32.999</span>
+              </div>
+              <button class="btn btn-dark btn-sm w-100 mt-auto">
+                Agregar al carrito
+              </button>
+            </div>
+          </article>
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+        TABLA DE VARIABLES USADAS
+        Para entregar como referencia a los alumnos.
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Variables definidas en StyleShop</h2>
+
+      <div class="table-responsive mb-5">
+        <table class="table table-sm table-bordered small">
+          <thead class="table-dark">
+            <tr>
+              <th>Variable</th>
+              <th>Valor</th>
+              <th>Afecta a</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>--bs-primary</code></td>
+              <td><code>#1a1a2e</code></td>
+              <td>btn-primary, links, focus rings</td>
+            </tr>
+            <tr>
+              <td><code>--bs-danger</code></td>
+              <td><code>#e94560</code></td>
+              <td>btn-danger, badge bg-danger, text-danger</td>
+            </tr>
+            <tr>
+              <td><code>--bs-body-font-family</code></td>
+              <td><code>Inter, system-ui</code></td>
+              <td>Todo el texto del body</td>
+            </tr>
+            <tr>
+              <td><code>--bs-body-bg</code></td>
+              <td><code>#f8f8f8</code></td>
+              <td>Fondo del &lt;body&gt;</td>
+            </tr>
+            <tr>
+              <td><code>--bs-border-radius</code></td>
+              <td><code>4px</code></td>
+              <td>Botones, inputs, alerts</td>
+            </tr>
+            <tr>
+              <td><code>--bs-border-radius-lg</code></td>
+              <td><code>8px</code></td>
+              <td>Cards, modals, offcanvas</td>
+            </tr>
+            <tr>
+              <td><code>--bs-offcanvas-width</code></td>
+              <td><code>380px</code></td>
+              <td>Ancho del offcanvas</td>
+            </tr>
+            <tr>
+              <td><code>--bs-navbar-padding-y</code></td>
+              <td><code>1rem</code></td>
+              <td>Altura de la navbar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  MECANISMO:
+  Bootstrap 5 define sus valores como CSS Custom Properties (variables).
+  Sobreescribir en :root → afecta todos los componentes.
+  Sobreescribir en .selector → afecta solo ese componente.
+  Nuestro <style> debe ir DESPUÉS del <link> de Bootstrap.
+
+  VARIABLES GLOBALES CLAVE:
+  --bs-primary / --bs-primary-rgb    → color principal
+  --bs-danger  / --bs-danger-rgb     → color de alerta/acento
+  --bs-body-font-family              → tipografía global
+  --bs-body-bg                       → fondo del body
+  --bs-border-radius                 → radio de esquinas base
+  --bs-border-radius-lg              → radio de cards y modales
+  --bs-border-color                  → color de bordes
+
+  VARIABLES DE COMPONENTE:
+  .navbar  → --bs-navbar-padding-y
+  .card    → --bs-card-border-radius, --bs-card-border-color
+  .btn     → --bs-btn-bg, --bs-btn-border-color, --bs-btn-hover-bg
+  .modal   → --bs-modal-border-radius
+  .offcanvas → --bs-offcanvas-width
+  .accordion → --bs-accordion-border-color
+
+  CREAR BOTONES CUSTOM:
+  .btn-{nombre} {
+    --bs-btn-color: ...;
+    --bs-btn-bg: ...;
+    --bs-btn-hover-bg: ...;
+    --bs-btn-focus-shadow-rgb: ...;
+  }
+  Mismo mecanismo que los botones de Bootstrap. Consistente.
+
+  TIPOGRAFÍA:
+  Cargar fuentes con Google Fonts + preconnect.
+  font-display: swap → evita el flash de texto invisible.
+  clamp(min, pref, max) → tamaño fluido sin media queries.
+  aspect-ratio: 3/4 en imágenes → grilla de productos uniforme.
+
+  PREFIJOS RECOMENDADOS:
+  --bs-* → variables de Bootstrap (sobreescribimos estas)
+  --ss-* → variables propias de StyleShop (no tocar las de BS directamente)
+
+  ALTERNATIVA AVANZADA (Módulo 8):
+  Instalar Bootstrap via npm: npm install bootstrap
+  Importar el .scss: @use 'bootstrap/scss/bootstrap' with (
+    $primary: #1a1a2e,
+    $danger:  #e94560,
+    $font-family-sans-serif: 'Inter', system-ui
+  );
+  Ventaja: el CSS resultante es más pequeño porque Sass
+  propaga los valores en tiempo de compilación.
+  Desventaja: requiere configurar un bundler (Vite, Webpack).
+
+  CONEXIÓN CON ANGULAR (Módulo 2):
+  En Angular el CSS global va en src/styles.scss (o styles.css).
+  Es exactamente el mismo código: importar Bootstrap, luego
+  sobreescribir las variables.
+
+  styles.scss:
+  @import 'bootstrap/scss/bootstrap';  // o el CDN en index.html
+
+  :root {
+    --bs-primary: #1a1a2e;
+    --bs-danger:  #e94560;
+    --bs-body-font-family: 'Inter', system-ui;
+  }
+
+  Los componentes de Angular usan clases de Bootstrap
+  igual que en HTML estático. La personalización aplica
+  globalmente a toda la aplicación.
+-->

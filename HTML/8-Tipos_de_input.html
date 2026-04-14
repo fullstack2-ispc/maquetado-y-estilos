@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Checkout</title>
+  </head>
+
+  <body>
+
+    <main>
+
+      <!-- =========================================================
+        CONTEXTO: por qué existen los tipos de input
+
+        En el Tema 6 usamos type="text" para todo.
+        Funciona, pero desperdicia lo que el navegador puede hacer solo:
+
+        - type="email"  → valida el formato antes de enviar
+        - type="number" → teclado numérico en mobile, flechas en desktop
+        - type="radio"  → una sola opción de un grupo
+        - type="checkbox" → una o varias opciones independientes
+
+        Validación nativa = el navegador rechaza el formulario
+        y muestra un mensaje de error SIN necesitar JavaScript.
+        No reemplaza la validación del servidor (Django siempre
+        debe validar igual), pero mejora la experiencia del usuario.
+      ========================================================= -->
+
+
+      <h1>Finalizar compra</h1>
+
+      <form action="/api/pedidos/" method="POST">
+
+
+        <!-- =========================================================
+          type="email"
+
+          Valida que el texto tenga formato de email (algo@algo.algo).
+          En mobile muestra el teclado con @ visible.
+          El navegador muestra un error automático si el formato
+          es incorrecto cuando el usuario intenta hacer submit.
+
+          NO valida que el email exista — eso lo hace el servidor.
+          Solo valida el formato.
+
+          required → el campo no puede estar vacío al hacer submit.
+                     Es el atributo de validación más usado.
+                     El navegador muestra "Completá este campo" si
+                     el usuario intenta enviar sin llenarlo.
+        ========================================================= -->
+
+        <fieldset>
+          <legend>Datos de contacto</legend>
+
+          <label for="email">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="tu@email.com"
+            required
+          >
+          <!--
+            Con type="email" y required, el navegador bloquea el submit si:
+            1. El campo está vacío (por required)
+            2. El texto no tiene formato de email (por type="email")
+
+            El usuario ve el error antes de que el dato llegue al servidor.
+            Menos viajes de red, mejor experiencia.
+          -->
+
+          <label for="email-confirm">Confirmá tu correo</label>
+          <input
+            type="email"
+            id="email-confirm"
+            name="email_confirm"
+            placeholder="tu@email.com"
+            required
+          >
+          <!--
+            El navegador no puede validar que dos campos coincidan —
+            eso requiere JavaScript (o Angular en la Fase 7).
+            Pero sí valida el formato de cada uno por separado.
+          -->
+
+        </fieldset>
+
+
+        <!-- =========================================================
+          type="number"
+
+          Campo numérico con controles de incremento/decremento.
+          En mobile muestra teclado numérico.
+
+          min   → valor mínimo permitido
+          max   → valor máximo permitido
+          step  → el incremento de las flechas y la validación.
+                  step="1"    → solo enteros
+                  step="0.5"  → permite medios (0, 0.5, 1, 1.5...)
+                  step="any"  → cualquier decimal
+
+          El navegador valida min, max y step al hacer submit.
+          
+          Cuándo NO usar type="number":
+          - Números de teléfono → type="tel" (no necesita flechas ni min/max)
+          - Números de tarjeta  → type="text" (tiene formato especial)
+          - Códigos postales    → type="text" (puede tener ceros adelante)
+        ========================================================= -->
+
+        <fieldset>
+          <legend>Detalle del pedido</legend>
+
+          <label for="cantidad">Cantidad de unidades</label>
+          <input
+            type="number"
+            id="cantidad"
+            name="cantidad"
+            min="1"
+            max="10"
+            step="1"
+            value="1"
+            required
+          >
+          <!--
+            value="1" → valor inicial del campo.
+            En <input> el valor inicial va en el atributo value,
+            no entre etiquetas (a diferencia de <textarea>).
+
+            min="1"  → no puede pedir 0 ni negativos
+            max="10" → límite de unidades por compra
+            step="1" → solo números enteros
+          -->
+
+          <label for="codigo-descuento">Código de descuento (opcional)</label>
+          <input
+            type="text"
+            id="codigo-descuento"
+            name="codigo_descuento"
+            placeholder="Ej: STYLE20"
+          >
+          <!--
+            Sin required → el campo es opcional.
+            El formulario se puede enviar aunque esté vacío.
+          -->
+
+        </fieldset>
+
+
+        <!-- =========================================================
+          type="radio"
+
+          Para elegir UNA opción de un grupo mutuamente excluyente.
+          Como los botones de radio de las radios antiguas:
+          al apretar uno, el que estaba apretado se suelta.
+
+          REGLA CLAVE: todos los radio del mismo grupo deben
+          tener exactamente el mismo atributo name.
+          El navegador agrupa por name, no por posición en el HTML.
+
+          Solo el radio seleccionado envía su value al servidor.
+          Si ninguno está seleccionado, el name no se envía.
+
+          checked → el radio que aparece preseleccionado.
+                    Buena práctica: siempre preseleccionar uno
+                    para que el formulario siempre tenga un valor
+                    válido en ese campo.
+
+          Cuándo usar radio vs select:
+          ≤ 4 opciones y siempre visibles → radio
+          > 4 opciones o espacio limitado → select
+        ========================================================= -->
+
+        <fieldset>
+          <legend>Método de envío</legend>
+          <!--
+            Tres opciones claramente distintas, siempre visibles.
+            El usuario necesita ver todas para decidir.
+            → Radio buttons, no select.
+          -->
+
+          <label>
+            <input
+              type="radio"
+              name="envio"
+              value="estandar"
+              checked
+            >
+            Envío estándar — 5 a 7 días hábiles — Gratis
+          </label>
+          <!--
+            Label anidado con el radio adentro.
+            Toda el área del label es clickeable, no solo el círculo.
+            Mejor experiencia, especialmente en mobile.
+
+            name="envio"     → agrupa estos tres radios.
+            value="estandar" → lo que recibe Django si este está seleccionado.
+            checked          → preseleccionado por defecto.
+          -->
+
+          <label>
+            <input
+              type="radio"
+              name="envio"
+              value="express"
+            >
+            Envío express — 24 a 48hs — $2.500
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="envio"
+              value="retiro"
+            >
+            Retiro en sucursal — Sin costo
+          </label>
+
+        </fieldset>
+
+
+        <!-- =========================================================
+          type="checkbox"
+
+          Para opciones INDEPENDIENTES entre sí.
+          Cada checkbox es su propio campo — se pueden marcar
+          varios al mismo tiempo sin que se excluyan.
+
+          DIFERENCIA FUNDAMENTAL CON RADIO:
+          Radio    → una sola opción de un grupo (excluyentes)
+          Checkbox → cada opción es independiente (no excluyentes)
+
+          Un checkbox solo envía su value si está marcado.
+          Si no está marcado, ese name no llega al servidor.
+          Django no va a ver ese campo en request.data.
+
+          checked → aparece marcado por defecto.
+
+          CASO ESPECIAL — checkbox único:
+          Un solo checkbox para aceptar términos, suscribirse,
+          o activar una opción. Muy común en formularios de registro
+          y checkout.
+        ========================================================= -->
+
+        <fieldset>
+          <legend>Opciones adicionales</legend>
+
+          <!-- Checkboxes múltiples: comunicaciones -->
+          <p>Quiero recibir información sobre:</p>
+
+          <label>
+            <input
+              type="checkbox"
+              name="comunicaciones"
+              value="ofertas"
+              checked
+            >
+            Ofertas y descuentos
+          </label>
+          <!--
+            Si está marcado  → servidor recibe comunicaciones=ofertas
+            Si no está marcado → servidor NO recibe el campo comunicaciones
+            
+            Esto es importante para Django: hay que usar
+            request.data.get("comunicaciones") en vez de
+            request.data["comunicaciones"] para evitar un KeyError
+            cuando el checkbox no está marcado.
+          -->
+
+          <label>
+            <input
+              type="checkbox"
+              name="comunicaciones_novedades"
+              value="novedades"
+            >
+            Novedades de colección
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="comunicaciones_envios"
+              value="envios"
+            >
+            Actualizaciones de mi envío
+          </label>
+
+        </fieldset>
+
+
+        <fieldset>
+          <legend>Términos y condiciones</legend>
+
+          <!-- Checkbox único: aceptación obligatoria -->
+          <label>
+            <input
+              type="checkbox"
+              id="terminos"
+              name="terminos"
+              value="aceptado"
+              required
+            >
+            Leí y acepto los
+            <a href="terminos.html" target="_blank" rel="noopener noreferrer">
+              términos y condiciones
+            </a>
+            de StyleShop
+          </label>
+          <!--
+            required en un checkbox → el formulario no se puede
+            enviar si el checkbox no está marcado.
+            El navegador muestra un error automático.
+            Ideal para aceptación de términos obligatoria.
+          -->
+
+        </fieldset>
+
+
+        <!-- =========================================================
+          INPUTS ADICIONALES ÚTILES PARA STYLESHOP
+
+          Mostramos type="tel", type="date" y type="range"
+          porque aparecen en checkout y filtros.
+          No necesitan un bloque propio — van agrupados acá
+          para que los alumnos los tengan de referencia.
+        ========================================================= -->
+
+        <fieldset>
+          <legend>Datos adicionales de envío</legend>
+
+          <label for="telefono">Teléfono de contacto</label>
+          <input
+            type="tel"
+            id="telefono"
+            name="telefono"
+            placeholder="+54 9 11 1234-5678"
+            required
+          >
+          <!--
+            type="tel" → en mobile muestra el teclado numérico del teléfono.
+                         NO valida el formato (los formatos de teléfono
+                         varían demasiado por país).
+                         Para validar formato se usa el atributo pattern
+                         con una expresión regular — lo veremos en Angular.
+          -->
+
+          <label for="rango-precio">Precio máximo: $<span id="valor-precio">50000</span></label>
+          <input
+            type="range"
+            id="rango-precio"
+            name="precio_max"
+            min="0"
+            max="200000"
+            step="5000"
+            value="50000"
+          >
+          <!--
+            type="range" → slider visual. El usuario arrastra para elegir un valor.
+                           Útil para filtros de precio en productos.html.
+                           El valor exacto no es visible por defecto —
+                           hay que mostrarlo con JavaScript o Angular.
+                           El <span id="valor-precio"> de arriba
+                           es donde Angular va a mostrar el valor en tiempo real.
+          -->
+
+        </fieldset>
+
+
+        <button type="submit">Confirmar compra</button>
+
+      </form>
+
+    </main>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  type="email"    → valida formato email. Teclado con @ en mobile.
+  type="number"   → numérico. Atributos: min, max, step, value.
+  type="tel"      → teclado de teléfono en mobile. No valida formato.
+  type="range"    → slider. Necesita JS o Angular para mostrar el valor.
+
+  type="radio"    → una sola opción del grupo. Mismo name = mismo grupo.
+                    Siempre preseleccionar uno con checked.
+  type="checkbox" → opciones independientes. Si no está marcado, no se envía.
+                    required en checkbox = obligatorio marcar para hacer submit.
+
+  required        → campo obligatorio. Navegador bloquea submit si está vacío.
+  checked         → radio o checkbox marcado por defecto.
+  min / max       → rango válido para number y range.
+  step            → incremento para number y range.
+  value           → valor inicial del input.
+
+  RADIO VS CHECKBOX — la pregunta clave:
+  "¿Las opciones se excluyen entre sí?"
+  Sí → radio (método de envío: no podés elegir dos)
+  No → checkbox (comunicaciones: podés querer todas)
+
+  CONEXIÓN CON LAS FASES SIGUIENTES:
+  Angular (Fase 7) → reactive forms validan estos mismos campos
+                     con Validators.required, Validators.email, etc.
+  Django (Fase 9)  → request.data["email"], request.data.get("terminos")
+  PostgreSQL       → estos valores se guardan en las columnas
+                     de las tablas que diseñamos en la Fase 10.
+-->

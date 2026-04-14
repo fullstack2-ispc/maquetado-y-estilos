@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Formularios</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body class="bg-light">
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: formularios en Bootstrap
+
+      Bootstrap no crea nuevas etiquetas HTML para formularios.
+      Trabaja con las etiquetas nativas: <form>, <input>,
+      <select>, <textarea>, <button>, <label>.
+
+      Lo que hace Bootstrap es:
+      1. Resetear los estilos feos del navegador.
+      2. Agregar clases que dan estilo consistente.
+      3. Proveer clases para layout del formulario.
+      4. Proveer clases para estados: válido, inválido, disabled.
+
+      CLASES PRINCIPALES:
+      form-label        → estilo del <label>
+      form-control      → inputs de texto, email, password,
+                          textarea, file
+      form-select       → <select>
+      form-check        → wrapper de checkbox y radio
+      form-check-input  → el <input type="checkbox/radio">
+      form-check-label  → el <label> de un checkbox/radio
+      form-range        → <input type="range"> (slider)
+      form-text         → texto de ayuda bajo un input
+
+      TAMAÑOS:
+      form-control-sm → input pequeño
+      form-control-lg → input grande
+      (igual para form-select)
+
+      ESTADOS:
+      is-valid   → borde verde, ícono de check
+      is-invalid → borde rojo, ícono de error
+      disabled   → atributo HTML, Bootstrap lo estiliza
+
+      LAYOUT:
+      Los formularios usan el sistema de grilla normal.
+      row + col-* para poner campos lado a lado.
+      row g-3 es el estándar para formularios (mismo gutter
+      que la grilla de productos).
+    ========================================================= -->
+
+    <main class="container my-5">
+
+      <h1 class="mb-2">Formularios Bootstrap</h1>
+      <p class="text-muted mb-5">Tema 4 · StyleShop</p>
+
+
+      <!-- =====================================================
+        FORMULARIO 1: LOGIN
+
+        El más simple: dos campos y un botón.
+        Sirve para entender form-label + form-control
+        antes de ver layouts complejos.
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Formulario de login</h2>
+
+      <div class="row mb-5">
+        <div class="col-12 col-md-5">
+          <!--
+            Limitamos el ancho del formulario de login.
+            Un form de login a 100% del ancho en desktop
+            es incómodo de usar y de leer.
+          -->
+
+          <div class="card p-4">
+          <!--
+            card → componente Bootstrap (Tema 7).
+            Por ahora: solo lo usamos como contenedor con
+            fondo blanco y borde sutil.
+          -->
+
+            <h3 class="h5 fw-bold mb-4">Ingresá a tu cuenta</h3>
+
+            <form>
+            <!--
+              En Angular este <form> tendrá [formGroup]="loginForm"
+              y (ngSubmit)="onSubmit()". Por ahora: HTML puro.
+            -->
+
+              <!-- Campo email -->
+              <div class="mb-3">
+              <!--
+                mb-3 → separa cada grupo label+input del siguiente.
+                Este div es el "form group": agrupa label, input
+                y mensaje de error de un mismo campo.
+              -->
+
+                <label for="login-email" class="form-label">
+                  Correo electrónico
+                </label>
+                <!--
+                  form-label → font-weight: 500, margin-bottom: 0.5rem.
+                  for="login-email" → conecta el label con el input.
+                  Clic en el label → foco en el input.
+                  Obligatorio para accesibilidad.
+                -->
+
+                <input
+                  type="email"
+                  class="form-control"
+                  id="login-email"
+                  name="email"
+                  placeholder="usuario@email.com"
+                  autocomplete="email"
+                >
+                <!--
+                  form-control → estiliza el input: border, padding,
+                  border-radius, foco con outline azul.
+                  type="email" → validación nativa del navegador
+                  y teclado de email en mobile.
+                  autocomplete → ayuda al gestor de contraseñas.
+                -->
+              </div>
+
+              <!-- Campo contraseña -->
+              <div class="mb-3">
+                <label for="login-password" class="form-label">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="login-password"
+                  name="password"
+                  autocomplete="current-password"
+                >
+              </div>
+
+              <!-- Recordarme + olvidé mi contraseña -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+              <!--
+                d-flex + justify-content-between → checkbox a la
+                izquierda, link a la derecha, en la misma línea.
+              -->
+
+                <div class="form-check">
+                <!--
+                  form-check → wrapper para checkbox y radio.
+                  Alinea el input y el label correctamente.
+                -->
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="recordarme"
+                    name="recordarme"
+                  >
+                  <!--
+                    form-check-input → estiliza el checkbox:
+                    tamaño uniforme, color de marca al estar chequeado.
+                  -->
+                  <label class="form-check-label" for="recordarme">
+                    Recordarme
+                  </label>
+                </div>
+
+                <a href="#" class="small text-muted">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+
+              <button type="submit" class="btn btn-dark w-100">
+                Ingresar
+              </button>
+              <!--
+                w-100 → el botón ocupa todo el ancho del form.
+                Estándar en formularios de login y checkout.
+              -->
+
+            </form>
+
+            <hr class="my-4">
+
+            <p class="text-center small text-muted mb-0">
+              ¿No tenés cuenta?
+              <a href="registro.html">Registrate gratis</a>
+            </p>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- =====================================================
+        ESTADOS DE VALIDACIÓN: is-valid / is-invalid
+
+        Bootstrap provee estilos visuales para campos
+        válidos e inválidos. Se activan agregando las
+        clases is-valid o is-invalid al form-control.
+
+        En la práctica, estas clases las agrega JavaScript
+        (o Angular) después de que el usuario intenta enviar
+        el formulario o sale del campo (evento blur).
+
+        valid-feedback   → mensaje de éxito (verde)
+        invalid-feedback → mensaje de error (rojo)
+        Ambos son display:none por defecto y se muestran
+        cuando el form-control hermano tiene is-valid/is-invalid.
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Estados de validación</h2>
+
+      <div class="row mb-5">
+        <div class="col-12 col-md-5">
+
+          <form>
+            <!-- Campo válido -->
+            <div class="mb-3">
+              <label for="email-valido" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control is-valid"
+                id="email-valido"
+                value="usuario@email.com"
+              >
+              <div class="valid-feedback">
+                <!--
+                  valid-feedback → se muestra en verde cuando
+                  el input hermano tiene is-valid.
+                  En Angular: *ngIf para mostrar este div.
+                -->
+                Email válido.
+              </div>
+            </div>
+
+            <!-- Campo inválido -->
+            <div class="mb-3">
+              <label for="password-invalido" class="form-label">Contraseña</label>
+              <input
+                type="password"
+                class="form-control is-invalid"
+                id="password-invalido"
+                value="123"
+              >
+              <div class="invalid-feedback">
+                <!--
+                  invalid-feedback → rojo cuando el input
+                  hermano tiene is-invalid.
+                -->
+                La contraseña debe tener al menos 8 caracteres.
+              </div>
+            </div>
+
+            <!-- Campo deshabilitado -->
+            <div class="mb-4">
+              <label for="campo-disabled" class="form-label">
+                Correo (no editable)
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="campo-disabled"
+                value="usuario@email.com"
+                disabled
+              >
+              <!--
+                disabled → atributo HTML nativo.
+                Bootstrap lo estiliza con fondo gris y cursor
+                not-allowed. No se puede editar ni enviar.
+                Útil en perfil de usuario para mostrar
+                el email registrado sin permitir cambiarlo
+                desde ese campo.
+              -->
+              <div class="form-text">
+                <!--
+                  form-text → texto de ayuda en gris bajo el input.
+                  Para instrucciones o aclaraciones del campo.
+                -->
+                Para cambiar tu email contactá a soporte.
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+      <!-- =====================================================
+        FORMULARIO 2: FILTROS DEL CATÁLOGO
+
+        Los filtros usan form-select, form-range, y checkboxes.
+        El layout es una columna angosta (sidebar).
+        En mobile este sidebar va en un Offcanvas (Tema 7).
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Filtros del catálogo</h2>
+
+      <div class="row mb-5">
+        <div class="col-12 col-md-4 col-lg-3">
+
+          <form>
+
+            <!-- Select: ordenar por -->
+            <div class="mb-4">
+              <label for="ordenar" class="form-label fw-medium">
+                Ordenar por
+              </label>
+              <select class="form-select" id="ordenar" name="ordenar">
+              <!--
+                form-select → estiliza el <select> con la misma
+                apariencia que form-control: borde, padding, flecha
+                personalizada, foco con outline azul.
+              -->
+                <option value="">Más relevantes</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+                <option value="nuevo">Más nuevos primero</option>
+              </select>
+            </div>
+
+            <!-- Rango de precio -->
+            <div class="mb-4">
+              <label class="form-label fw-medium">
+                Precio máximo: <span id="precio-display">$50.000</span>
+              </label>
+              <input
+                type="range"
+                class="form-range"
+                id="precio-range"
+                name="precio-max"
+                min="0"
+                max="100000"
+                step="1000"
+                value="50000"
+                oninput="document.getElementById('precio-display').textContent =
+                  '$' + Number(this.value).toLocaleString('es-AR')"
+              >
+              <!--
+                form-range → estiliza el slider: thumb circular,
+                track delgado, color de acento al arrastrar.
+                oninput → actualiza el display del valor en tiempo real.
+                En Angular esto será [(ngModel)] o un FormControl
+                con valueChanges.
+              -->
+              <div class="d-flex justify-content-between">
+                <span class="small text-muted">$0</span>
+                <span class="small text-muted">$100.000</span>
+              </div>
+            </div>
+
+            <!-- Checkboxes: categorías -->
+            <div class="mb-4">
+              <p class="form-label fw-medium mb-2">Categoría</p>
+              <!--
+                Usamos <p> en lugar de <label> porque este texto
+                no está asociado a un input específico.
+              -->
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                  id="cat-remeras" name="categoria" value="remeras" checked>
+                <label class="form-check-label" for="cat-remeras">
+                  Remeras <span class="text-muted small">(24)</span>
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                  id="cat-pantalones" name="categoria" value="pantalones">
+                <label class="form-check-label" for="cat-pantalones">
+                  Pantalones <span class="text-muted small">(18)</span>
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                  id="cat-vestidos" name="categoria" value="vestidos">
+                <label class="form-check-label" for="cat-vestidos">
+                  Vestidos <span class="text-muted small">(12)</span>
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                  id="cat-camperas" name="categoria" value="camperas">
+                <label class="form-check-label" for="cat-camperas">
+                  Camperas <span class="text-muted small">(9)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Radios: talle -->
+            <div class="mb-4">
+              <p class="form-label fw-medium mb-2">Talle</p>
+
+              <!--
+                form-check-inline → muestra los radios en línea
+                en lugar de en columna. Útil para opciones cortas
+                como talles, colores o géneros.
+              -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                  id="talle-s" name="talle" value="S">
+                <label class="form-check-label" for="talle-s">S</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                  id="talle-m" name="talle" value="M" checked>
+                <label class="form-check-label" for="talle-m">M</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                  id="talle-l" name="talle" value="L">
+                <label class="form-check-label" for="talle-l">L</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                  id="talle-xl" name="talle" value="XL">
+                <label class="form-check-label" for="talle-xl">XL</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100 mb-2">
+              Aplicar filtros
+            </button>
+            <button type="reset" class="btn btn-outline-secondary w-100">
+              Limpiar filtros
+            </button>
+            <!--
+              type="reset" → HTML nativo. Restaura todos los campos
+              del formulario a sus valores iniciales sin JavaScript.
+            -->
+
+          </form>
+        </div>
+      </div>
+
+
+      <!-- =====================================================
+        FORMULARIO 3: CHECKOUT
+
+        El más complejo: usa el grid para poner campos
+        lado a lado. Patrón común en formularios largos
+        donde algunos campos son cortos (código postal)
+        y otros son largos (calle y número).
+      ===================================================== -->
+
+      <h2 class="h5 text-muted mb-3">Checkout — datos de envío</h2>
+
+      <div class="row mb-5">
+        <div class="col-12 col-lg-7">
+
+          <div class="card p-4">
+            <h3 class="h6 fw-bold mb-4">Datos de envío</h3>
+
+            <form>
+
+              <!-- Nombre y apellido: dos campos en una fila -->
+              <div class="row g-3 mb-3">
+              <!--
+                row g-3 dentro del form → los campos se
+                distribuyen en columnas con el mismo gutter
+                que la grilla de productos.
+                Consistencia visual en toda la página.
+              -->
+                <div class="col-12 col-sm-6">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombre"
+                    name="nombre" autocomplete="given-name">
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input type="text" class="form-control" id="apellido"
+                    name="apellido" autocomplete="family-name">
+                </div>
+              </div>
+
+              <!-- Calle: campo ancho -->
+              <div class="mb-3">
+                <label for="calle" class="form-label">Calle</label>
+                <input type="text" class="form-control" id="calle"
+                  name="calle" placeholder="Av. Corrientes"
+                  autocomplete="street-address">
+              </div>
+
+              <!-- Número, piso, depto: tres campos en una fila -->
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-sm-4">
+                  <label for="numero" class="form-label">Número</label>
+                  <input type="text" class="form-control" id="numero"
+                    name="numero" placeholder="1234">
+                </div>
+                <div class="col-12 col-sm-4">
+                  <label for="piso" class="form-label">
+                    Piso <span class="text-muted">(opcional)</span>
+                  </label>
+                  <input type="text" class="form-control" id="piso"
+                    name="piso" placeholder="3">
+                </div>
+                <div class="col-12 col-sm-4">
+                  <label for="depto" class="form-label">
+                    Depto <span class="text-muted">(opcional)</span>
+                  </label>
+                  <input type="text" class="form-control" id="depto"
+                    name="depto" placeholder="B">
+                </div>
+              </div>
+
+              <!-- Código postal y ciudad -->
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-sm-4">
+                  <label for="cp" class="form-label">Código postal</label>
+                  <input type="text" class="form-control" id="cp"
+                    name="cp" placeholder="1414" autocomplete="postal-code">
+                </div>
+                <div class="col-12 col-sm-8">
+                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <input type="text" class="form-control" id="ciudad"
+                    name="ciudad" placeholder="Buenos Aires"
+                    autocomplete="address-level2">
+                </div>
+              </div>
+
+              <!-- Provincia: select -->
+              <div class="mb-3">
+                <label for="provincia" class="form-label">Provincia</label>
+                <select class="form-select" id="provincia" name="provincia"
+                  autocomplete="address-level1">
+                  <option value="">Seleccioná una provincia</option>
+                  <option value="bsas">Buenos Aires</option>
+                  <option value="caba" selected>CABA</option>
+                  <option value="cordoba">Córdoba</option>
+                  <option value="rosario">Santa Fe</option>
+                  <option value="mendoza">Mendoza</option>
+                </select>
+              </div>
+
+              <!-- Teléfono con texto de ayuda -->
+              <div class="mb-4">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="telefono"
+                  name="telefono" placeholder="11 1234-5678"
+                  autocomplete="tel">
+                <div class="form-text">
+                  Lo usamos solo para coordinar la entrega.
+                </div>
+              </div>
+
+              <!-- Notas: textarea -->
+              <div class="mb-4">
+                <label for="notas" class="form-label">
+                  Notas para el envío
+                  <span class="text-muted">(opcional)</span>
+                </label>
+                <textarea
+                  class="form-control"
+                  id="notas"
+                  name="notas"
+                  rows="3"
+                  placeholder="Ej: dejar con el portero, timbre no funciona..."
+                ></textarea>
+                <!--
+                  form-control en textarea → mismo estilo que los inputs.
+                  rows="3" → altura inicial. El usuario puede redimensionar.
+                -->
+              </div>
+
+              <button type="submit" class="btn btn-dark w-100 btn-lg">
+                Continuar al pago
+              </button>
+              <!--
+                btn-lg → botón grande. En el paso final del checkout
+                el botón de acción principal debe ser prominente.
+              -->
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  CLASES DE CAMPOS:
+  form-label        → estiliza el <label>
+  form-control      → inputs texto, email, password, textarea, file
+  form-select       → <select>
+  form-check        → wrapper de checkbox y radio
+  form-check-input  → <input type="checkbox"> o <input type="radio">
+  form-check-label  → label de checkbox/radio
+  form-check-inline → checkboxes/radios en línea horizontal
+  form-range        → <input type="range"> slider
+  form-text         → texto de ayuda bajo el campo
+
+  TAMAÑOS:
+  form-control-sm / form-control-lg
+  form-select-sm  / form-select-lg
+
+  ESTADOS:
+  is-valid     → borde verde, muestra .valid-feedback
+  is-invalid   → borde rojo, muestra .invalid-feedback
+  disabled     → atributo HTML, Bootstrap estiliza con gris
+
+  LAYOUT:
+  Los formularios usan row + col-* igual que la grilla.
+  row g-3 dentro del form → estándar para campos lado a lado.
+
+  BOTONES:
+  btn btn-dark    → acción principal
+  btn btn-outline-secondary → acción secundaria / limpiar
+  btn-lg          → botón grande para CTAs importantes
+  w-100           → ancho completo (estándar en forms)
+  type="reset"    → limpia el form sin JavaScript
+
+  AUTOCOMPLETE:
+  Siempre agregar autocomplete en campos de formulario.
+  Mejora UX en mobile y con gestores de contraseñas.
+  Valores comunes: email, current-password, given-name,
+  family-name, street-address, postal-code, tel.
+
+  PATRONES DE STYLESHOP:
+  Login           → dos form-control + form-check + btn w-100
+  Filtros         → form-select + form-range + form-check
+  Checkout        → row g-3 con col-* para campos lado a lado
+
+  CONEXIÓN CON ANGULAR (Módulo 6):
+  HTML estático:
+  <input class="form-control" type="email" id="email">
+
+  Angular Reactive Forms:
+  <input
+    class="form-control"
+    [class.is-invalid]="email.invalid && email.touched"
+    type="email"
+    id="email"
+    formControlName="email"
+  >
+  <div class="invalid-feedback">
+    {{ email.errors?.['required'] ? 'Campo requerido.' : 'Email inválido.' }}
+  </div>
+
+  Las clases de Bootstrap son las mismas.
+  [class.is-invalid] reemplaza al JavaScript que antes
+  agregaba y sacaba la clase manualmente.
+-->

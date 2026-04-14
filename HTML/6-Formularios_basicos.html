@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Login</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué es un formulario
+
+      Un formulario es el mecanismo que tiene HTML para recolectar
+      datos del usuario y enviarlos a un servidor.
+
+      En StyleShop los formularios aparecen en:
+      - login.html        → email y contraseña
+      - registro.html     → datos de la cuenta
+      - checkout.html     → datos de envío y pago
+      - contacto.html     → mensaje al equipo
+      - productos.html    → buscador y filtros
+
+      Todos comparten la misma base: <form>, <label>, <input>, <button>.
+    ========================================================= -->
+
+
+    <main>
+
+      <!-- =========================================================
+        <form>
+
+        El contenedor de todo el formulario.
+        Define DOS cosas importantes:
+
+        action → a dónde se envían los datos cuando el usuario
+                 hace submit. Una URL del servidor.
+                 Cuando lleguemos a Django, acá va el endpoint
+                 de la API: action="/api/login/"
+
+        method → cómo se envían los datos:
+                 GET  → los datos van en la URL (?email=...&pass=...)
+                        Visible, guardable, para búsquedas y filtros.
+                 POST → los datos van en el cuerpo del request.
+                        No visible en la URL, para datos sensibles
+                        (contraseñas, pagos, datos personales).
+
+        En StyleShop:
+        - Buscador de productos → GET (la búsqueda puede compartirse)
+        - Login, registro, checkout → POST (datos privados)
+      ========================================================= -->
+
+      <h1>Iniciá sesión en StyleShop</h1>
+
+      <form action="/api/login/" method="POST">
+      <!--
+        Por ahora el action apunta a una URL que no existe todavía.
+        Cuando construyamos el backend en Django, este endpoint
+        va a existir y va a recibir estos datos.
+        Es intencional mostrarlo así para que los alumnos vean
+        la conexión entre el formulario HTML y la API futura.
+      -->
+
+
+        <!-- =========================================================
+          <label> e <input>: siempre van juntos
+
+          <label> → etiqueta visible que describe qué debe ingresar
+                    el usuario. No es solo texto decorativo:
+                    al hacer clic en el label, el foco va al input.
+                    Los lectores de pantalla lo leen antes del campo.
+
+          La conexión label-input se hace de DOS maneras:
+
+          MANERA 1 — for/id (recomendada):
+          El atributo for del <label> debe coincidir exactamente
+          con el atributo id del <input>.
+          Permite que label e input estén separados en el HTML.
+
+          MANERA 2 — anidado:
+          El <input> vive dentro del <label>.
+          No necesita for ni id, pero es menos flexible para CSS.
+
+          NUNCA usar placeholder como reemplazo del label:
+          el placeholder desaparece cuando el usuario empieza a escribir
+          y no es accesible para lectores de pantalla.
+        ========================================================= -->
+
+        <!-- CAMPO: Email -->
+        <label for="email">Correo electrónico</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="tu@email.com"
+        >
+        <!--
+          type="text"  → campo de texto libre (por ahora).
+                         En el Tema 8 vemos type="email" que agrega
+                         validación automática del formato.
+
+          id="email"   → conecta este input con el label de arriba.
+                         También sirve para CSS y JavaScript.
+
+          name="email" → el nombre con el que este dato llega al servidor.
+                         Cuando Django reciba el formulario, va a buscar
+                         request.data["email"] — este name es esa clave.
+                         Sin name, el dato no se envía.
+
+          placeholder  → texto de ayuda que desaparece al escribir.
+                         Complementa al label, no lo reemplaza.
+        -->
+
+
+        <!-- CAMPO: Contraseña -->
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Tu contraseña"
+        >
+        <!--
+          type="password" → oculta los caracteres mientras el usuario
+                            escribe. El navegador muestra bullets (••••).
+                            Los datos siguen viajando como texto plano
+                            en el body del request — la seguridad real
+                            la da HTTPS, no el type="password".
+        -->
+
+
+        <!-- =========================================================
+          <button>
+
+          Ejecuta una acción dentro del formulario.
+          
+          type="submit" → envía el formulario. Es el valor por defecto
+                          si no se especifica type — siempre conviene
+                          escribirlo explícitamente para que quede claro.
+
+          type="button" → no hace nada por sí solo. Se usa cuando
+                          queremos ejecutar JavaScript al hacer clic,
+                          sin enviar el formulario.
+
+          type="reset"  → limpia todos los campos del formulario.
+                          Raramente útil — casi nunca se usa en
+                          aplicaciones reales porque es frustrante
+                          para el usuario perder lo que escribió.
+
+          DIFERENCIA CON <input type="submit">:
+          <button> puede contener HTML adentro (íconos, spans).
+          <input type="submit"> solo acepta texto plano.
+          En la práctica profesional siempre se usa <button>.
+        ========================================================= -->
+
+        <button type="submit">Iniciar sesión</button>
+
+        <button type="button">
+          <!--
+            Este botón no envía el formulario.
+            Cuando lleguemos a Angular, acá va (click)="irARegistro()"
+          -->
+          Crear cuenta nueva
+        </button>
+
+      </form>
+
+
+      <!-- =========================================================
+        SEGUNDO FORMULARIO: el buscador
+
+        Un ejemplo de formulario GET para contrastar con el anterior.
+        Los datos del buscador SÍ pueden ir en la URL:
+        styleshop.com/productos?q=campera
+        Eso permite compartir una búsqueda o volver con el botón atrás.
+      ========================================================= -->
+
+      <form action="/productos" method="GET">
+
+        <label for="busqueda">Buscar productos</label>
+        <input
+          type="text"
+          id="busqueda"
+          name="q"
+          placeholder="Camperas, remeras, jeans..."
+        >
+        <!--
+          name="q" → convención común para el parámetro de búsqueda.
+                     La URL resultante será: /productos?q=campera
+                     Django leerá esto como: request.GET["q"]
+        -->
+
+        <button type="submit">Buscar</button>
+
+      </form>
+
+
+      <!-- =========================================================
+        LABEL ANIDADO: la segunda forma de conectar label e input
+
+        Útil cuando el diseño es muy simple y no necesitamos
+        separar el label del input en el CSS.
+      ========================================================= -->
+
+      <form action="/newsletter" method="POST">
+
+        <label>
+          Tu email para el newsletter
+          <input
+            type="text"
+            name="email_newsletter"
+            placeholder="tu@email.com"
+          >
+          <!--
+            Sin id ni for porque el input está dentro del label.
+            El navegador entiende la relación automáticamente.
+          -->
+        </label>
+
+        <button type="submit">Suscribirme</button>
+
+      </form>
+
+    </main>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  <form action method> → contenedor. action = destino, method = GET o POST.
+  GET                  → datos en la URL. Para búsquedas y filtros.
+  POST                 → datos en el body. Para login, registro, checkout.
+
+  <label for="x">     → conectado al input con id="x". Clic en label = foco en input.
+  <input id name>      → id conecta con label. name es la clave que recibe el servidor.
+  placeholder          → ayuda visual. Nunca reemplaza al label.
+
+  <button type="submit">  → envía el formulario.
+  <button type="button">  → acción personalizada, no envía.
+  <button type="reset">   → limpia campos. Casi nunca se usa.
+
+  CONEXIÓN CON EL STACK COMPLETO:
+
+  HTML (ahora)   → define los campos y el destino
+  Bootstrap      → los estiliza (Fase 2)
+  Angular        → maneja el estado y la validación (Fase 4 y 7)
+  Django         → recibe y procesa los datos (Fase 9)
+  PostgreSQL     → los persiste (Fase 10)
+
+  El formulario de login que escribimos hoy es exactamente
+  el mismo que vamos a conectar al backend en Django.
+  Solo va a cambiar cómo se maneja, no su estructura base.
+-->

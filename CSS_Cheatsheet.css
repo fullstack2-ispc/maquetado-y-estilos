@@ -1,0 +1,318 @@
+/* =========================================================
+   STYLSHOP CSS CHEATSHEET
+   Objetivo: Recordatorio rápido de CSS para proyectos reales
+   Contexto: Se usa junto con Bootstrap (no reemplaza estilos)
+   ========================================================= */
+
+
+/* =========================================================
+   1. SELECTORES
+   ========================================================= */
+
+/* Selector universal (todos los elementos) */
+* {
+  box-sizing: border-box;
+}
+
+/* Selector por etiqueta */
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Selector por clase */
+.product-card {
+  border: 1px solid #ccc;
+}
+
+/* Selector por ID (evitar abuso) */
+#main-header {
+  background-color: black;
+}
+
+/* Selectores combinados */
+.product-card p {
+  color: gray; /* todos los <p> dentro de .product-card */
+}
+
+/* Pseudoclases (interacciones) */
+a:hover {
+  color: red;
+}
+
+/* Pseudoelementos */
+p::first-letter {
+  font-size: 2rem;
+}
+
+
+/* =========================================================
+   2. BOX MODEL (modelo de caja)
+   ========================================================= */
+
+/*
+Cada elemento tiene:
+- content
+- padding (espacio interno)
+- border
+- margin (espacio externo)
+*/
+
+.box-example {
+  width: 200px;
+  padding: 20px;
+  border: 2px solid black;
+  margin: 10px;
+}
+
+
+/* =========================================================
+   3. DISPLAY
+   ========================================================= */
+
+/* block → ocupa todo el ancho */
+.block {
+  display: block;
+}
+
+/* inline → no acepta width/height */
+.inline {
+  display: inline;
+}
+
+/* inline-block → mezcla de ambos */
+.inline-block {
+  display: inline-block;
+}
+
+/* none → oculta elemento */
+.hidden {
+  display: none;
+}
+
+
+/* =========================================================
+   4. FLEXBOX (alineación en 1 dimensión)
+   ========================================================= */
+
+.flex-container {
+  display: flex;
+
+  /* eje principal */
+  justify-content: space-between;
+
+  /* eje cruzado */
+  align-items: center;
+
+  /* wrap */
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  flex: 1; /* crece proporcionalmente */
+}
+
+
+/* =========================================================
+   5. GRID (layout en 2 dimensiones)
+   ========================================================= */
+
+.grid-container {
+  display: grid;
+
+  /* columnas automáticas */
+  grid-template-columns: repeat(3, 1fr);
+
+  /* filas */
+  grid-template-rows: auto;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   6. POSICIONAMIENTO
+   ========================================================= */
+
+/* static (default) */
+.static {
+  position: static;
+}
+
+/* relative → base para posicionar hijos */
+.relative {
+  position: relative;
+}
+
+/* absolute → relativo al padre con position */
+.absolute {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* fixed → se queda en pantalla */
+.fixed {
+  position: fixed;
+  bottom: 0;
+}
+
+/* sticky → mezcla de relative + fixed */
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+
+/* =========================================================
+   7. COLORES Y FONDOS
+   ========================================================= */
+
+.bg-example {
+  background-color: #f1f1f1;
+  background-image: url('../img/bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.text-color {
+  color: #333;
+}
+
+
+/* =========================================================
+   8. TIPOGRAFÍA
+   ========================================================= */
+
+.text-example {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   9. BORDES Y SOMBRAS
+   ========================================================= */
+
+.box-style {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  /* sombra */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+/* =========================================================
+   10. TRANSICIONES Y ANIMACIONES
+   ========================================================= */
+
+/* transición simple */
+.button {
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+/* animación */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade {
+  animation: fadeIn 1s ease-in;
+}
+
+
+/* =========================================================
+   11. RESPONSIVE DESIGN
+   ========================================================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+  body {
+    background-color: lightgray;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   12. UNIDADES
+   ========================================================= */
+
+/*
+px  → fijo
+%   → relativo al padre
+em  → relativo al font-size del padre
+rem → relativo al root (html)
+vh  → altura de pantalla
+vw  → ancho de pantalla
+*/
+
+
+/* =========================================================
+   13. VARIABLES (CSS CUSTOM PROPERTIES)
+   ========================================================= */
+
+:root {
+  --main-color: #ff4081;
+}
+
+.title {
+  color: var(--main-color);
+}
+
+
+/* =========================================================
+   14. Z-INDEX (capas)
+   ========================================================= */
+
+.modal {
+  position: fixed;
+  z-index: 1000;
+}
+
+
+/* =========================================================
+   15. OVERFLOW
+   ========================================================= */
+
+.overflow-box {
+  width: 200px;
+  height: 100px;
+  overflow: auto; /* hidden / scroll */
+}
+
+
+/* =========================================================
+   16. CURSOR
+   ========================================================= */
+
+.pointer {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   17. BUENAS PRÁCTICAS
+   ========================================================= */
+
+/*
+✔ Usar clases en lugar de IDs
+✔ No usar estilos inline
+✔ Nombrar clases de forma clara (product-card, navbar)
+✔ Separar CSS de HTML
+✔ Reutilizar clases
+✔ Usar Bootstrap + CSS custom (no reinventar todo)
+*/

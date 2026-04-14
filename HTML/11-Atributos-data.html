@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Productos</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué problema resuelven los data-*
+
+      A veces necesitamos guardar información en el HTML que:
+      - No debe mostrarse visualmente al usuario
+      - JavaScript necesita leer para hacer algo
+      - No encaja en ningún atributo HTML estándar
+
+      Antes de que existieran los data-*, los desarrolladores
+      hacían cosas como estas para guardar datos extra:
+
+      MAL → <div id="producto" class="campera precio-62999 id-1">
+      MAL → <div title="id:1|precio:62999|stock:true">
+      MAL → <input type="hidden" value="62999">
+
+      HTML5 introdujo data-* para resolver esto limpiamente.
+      Cualquier atributo que empiece con "data-" seguido de
+      al menos una letra es válido — el nombre lo inventás vos.
+
+      data-id="1"
+      data-precio="62999"
+      data-talle="M"
+      data-en-stock="true"
+
+      El navegador los ignora visualmente.
+      JavaScript los lee a través de dataset.
+      CSS puede usarlos como selectores.
+      Son la forma estándar y semántica de embeber datos en HTML.
+    ========================================================= -->
+
+
+    <main>
+
+      <h1>Productos</h1>
+
+
+      <!-- =========================================================
+        CASO 1: data-* en tarjetas de producto
+
+        La grilla de productos es el caso más común en StyleShop.
+        Cada tarjeta necesita guardar datos del producto para que
+        JavaScript pueda agregar al carrito, mostrar detalles,
+        o filtrar sin hacer un nuevo request al servidor.
+      ========================================================= -->
+
+      <section aria-label="Grilla de productos">
+
+        <article
+          data-id="1"
+          data-categoria="camperas"
+          data-precio="62999"
+          data-precio-original="89999"
+          data-en-stock="true"
+          data-talles-disponibles="S,M,L,XL"
+        >
+          <!--
+            Cada data-* guarda un dato específico del producto.
+
+            CONVENCIÓN DE NOMBRES:
+            - Solo minúsculas
+            - Palabras separadas por guiones: data-en-stock, data-precio-original
+            - Sin espacios, sin caracteres especiales
+            - Descriptivos y específicos al dominio
+
+            JavaScript los lee como camelCase desde dataset:
+            data-en-stock           → element.dataset.enStock
+            data-precio-original    → element.dataset.precioOriginal
+            data-talles-disponibles → element.dataset.tallesDisponibles
+
+            Los guiones en el nombre se convierten automáticamente
+            a camelCase al leer con dataset. No hay que hacer nada especial.
+          -->
+
+          <img
+            src="imagenes/campera-cuero.jpg"
+            alt="Campera de cuero negra"
+            width="300"
+            height="300"
+          >
+          <h2>Campera de cuero</h2>
+          <p>$62.999</p>
+
+          <button
+            type="button"
+            data-accion="agregar-carrito"
+            data-producto-id="1"
+            data-producto-nombre="Campera de cuero"
+            data-producto-precio="62999"
+            aria-label="Agregar Campera de cuero al carrito"
+          >
+            <!--
+              data-* en el botón → JavaScript lee estos datos
+              cuando el usuario hace clic, sin necesidad de
+              "subir" al article padre a buscarlos.
+              El botón lleva consigo toda la información que necesita.
+            -->
+            Agregar al carrito
+          </button>
+
+        </article>
+
+
+        <article
+          data-id="2"
+          data-categoria="remeras"
+          data-precio="8999"
+          data-precio-original="8999"
+          data-en-stock="true"
+          data-talles-disponibles="XS,S,M,L,XL,XXL"
+        >
+          <img
+            src="imagenes/remera-basica.jpg"
+            alt="Remera básica blanca"
+            width="300"
+            height="300"
+          >
+          <h2>Remera básica</h2>
+          <p>$8.999</p>
+
+          <button
+            type="button"
+            data-accion="agregar-carrito"
+            data-producto-id="2"
+            data-producto-nombre="Remera básica"
+            data-producto-precio="8999"
+            aria-label="Agregar Remera básica al carrito"
+          >
+            Agregar al carrito
+          </button>
+
+        </article>
+
+
+        <article
+          data-id="3"
+          data-categoria="pantalones"
+          data-precio="24999"
+          data-precio-original="24999"
+          data-en-stock="false"
+          data-talles-disponibles=""
+        >
+          <!--
+            data-en-stock="false" y data-talles-disponibles="" →
+            producto sin stock. JavaScript lee estos datos y puede
+            deshabilitar el botón, cambiar su texto, o agregar
+            una clase CSS de "agotado" — todo sin tocar el servidor.
+          -->
+          <img
+            src="imagenes/jean-slim.jpg"
+            alt="Jean slim fit azul oscuro"
+            width="300"
+            height="300"
+          >
+          <h2>Jean slim fit</h2>
+          <p>$24.999</p>
+
+          <button
+            type="button"
+            data-accion="agregar-carrito"
+            data-producto-id="3"
+            data-producto-nombre="Jean slim fit"
+            data-producto-precio="24999"
+            disabled
+            aria-label="Jean slim fit sin stock"
+          >
+            Sin stock
+          </button>
+
+        </article>
+
+      </section>
+
+
+      <!-- =========================================================
+        CASO 2: data-* para variantes de producto
+
+        En la página de detalle, el usuario elige talle y color.
+        Cada opción tiene datos propios: precio, stock, imagen.
+        Los data-* guardan esa información en cada botón de variante.
+      ========================================================= -->
+
+      <section aria-label="Detalle de producto">
+
+        <h2>Campera de cuero — Elegí tu variante</h2>
+
+        <div aria-label="Selección de talle">
+          <p>Talle:</p>
+
+          <button
+            type="button"
+            data-variante="talle"
+            data-valor="S"
+            data-stock="3"
+            data-precio-variante="62999"
+            aria-pressed="false"
+          >
+            S
+          </button>
+          <!--
+            aria-pressed → indica si el botón toggle está
+                           "presionado" (seleccionado) o no.
+                           false = no seleccionado
+                           true  = seleccionado (el talle elegido)
+
+            data-stock="3" → JavaScript puede mostrar
+                             "¡Últimas 3 unidades!" cuando se selecciona.
+
+            data-precio-variante → si el precio varía por talle
+                                   (no siempre, pero existe en ecommerce).
+          -->
+
+          <button
+            type="button"
+            data-variante="talle"
+            data-valor="M"
+            data-stock="8"
+            data-precio-variante="62999"
+            aria-pressed="true"
+          >
+            M
+          </button>
+          <!--
+            aria-pressed="true" → M está seleccionado por defecto.
+            JavaScript cambia aria-pressed entre los botones
+            cuando el usuario elige otro talle.
+          -->
+
+          <button
+            type="button"
+            data-variante="talle"
+            data-valor="L"
+            data-stock="0"
+            data-precio-variante="62999"
+            aria-pressed="false"
+            disabled
+          >
+            L
+          </button>
+          <!--
+            data-stock="0" y disabled → talle sin stock.
+            El botón está deshabilitado — no se puede seleccionar.
+          -->
+
+          <button
+            type="button"
+            data-variante="talle"
+            data-valor="XL"
+            data-stock="5"
+            data-precio-variante="62999"
+            aria-pressed="false"
+          >
+            XL
+          </button>
+
+        </div>
+
+
+        <div aria-label="Selección de color">
+          <p>Color:</p>
+
+          <button
+            type="button"
+            data-variante="color"
+            data-valor="negro"
+            data-imagen="campera-cuero-negro.jpg"
+            data-imagen-alt="Campera de cuero en color negro"
+            aria-pressed="true"
+            aria-label="Negro"
+          >
+            <!--
+              data-imagen y data-imagen-alt → cuando el usuario
+              selecciona un color, JavaScript cambia la imagen
+              principal del producto usando estos valores.
+              Sin data-*, habría que hardcodear la lógica en JS
+              o hacer un request al servidor para cada cambio de color.
+            -->
+          </button>
+
+          <button
+            type="button"
+            data-variante="color"
+            data-valor="marron"
+            data-imagen="campera-cuero-marron.jpg"
+            data-imagen-alt="Campera de cuero en color marrón"
+            aria-pressed="false"
+            aria-label="Marrón"
+          >
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+        CASO 3: data-* para filtros
+
+        Los filtros de la página de productos usan data-*
+        para guardar qué tipo de filtro aplica cada control.
+        JavaScript lee el data-filtro y data-valor para saber
+        cómo actualizar la grilla sin recargar la página.
+      ========================================================= -->
+
+      <aside aria-label="Filtros de productos">
+
+        <h2>Filtrar por</h2>
+
+        <fieldset>
+          <legend>Categoría</legend>
+
+          <label>
+            <input
+              type="checkbox"
+              data-filtro="categoria"
+              data-valor="camperas"
+              name="filtro-categoria"
+              value="camperas"
+            >
+            Camperas
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              data-filtro="categoria"
+              data-valor="remeras"
+              name="filtro-categoria"
+              value="remeras"
+            >
+            Remeras
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              data-filtro="categoria"
+              data-valor="pantalones"
+              name="filtro-categoria"
+              value="pantalones"
+            >
+            Pantalones
+          </label>
+
+        </fieldset>
+
+
+        <fieldset>
+          <legend>Precio</legend>
+
+          <label for="precio-max-filtro">
+            Precio máximo: $<span id="precio-max-valor">200000</span>
+          </label>
+          <input
+            type="range"
+            id="precio-max-filtro"
+            data-filtro="precio-max"
+            name="precio-max"
+            min="0"
+            max="200000"
+            step="5000"
+            value="200000"
+          >
+          <!--
+            data-filtro="precio-max" → JavaScript identifica que
+            este range aplica el filtro de precio máximo.
+            Al cambiar el valor, filtra los articles de la grilla
+            comparando con su data-precio.
+          -->
+
+        </fieldset>
+
+
+        <button
+          type="button"
+          data-accion="limpiar-filtros"
+        >
+          <!--
+            data-accion="limpiar-filtros" → JavaScript identifica
+            qué hace este botón sin necesitar un id específico.
+            Patrón muy usado: un solo event listener en el documento
+            lee data-accion de cualquier botón que se clickee
+            y ejecuta la acción correspondiente.
+          -->
+          Limpiar filtros
+        </button>
+
+      </aside>
+
+
+      <!-- =========================================================
+        JAVASCRIPT: cómo se leen los data-*
+
+        Este bloque de JavaScript muestra cómo leer y usar
+        los data-* que definimos en el HTML.
+        En la Fase 3 (Angular) esto se reemplaza por
+        event binding y property binding — pero la lógica
+        conceptual es la misma.
+      ========================================================= -->
+
+      <script>
+        // =========================================================
+        // LEER data-* con dataset
+        //
+        // element.dataset devuelve un objeto con todos los data-*
+        // del elemento. Los nombres se convierten a camelCase.
+        //
+        // data-producto-id      → dataset.productoId
+        // data-en-stock         → dataset.enStock
+        // data-talles-disponibles → dataset.tallesDisponibles
+        // =========================================================
+
+        // Leer datos de un article de producto
+        const primerProducto = document.querySelector('[data-id="1"]');
+
+        console.log(primerProducto.dataset.id);                 // "1"
+        console.log(primerProducto.dataset.categoria);          // "camperas"
+        console.log(primerProducto.dataset.precio);             // "62999"
+        console.log(primerProducto.dataset.enStock);            // "true"
+        console.log(primerProducto.dataset.tallesDisponibles);  // "S,M,L,XL"
+
+        // IMPORTANTE: dataset siempre devuelve STRINGS.
+        // Si necesitás un número, hay que convertirlo:
+        const precio = Number(primerProducto.dataset.precio);   // 62999 (number)
+        const enStock = primerProducto.dataset.enStock === 'true'; // true (boolean)
+
+
+        // =========================================================
+        // PATRÓN: event delegation con data-accion
+        //
+        // En vez de poner un addEventListener en cada botón,
+        // ponemos uno solo en el documento y leemos data-accion
+        // para saber qué botón fue clickeado.
+        // Más eficiente, especialmente con listas largas de productos.
+        // =========================================================
+
+        document.addEventListener('click', function(evento) {
+          const boton = evento.target.closest('[data-accion]');
+          // closest() sube por el DOM buscando el ancestro más
+          // cercano que tenga el atributo data-accion.
+          // Útil cuando el usuario clickea el texto dentro del botón.
+
+          if (!boton) return; // el clic no fue en un botón con data-accion
+
+          const accion = boton.dataset.accion;
+
+          if (accion === 'agregar-carrito') {
+            const productoId    = boton.dataset.productoId;
+            const productoNombre = boton.dataset.productoNombre;
+            const productoPrecio = Number(boton.dataset.productoPrecio);
+
+            console.log(`Agregando al carrito: ${productoNombre} — $${productoPrecio}`);
+            // Acá iría la lógica real del carrito.
+            // En Angular (Fase 6) esto será: this.carritoService.agregar(producto)
+          }
+
+          if (accion === 'limpiar-filtros') {
+            console.log('Limpiando todos los filtros');
+            // En Angular: this.filtrosService.limpiar()
+          }
+        });
+
+
+        // =========================================================
+        // PATRÓN: filtrar productos con data-*
+        //
+        // Leer todos los productos y mostrar/ocultar
+        // según los filtros seleccionados.
+        // =========================================================
+
+        function filtrarPorCategoria(categoriaSeleccionada) {
+          const productos = document.querySelectorAll('[data-id]');
+          // Selecciona todos los articles con data-id (todos los productos)
+
+          productos.forEach(function(producto) {
+            const categoriaProducto = producto.dataset.categoria;
+
+            if (categoriaProducto === categoriaSeleccionada) {
+              producto.hidden = false; // mostrar
+            } else {
+              producto.hidden = true;  // ocultar
+            }
+          });
+        }
+
+        // Escuchar cambios en los checkboxes de filtro
+        document.querySelectorAll('[data-filtro="categoria"]').forEach(function(checkbox) {
+          checkbox.addEventListener('change', function() {
+            if (this.checked) {
+              filtrarPorCategoria(this.dataset.valor);
+            }
+          });
+        });
+
+
+        // =========================================================
+        // PATRÓN: cambiar imagen al seleccionar color
+        // =========================================================
+
+        const botonesColor = document.querySelectorAll('[data-variante="color"]');
+        const imagenProducto = document.querySelector('#imagen-principal-producto');
+
+        botonesColor.forEach(function(boton) {
+          boton.addEventListener('click', function() {
+
+            // Actualizar aria-pressed en todos los botones de color
+            botonesColor.forEach(b => b.setAttribute('aria-pressed', 'false'));
+            this.setAttribute('aria-pressed', 'true');
+
+            // Cambiar la imagen usando los data-* del botón
+            if (imagenProducto) {
+              imagenProducto.src = 'imagenes/' + this.dataset.imagen;
+              imagenProducto.alt = this.dataset.imagenAlt;
+              // dataset.imagenAlt ← data-imagen-alt (guión → camelCase)
+            }
+          });
+        });
+
+      </script>
+
+    </main>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  data-*              → atributo personalizado para guardar datos en HTML.
+                        Nombre libre: data-cualquier-cosa="valor".
+                        El navegador lo ignora visualmente.
+                        JavaScript lo lee con dataset.
+
+  element.dataset     → objeto con todos los data-* del elemento.
+                        Los guiones se convierten a camelCase:
+                        data-precio-original → dataset.precioOriginal
+
+  Tipos de valor:
+  dataset siempre devuelve strings.
+  Convertir explícitamente: Number(), === 'true', JSON.parse().
+
+  CUÁNDO USAR data-*:
+  ✅ Guardar el ID de un producto para enviarlo al carrito
+  ✅ Guardar variantes (talle, color, stock) para manejarlas con JS
+  ✅ Identificar la acción de un botón (data-accion)
+  ✅ Guardar valores para filtros sin hacer requests al servidor
+  ✅ CSS: [data-en-stock="false"] { opacity: 0.5 } (selector de atributo)
+
+  CUÁNDO NO USAR data-*:
+  ❌ Para datos sensibles (precios reales, tokens, IDs críticos)
+     → cualquier usuario puede ver y modificar los data-* con DevTools
+  ❌ Para datos que cambian frecuentemente y necesitan ser precisos
+     → esos datos deben venir siempre del servidor
+  ❌ Para metadatos del documento (SEO, viewport)
+     → para eso existen las <meta>
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  En Angular los data-* casi desaparecen como patrón principal.
+  Su trabajo lo hacen el property binding y los servicios:
+
+  HTML con data-*:
+  <button data-producto-id="1" data-precio="62999">Agregar</button>
+
+  Angular equivalente:
+  <button (click)="carrito.agregar(producto)">Agregar</button>
+
+  El objeto producto ya vive en el componente TypeScript —
+  no necesita estar serializado en el HTML.
+  Pero los data-* siguen siendo válidos y útiles para
+  integrar librerías de terceros o pasar datos a scripts
+  externos que no hablan Angular.
+-->

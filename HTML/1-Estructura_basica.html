@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+  DOCTYPE le dice al navegador que este documento usa HTML5.
+  Sin esta línea, el navegador entra en "quirks mode" e interpreta
+  el HTML con reglas antiguas, haciendo que los estilos puedan comportarse distinto.
+  Siempre va en la primera línea, antes que todo.
+-->
+
+<html lang="es">
+<!--
+  <html> es la raíz del documento. Todo el contenido vive adentro.
+
+  El atributo lang="es" le indica al navegador (y a los lectores
+  de pantalla) que el contenido está en español. Esto importa para:
+  - Accesibilidad: así los lectores de pantalla pronuncien correctamente.
+  - SEO: los motores de búsqueda indexan mejor el contenido.
+  - Comportamiento del navegador: corrector ortográfico, traducción automática.
+-->
+
+  <head>
+  <!--
+    <head> contiene información SOBRE el documento, no contenido visible.
+    Todo lo que el navegador necesita saber antes de renderizar la página
+    va acá: título, estilos, scripts, configuraciones.
+  -->
+
+    <title>StyleShop — Moda que te define</title>
+    <!--
+      <title> es el texto que aparece en la pestaña del navegador
+      y en los resultados de búsqueda de Google.
+      Cada página del sitio debería tener un título único y descriptivo.
+    -->
+
+  </head>
+
+  <body>
+  <!--
+    <body> contiene TODO el contenido visible de la página:
+    textos, imágenes, botones, formularios, etc.
+    El navegador renderiza lo que esté dentro de este elemento.
+  -->
+
+    <p>Bienvenidos a StyleShop</p>
+    <!--
+      Por ahora solo un texto de prueba.
+      En los próximos temas vamos a construir el contenido real.
+    -->
+
+  </body>
+
+</html>
+<!--
+  RESUMEN DE LA ESTRUCTURA:
+  
+  <!DOCTYPE html>     → "Esto es HTML5"
+  <html lang="es">   → Raíz del documento, idioma español
+    <head>            → Metainformación (no visible)
+      <title>         → Nombre de la pestaña y en buscadores
+    <body>            → Contenido visible de la página
+
+  Esta estructura es la base de TODAS las páginas de StyleShop:
+  index.html, productos.html, detalle.html, carrito.html, etc.
+  Cada una arranca exactamente igual — solo cambia el <title>
+  y lo que hay dentro del <body>.
+-->

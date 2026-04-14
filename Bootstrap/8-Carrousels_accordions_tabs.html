@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Carousel, Accordion, Tabs</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body class="bg-light">
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: componentes de contenido interactivo
+
+      CAROUSEL → slideshow de imágenes o tarjetas.
+                 Pasa automáticamente o con controles.
+                 Uso en StyleShop: hero banner, banners de oferta.
+
+      ACCORDION → lista de secciones colapsables.
+                  Solo una (o varias) abiertas a la vez.
+                  Uso en StyleShop: FAQ, filtros mobile, descripciones.
+
+      TABS → pestañas que muestran paneles diferentes.
+             Una tab activa a la vez.
+             Uso en StyleShop: detalle de producto
+             (descripción / talles y medidas / cuidado de la prenda).
+
+      Los tres componentes requieren el JS de Bootstrap
+      (bootstrap.bundle.min.js ya incluye Popper).
+    ========================================================= -->
+
+    <main>
+
+      <div class="container my-5">
+        <h1 class="mb-2">Carousel, Accordion, Tabs</h1>
+        <p class="text-muted mb-5">Tema 6 · StyleShop</p>
+      </div>
+
+
+      <!-- =====================================================
+        CAROUSEL: hero banner del home
+
+        ESTRUCTURA:
+        .carousel                    → wrapper principal
+        .carousel-inner              → contiene los slides
+        .carousel-item               → cada slide (solo uno .active)
+        .carousel-indicators         → puntitos de navegación (opcional)
+        .carousel-control-prev/next  → flechas (opcional)
+        .carousel-caption            → texto superpuesto (opcional)
+
+        ATRIBUTOS DE DATOS:
+        data-bs-ride="carousel"      → arranca automáticamente al cargar
+        data-bs-interval="5000"      → milisegundos entre slides (default: 5000)
+        data-bs-pause="hover"        → pausa al pasar el mouse (default)
+
+        ACCESIBILIDAD:
+        aria-label en el .carousel
+        aria-label en cada botón de control
+        role="group" + aria-roledescription en cada .carousel-item
+      ===================================================== -->
+
+      <section class="mb-5">
+        <div class="container">
+          <h2 class="h5 text-muted mb-3">Carousel — hero banner</h2>
+        </div>
+
+        <div
+          id="carousel-hero"
+          class="carousel slide"
+          data-bs-ride="carousel"
+          data-bs-interval="5000"
+          aria-label="Banners promocionales de StyleShop"
+        >
+        <!--
+          carousel → clase base del componente.
+          slide    → activa la animación de deslizamiento.
+                     Sin slide, el cambio es instantáneo.
+          data-bs-ride="carousel" → Bootstrap inicia el
+          autoplay cuando el DOM está listo.
+        -->
+
+          <!-- Indicadores (puntitos) -->
+          <div class="carousel-indicators">
+          <!--
+            carousel-indicators → barra de puntitos en la parte inferior.
+            Cada botón tiene data-bs-target apuntando al carousel
+            y data-bs-slide-to con el índice del slide (empieza en 0).
+          -->
+            <button type="button"
+              data-bs-target="#carousel-hero"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1">
+            </button>
+            <button type="button"
+              data-bs-target="#carousel-hero"
+              data-bs-slide-to="1"
+              aria-label="Slide 2">
+            </button>
+            <button type="button"
+              data-bs-target="#carousel-hero"
+              data-bs-slide-to="2"
+              aria-label="Slide 3">
+            </button>
+          </div>
+
+          <!-- Slides -->
+          <div class="carousel-inner">
+          <!--
+            carousel-inner → wrapper de los slides.
+            OBLIGATORIO: exactamente un .carousel-item
+            debe tener la clase .active. Sin .active,
+            el carousel no muestra nada.
+          -->
+
+            <!-- Slide 1: activo por defecto -->
+            <div class="carousel-item active"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 de 3">
+              <img
+                src="imagenes/banner-verano.webp"
+                class="d-block w-100"
+                alt="Colección verano 2025 — hasta 40% off"
+                width="1920" height="500"
+                fetchpriority="high"
+                style="object-fit: cover; max-height: 480px"
+              >
+              <!--
+                d-block → evita el espacio extra debajo de la imagen
+                que genera display:inline por defecto.
+                w-100 → la imagen ocupa todo el ancho del carousel.
+              -->
+              <div class="carousel-caption d-none d-md-block">
+              <!--
+                carousel-caption → texto superpuesto, centrado,
+                sobre el tercio inferior de la imagen.
+                d-none d-md-block → oculto en mobile (la imagen
+                ya es pequeña, el texto taparía el contenido).
+              -->
+                <h3 class="display-6 fw-bold">Colección Verano 2025</h3>
+                <p>Hasta 40% de descuento en toda la temporada</p>
+                <a href="catalogo.html" class="btn btn-light btn-lg">
+                  Ver colección
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 de 3">
+              <img
+                src="imagenes/banner-denim.webp"
+                class="d-block w-100"
+                alt="Nueva línea denim — jeans desde $15.000"
+                width="1920" height="500"
+                loading="lazy"
+                style="object-fit: cover; max-height: 480px"
+              >
+              <div class="carousel-caption d-none d-md-block">
+                <h3 class="display-6 fw-bold">Nueva línea Denim</h3>
+                <p>Jeans, shorts y jackets. Envío gratis.</p>
+                <a href="catalogo.html?categoria=denim" class="btn btn-light btn-lg">
+                  Explorar denim
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 de 3">
+              <img
+                src="imagenes/banner-invierno.webp"
+                class="d-block w-100"
+                alt="Pre-venta invierno 2025"
+                width="1920" height="500"
+                loading="lazy"
+                style="object-fit: cover; max-height: 480px"
+              >
+              <div class="carousel-caption d-none d-md-block">
+                <h3 class="display-6 fw-bold">Pre-venta Invierno</h3>
+                <p>Abrigáte con estilo. Descuentos exclusivos.</p>
+                <a href="catalogo.html?temporada=invierno" class="btn btn-light btn-lg">
+                  Ver pre-venta
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <!-- fin carousel-inner -->
+
+          <!-- Control anterior -->
+          <button class="carousel-control-prev" type="button"
+            data-bs-target="#carousel-hero" data-bs-slide="prev">
+          <!--
+            data-bs-slide="prev/next" → Bootstrap escucha este atributo
+            y navega el carousel al hacer clic.
+          -->
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+            <!--
+              visually-hidden → oculto visualmente pero leído
+              por lectores de pantalla. Obligatorio en íconos sin texto.
+            -->
+          </button>
+
+          <!-- Control siguiente -->
+          <button class="carousel-control-next" type="button"
+            data-bs-target="#carousel-hero" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+
+        </div>
+        <!-- fin carousel -->
+      </section>
+
+
+      <!-- =====================================================
+        ACCORDION: FAQ y descripción de producto
+
+        ESTRUCTURA:
+        .accordion                   → wrapper
+        .accordion-item              → cada elemento (pregunta/respuesta)
+        .accordion-header            → el encabezado clickeable
+        .accordion-button            → el botón que abre/cierra
+        .accordion-collapse          → el panel colapsable
+        .accordion-body              → contenido del panel
+
+        VARIANTES:
+        accordion-flush → sin bordes laterales ni bordes entre items.
+                          Para integrar en sidebars o modales.
+
+        CONTROLAR QUÉ ITEMS ABREN:
+        Sin data-bs-parent → cada item abre/cierra independientemente.
+        Con data-bs-parent="#id" → solo un item abierto a la vez
+        (comportamiento estándar de FAQ).
+
+        IDs: cada accordion-item necesita IDs únicos para
+        conectar el botón con su panel.
+      ===================================================== -->
+
+      <div class="container mb-5">
+
+        <h2 class="h5 text-muted mb-3">Accordion — FAQ de StyleShop</h2>
+
+        <div class="accordion" id="faq-styleshop">
+        <!--
+          id="faq-styleshop" → lo usan los accordion-button
+          en data-bs-parent para el comportamiento de
+          "solo uno abierto a la vez".
+        -->
+
+          <!-- Pregunta 1 -->
+          <div class="accordion-item">
+
+            <h3 class="accordion-header">
+            <!--
+              accordion-header → semántica: es un encabezado.
+              El nivel (h3) debe ser correcto en la jerarquía
+              de la página (aquí es h3 porque el título de la
+              sección es h2).
+            -->
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq-1"
+                aria-expanded="true"
+                aria-controls="faq-1"
+              >
+              <!--
+                data-bs-toggle="collapse" → BS escucha esto.
+                data-bs-target="#faq-1"   → qué panel colapsar.
+                aria-expanded="true"      → accesibilidad: estado.
+                                            Debe coincidir con si el
+                                            panel está abierto o no.
+              -->
+                ¿Cuánto tarda el envío?
+              </button>
+            </h3>
+
+            <div
+              id="faq-1"
+              class="accordion-collapse collapse show"
+              data-bs-parent="#faq-styleshop"
+            >
+            <!--
+              collapse show → abierto por defecto.
+              Solo el primero tiene "show"; los demás solo "collapse".
+              data-bs-parent → cuando este panel se abre, Bootstrap
+              cierra todos los demás accordion-item del mismo padre.
+            -->
+              <div class="accordion-body">
+                Los envíos a CABA y GBA tardan <strong>1 a 3 días hábiles</strong>.
+                Al interior del país, <strong>3 a 7 días hábiles</strong>
+                según la localidad. Envío gratis en compras mayores a $30.000.
+              </div>
+            </div>
+
+          </div>
+          <!-- fin pregunta 1 -->
+
+          <!-- Pregunta 2 -->
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq-2"
+                aria-expanded="false"
+                aria-controls="faq-2"
+              >
+              <!--
+                collapsed → clase CSS que rota el ícono de flecha.
+                Bootstrap la agrega/saca automáticamente al operar
+                el accordion. La ponemos manualmente en los
+                items que arrancan cerrados.
+                aria-expanded="false" → refleja que está cerrado.
+              -->
+                ¿Puedo cambiar o devolver una prenda?
+              </button>
+            </h3>
+            <div id="faq-2" class="accordion-collapse collapse"
+              data-bs-parent="#faq-styleshop">
+              <div class="accordion-body">
+                Sí. Tenés <strong>30 días corridos</strong> desde la fecha
+                de entrega para solicitar un cambio o devolución.
+                La prenda debe estar sin uso, con etiquetas originales
+                y en su empaque original.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pregunta 3 -->
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq-3"
+                aria-expanded="false"
+                aria-controls="faq-3"
+              >
+                ¿Cómo sé qué talle elegir?
+              </button>
+            </h3>
+            <div id="faq-3" class="accordion-collapse collapse"
+              data-bs-parent="#faq-styleshop">
+              <div class="accordion-body">
+                Cada producto tiene una guía de talles con medidas
+                en centímetros. Medí tu contorno de pecho, cintura
+                y cadera, y comparalos con la tabla.
+                Si estás entre dos talles, recomendamos el mayor.
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- fin accordion FAQ -->
+
+
+        <!-- Accordion flush: filtros en sidebar mobile -->
+        <h2 class="h5 text-muted mt-5 mb-3">
+          Accordion flush — filtros en sidebar
+        </h2>
+        <p class="small text-muted mb-3">
+          accordion-flush → sin bordes laterales, integrado al sidebar.
+        </p>
+
+        <div class="col-12 col-md-3">
+          <div class="accordion accordion-flush" id="filtros-sidebar">
+          <!--
+            accordion-flush → remueve los bordes laterales y
+            el border-radius. Queda como una lista separada
+            por líneas. Ideal para sidebars con fondo blanco.
+          -->
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button px-0" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#filtro-cat"
+                  aria-expanded="true" aria-controls="filtro-cat">
+                  Categoría
+                </button>
+              </h3>
+              <div id="filtro-cat" class="accordion-collapse collapse show"
+                data-bs-parent="#filtros-sidebar">
+                <div class="accordion-body px-0">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="f-remeras">
+                    <label class="form-check-label" for="f-remeras">Remeras (24)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="f-jeans">
+                    <label class="form-check-label" for="f-jeans">Jeans (18)</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed px-0" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#filtro-precio"
+                  aria-expanded="false" aria-controls="filtro-precio">
+                  Precio
+                </button>
+              </h3>
+              <div id="filtro-precio" class="accordion-collapse collapse"
+                data-bs-parent="#filtros-sidebar">
+                <div class="accordion-body px-0">
+                  <input type="range" class="form-range" min="0" max="100000"
+                    step="1000" value="50000">
+                  <div class="d-flex justify-content-between">
+                    <small class="text-muted">$0</small>
+                    <small class="text-muted">$100.000</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <!-- fin container accordion -->
+
+
+      <!-- =====================================================
+        TABS: detalle de producto
+
+        ESTRUCTURA (dos partes que deben estar conectadas):
+
+        Parte 1: NAV (las pestañas clickeables)
+        .nav.nav-tabs / .nav.nav-pills → la barra de pestañas
+        .nav-item                      → cada pestaña
+        .nav-link                      → el enlace de la pestaña
+
+        Parte 2: TAB CONTENT (los paneles)
+        .tab-content  → wrapper de todos los paneles
+        .tab-pane     → cada panel
+        .fade         → animación de fade al cambiar
+        .show.active  → el panel activo (solo uno)
+
+        CONEXIÓN entre nav-link y tab-pane:
+        El nav-link tiene data-bs-target="#id-del-panel"
+        El tab-pane tiene id="id-del-panel"
+
+        VARIANTE pills:
+        nav-pills → pestañas con fondo (no borde inferior).
+        Misma lógica, distinta apariencia.
+      ===================================================== -->
+
+      <div class="container mb-5">
+
+        <h2 class="h5 text-muted mb-3">Tabs — detalle de producto</h2>
+
+        <div class="row">
+          <div class="col-12 col-lg-8">
+
+            <!-- Las pestañas -->
+            <ul class="nav nav-tabs" id="tabs-detalle" role="tablist">
+            <!--
+              nav nav-tabs → barra horizontal con borde inferior.
+              role="tablist" → accesibilidad: identifica el grupo de tabs.
+            -->
+
+              <li class="nav-item" role="presentation">
+              <!--
+                role="presentation" → el <li> es solo estructural,
+                no tiene significado semántico propio aquí.
+              -->
+                <button
+                  class="nav-link active"
+                  id="tab-descripcion"
+                  data-bs-toggle="tab"
+                  data-bs-target="#panel-descripcion"
+                  type="button"
+                  role="tab"
+                  aria-controls="panel-descripcion"
+                  aria-selected="true"
+                >
+                <!--
+                  data-bs-toggle="tab" → Bootstrap escucha esto.
+                  data-bs-target="#panel-descripcion" → el panel a mostrar.
+                  role="tab" → accesibilidad.
+                  aria-selected="true" → el tab activo.
+                -->
+                  Descripción
+                </button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tab-talles"
+                  data-bs-toggle="tab"
+                  data-bs-target="#panel-talles"
+                  type="button"
+                  role="tab"
+                  aria-controls="panel-talles"
+                  aria-selected="false"
+                >
+                  Talles y medidas
+                </button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tab-cuidado"
+                  data-bs-toggle="tab"
+                  data-bs-target="#panel-cuidado"
+                  type="button"
+                  role="tab"
+                  aria-controls="panel-cuidado"
+                  aria-selected="false"
+                >
+                  Cuidado de la prenda
+                </button>
+              </li>
+
+            </ul>
+            <!-- fin nav-tabs -->
+
+            <!-- Los paneles -->
+            <div class="tab-content border border-top-0 p-4" id="tabs-detalle-content">
+            <!--
+              border border-top-0 → borde alrededor del panel
+              excepto arriba, donde está la línea de las tabs.
+              Crea el efecto visual de "continuación" del tab activo.
+              p-4 → padding interno del panel.
+            -->
+
+              <!-- Panel 1: descripción -->
+              <div
+                class="tab-pane fade show active"
+                id="panel-descripcion"
+                role="tabpanel"
+                aria-labelledby="tab-descripcion"
+              >
+              <!--
+                tab-pane fade → panel con animación de fade.
+                show active   → este panel es el visible al cargar.
+                                Debe coincidir con el nav-link que
+                                tiene la clase .active.
+                role="tabpanel" → accesibilidad.
+                aria-labelledby → apunta al id del nav-link que lo controla.
+              -->
+                <p>
+                  Campera de cuero ecológico con forro interior polar desmontable.
+                  Confeccionada con materiales sustentables certificados.
+                </p>
+                <ul>
+                  <li>Cuero ecológico premium — 100% libre de animales</li>
+                  <li>Forro polar desmontable con cierre oculto</li>
+                  <li>Cierre principal metálico YKK</li>
+                  <li>4 bolsillos con broche magnético</li>
+                  <li>Ajuste en cintura con trabilla lateral</li>
+                </ul>
+              </div>
+
+              <!-- Panel 2: talles y medidas -->
+              <div
+                class="tab-pane fade"
+                id="panel-talles"
+                role="tabpanel"
+                aria-labelledby="tab-talles"
+              >
+                <p class="small text-muted mb-3">
+                  Medidas en centímetros. Si estás entre dos talles, elegí el mayor.
+                </p>
+                <table class="table table-sm table-bordered">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Talle</th>
+                      <th>Pecho</th>
+                      <th>Cintura</th>
+                      <th>Largo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>S</td><td>88–92</td><td>70–74</td><td>58</td></tr>
+                    <tr><td>M</td><td>93–97</td><td>75–79</td><td>60</td></tr>
+                    <tr><td>L</td><td>98–103</td><td>80–85</td><td>62</td></tr>
+                    <tr><td>XL</td><td>104–110</td><td>86–92</td><td>64</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Panel 3: cuidado -->
+              <div
+                class="tab-pane fade"
+                id="panel-cuidado"
+                role="tabpanel"
+                aria-labelledby="tab-cuidado"
+              >
+                <ul class="list-unstyled">
+                  <li class="mb-2">No lavar en lavarropas</li>
+                  <li class="mb-2">Limpiar con paño húmedo</li>
+                  <li class="mb-2">No usar secadora</li>
+                  <li class="mb-2">Planchar a temperatura baja por el revés</li>
+                  <li class="mb-2">Guardar colgada, no doblada</li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- fin tab-content -->
+
+          </div>
+        </div>
+
+      </div>
+      <!-- fin container tabs -->
+
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  CAROUSEL:
+  .carousel.slide             → wrapper con animación
+  data-bs-ride="carousel"     → autoplay al cargar
+  data-bs-interval="ms"       → tiempo entre slides
+  .carousel-inner             → wrapper de slides
+  .carousel-item (.active)    → cada slide
+  .carousel-indicators        → puntitos de navegación
+  .carousel-control-prev/next → flechas
+  .carousel-caption           → texto superpuesto
+  d-none d-md-block en caption→ ocultar texto en mobile
+  OBLIGATORIO: exactamente un .carousel-item debe tener .active
+
+  ACCORDION:
+  .accordion                  → wrapper
+  .accordion-item             → cada elemento
+  .accordion-header           → encabezado semántico (h2/h3)
+  .accordion-button           → botón clickeable
+  .accordion-button.collapsed → estado cerrado (manual en HTML)
+  .accordion-collapse.collapse.show → panel abierto por defecto
+  data-bs-parent="#id"        → solo uno abierto a la vez
+  .accordion-flush            → sin bordes laterales (sidebar)
+  aria-expanded               → refleja el estado abierto/cerrado
+
+  TABS:
+  .nav.nav-tabs               → barra de pestañas
+  .nav.nav-pills              → pestañas con fondo
+  .nav-item + .nav-link       → cada pestaña
+  .nav-link.active            → pestaña activa
+  data-bs-toggle="tab"        → JS de Bootstrap escucha esto
+  data-bs-target="#panel-id"  → qué panel mostrar
+  .tab-content                → wrapper de paneles
+  .tab-pane.fade              → cada panel con animación
+  .tab-pane.fade.show.active  → panel visible al cargar
+  role="tablist/tab/tabpanel" → accesibilidad obligatoria
+  aria-selected / aria-controls / aria-labelledby → accesibilidad
+
+  CONEXIÓN CON ANGULAR (Módulo 3):
+  Carousel con imágenes dinámicas:
+  <div class="carousel-inner">
+    <div
+      *ngFor="let banner of banners; let i = index"
+      class="carousel-item"
+      [class.active]="i === 0"
+    >
+      <img [src]="banner.imagen" [alt]="banner.alt" class="d-block w-100">
+    </div>
+  </div>
+
+  Tabs con contenido del producto:
+  <button
+    *ngFor="let tab of tabs"
+    class="nav-link"
+    [class.active]="tabActiva === tab.id"
+    (click)="tabActiva = tab.id"
+  >
+    {{ tab.label }}
+  </button>
+
+  Nota: en Angular se suele reemplazar el JS de Bootstrap
+  para tabs y accordion por lógica de componente propia,
+  ya que es más simple y predecible dentro del ciclo
+  de vida de Angular.
+-->

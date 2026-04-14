@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Inicio</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué es ARIA y por qué existe
+
+      ARIA = Accessible Rich Internet Applications.
+      Es un conjunto de atributos HTML que le dan información
+      adicional a las tecnologías de asistencia (lectores de
+      pantalla, navegación por teclado, switches de accesibilidad).
+
+      REGLA DE ORO DE ARIA:
+      "No uses ARIA si HTML semántico puede hacer el trabajo."
+
+      El orden correcto de preferencia es:
+      1. HTML semántico nativo (<button>, <nav>, <main>)
+      2. HTML semántico + atributos nativos (required, disabled)
+      3. ARIA como último recurso o complemento
+
+      Usar ARIA mal es peor que no usarlo:
+      un aria-label incorrecto confunde más que el silencio.
+
+      En StyleShop ARIA aparece donde el HTML semántico
+      no alcanza solo: botones de ícono, menú mobile,
+      notificaciones dinámicas, modales, sliders.
+    ========================================================= -->
+
+
+    <header>
+
+      <a href="index.html">
+        <img src="imagenes/logo-styleshop.svg" alt="StyleShop — Inicio" width="160" height="48">
+      </a>
+
+      <nav aria-label="Navegación principal">
+        <!--
+          aria-label en <nav> → cuando hay más de un <nav> en la página
+          (por ejemplo, uno en el header y otro en el footer),
+          el lector de pantalla necesita distinguirlos.
+          Sin aria-label: "navegación" y "navegación" — ambiguo.
+          Con aria-label: "Navegación principal" y "Navegación del pie" — claro.
+
+          Si hay un solo <nav> en la página, aria-label es opcional
+          pero recomendable para dar más contexto.
+        -->
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+
+
+      <!-- =========================================================
+        aria-label en botones de ícono
+
+        El caso más común de aria-label en StyleShop.
+        Un botón que solo tiene un ícono (SVG, imagen, emoji)
+        no tiene texto visible — el lector de pantalla no sabe
+        qué hace ese botón.
+
+        aria-label → reemplaza el texto visible ausente.
+                     El lector de pantalla dice "Carrito de compras,
+                     botón" en vez de "botón" a secas.
+
+        IMPORTANTE: si el botón tiene texto visible, NO usar aria-label
+        — el lector de pantalla ya tiene el texto para leer.
+      ========================================================= -->
+
+      <button type="button" aria-label="Carrito de compras">
+        <!--
+          Sin aria-label, el lector de pantalla dice: "botón"
+          Con aria-label, dice: "Carrito de compras, botón"
+          El usuario sabe exactamente qué hace antes de activarlo.
+        -->
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <!--
+            aria-hidden="true" en el SVG → le dice al lector de pantalla
+            que ignore este elemento completamente.
+            El ícono es decorativo: el aria-label del botón ya
+            describe la función. Si el lector leyera el SVG además,
+            habría información duplicada o confusa.
+
+            focusable="false" → necesario en IE/Edge antiguos para
+            evitar que el SVG reciba foco por teclado por separado.
+          -->
+          <use href="icons/sprite.svg#icon-cart"></use>
+        </svg>
+      </button>
+
+      <button type="button" aria-label="Buscar productos">
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <use href="icons/sprite.svg#icon-search"></use>
+        </svg>
+      </button>
+
+      <button type="button" aria-label="Mi cuenta">
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <use href="icons/sprite.svg#icon-user"></use>
+        </svg>
+      </button>
+
+
+      <!-- =========================================================
+        aria-expanded: estado de elementos colapsables
+
+        Comunica al lector de pantalla si un elemento está
+        abierto o cerrado — información que visualmente es obvia
+        (el menú se ve o no se ve) pero que el lector no puede inferir.
+
+        aria-expanded="false" → el elemento controlado está cerrado
+        aria-expanded="true"  → el elemento controlado está abierto
+
+        Siempre va en el BOTÓN que controla el elemento,
+        no en el elemento controlado.
+
+        aria-controls → conecta el botón con el elemento que controla.
+                         El valor es el id del elemento controlado.
+
+        En Angular (Fase 4) este valor va a cambiar dinámicamente:
+        [attr.aria-expanded]="menuAbierto"
+      ========================================================= -->
+
+      <button
+        type="button"
+        aria-label="Menú de navegación"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+      >
+        <!--
+          Botón hamburguesa del menú mobile.
+          aria-expanded empieza en false porque el menú empieza cerrado.
+          Cuando el usuario lo abre, JavaScript (o Angular) cambia
+          aria-expanded a "true" — el lector de pantalla anuncia
+          "Menú de navegación, expandido, botón".
+        -->
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <use href="icons/sprite.svg#icon-menu"></use>
+        </svg>
+      </button>
+
+      <nav id="menu-mobile" aria-label="Menú mobile">
+        <!--
+          id="menu-mobile" → conectado al aria-controls del botón.
+          El lector de pantalla sabe que este nav es controlado
+          por el botón hamburguesa.
+        -->
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <main>
+
+      <!-- =========================================================
+        aria-describedby: descripción extendida
+
+        Conecta un elemento con un texto que lo describe
+        con más detalle que su label.
+
+        Diferencia con aria-label:
+        aria-label       → reemplaza el nombre del elemento
+        aria-describedby → agrega una descripción adicional,
+                           complementa al nombre que ya existe
+
+        El lector de pantalla lee: nombre del campo → tipo → descripción.
+        "Email, campo de texto, usá el email con el que te registraste"
+      ========================================================= -->
+
+      <section>
+        <h1>Iniciá sesión</h1>
+
+        <form action="/api/login/" method="POST">
+
+          <label for="email-login">Correo electrónico</label>
+          <input
+            type="email"
+            id="email-login"
+            name="email"
+            aria-describedby="email-ayuda"
+            required
+          >
+          <p id="email-ayuda">
+            Usá el email con el que te registraste en StyleShop.
+          </p>
+          <!--
+            aria-describedby="email-ayuda" → conecta el input con el <p>.
+            El lector de pantalla lee el label primero,
+            luego el tipo de campo, luego el texto del <p>.
+            El usuario recibe toda la información antes de escribir.
+
+            id="email-ayuda" en el <p> → es el punto de conexión.
+            El valor de aria-describedby debe coincidir exactamente
+            con el id del elemento descriptor.
+          -->
+
+          <label for="password-login">Contraseña</label>
+          <input
+            type="password"
+            id="password-login"
+            name="password"
+            aria-describedby="password-ayuda"
+            required
+          >
+          <p id="password-ayuda">
+            Mínimo 8 caracteres, al menos una mayúscula y un número.
+          </p>
+
+          <button type="submit">Iniciar sesión</button>
+
+        </form>
+      </section>
+
+
+      <!-- =========================================================
+        role: roles ARIA para elementos no semánticos
+
+        Cuando un elemento HTML no tiene semántica nativa
+        pero cumple una función específica de interfaz,
+        role le asigna esa función explícitamente.
+
+        Roles más comunes en StyleShop:
+
+        role="alert"        → anuncia mensajes urgentes automáticamente.
+                              El lector de pantalla lo lee en cuanto
+                              aparece en el DOM, sin que el usuario
+                              lo haya enfocado.
+
+        role="status"       → como alert pero menos urgente.
+                              Para mensajes informativos, no errores.
+
+        role="dialog"       → para modales y ventanas emergentes.
+
+        role="tablist"      → contenedor de pestañas.
+        role="tab"          → cada pestaña individual.
+        role="tabpanel"     → el contenido de cada pestaña.
+
+        role="region"       → sección con nombre propio.
+                              Alternativa a <section> cuando no se
+                              puede cambiar el HTML.
+
+        IMPORTANTE: la mayoría de los roles ya los dan las etiquetas
+        semánticas nativas. Usar role solo cuando no hay etiqueta
+        semántica disponible o cuando se necesita un rol muy específico.
+      ========================================================= -->
+
+      <!-- Mensaje de error con role="alert" -->
+      <div role="alert" aria-live="assertive">
+        <!--
+          role="alert" → el lector de pantalla interrumpe lo que está
+                          leyendo para anunciar este mensaje de inmediato.
+                          Ideal para errores críticos: "Contraseña incorrecta",
+                          "Tu sesión expiró", "Error al procesar el pago".
+
+          aria-live="assertive" → refuerza el comportamiento de interrupción.
+                                   Con role="alert" ya está implícito,
+                                   pero escribirlo explícitamente es buena práctica.
+
+          En Angular este div empieza vacío y se llena dinámicamente
+          cuando hay un error. El lector de pantalla lo anuncia
+          en el momento en que el texto aparece en el DOM.
+        -->
+        <!-- Angular llenará este div con mensajes de error -->
+      </div>
+
+      <!-- Mensaje de estado con role="status" -->
+      <div role="status" aria-live="polite">
+        <!--
+          role="status" + aria-live="polite" → el lector espera a que
+          el usuario termine de leer lo que está leyendo antes de
+          anunciar este mensaje. Para notificaciones no urgentes:
+          "Producto agregado al carrito", "Filtros aplicados".
+        -->
+        <!-- Angular llenará este div con confirmaciones -->
+      </div>
+
+
+      <!-- Pestañas de producto con roles ARIA -->
+      <section aria-label="Información detallada del producto">
+
+        <div role="tablist" aria-label="Secciones del producto">
+          <!--
+            role="tablist" → contenedor de las pestañas.
+                             El lector de pantalla sabe que adentro
+                             hay un grupo de pestañas navegables.
+          -->
+
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-descripcion"
+            id="tab-descripcion"
+          >
+            Descripción
+          </button>
+          <!--
+            role="tab"           → este botón es una pestaña.
+            aria-selected="true" → esta pestaña está activa.
+            aria-controls        → conecta con el panel que muestra.
+            id                   → lo referencia el aria-labelledby del panel.
+          -->
+
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-talles"
+            id="tab-talles"
+          >
+            Guía de talles
+          </button>
+
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-resenas"
+            id="tab-resenas"
+          >
+            Reseñas
+          </button>
+
+        </div>
+
+        <div
+          role="tabpanel"
+          id="panel-descripcion"
+          aria-labelledby="tab-descripcion"
+        >
+          <!--
+            role="tabpanel"      → este div es el contenido de una pestaña.
+            aria-labelledby      → su nombre viene del tab que lo controla.
+                                   El lector dice: "Descripción, panel de pestaña"
+          -->
+          <p>Campera de cuero ecológico con forro interior de microfibra...</p>
+        </div>
+
+        <div
+          role="tabpanel"
+          id="panel-talles"
+          aria-labelledby="tab-talles"
+          hidden
+        >
+          <!--
+            hidden → oculto visualmente Y para lectores de pantalla.
+                     Distinto a display:none solo en CSS, que oculta
+                     visualmente pero a veces no para el lector.
+                     El atributo hidden es la forma correcta de
+                     ocultar contenido inactivo de pestañas y modales.
+          -->
+          <img src="imagenes/guia-talles.jpg" alt="Tabla de talles y medidas">
+        </div>
+
+        <div
+          role="tabpanel"
+          id="panel-resenas"
+          aria-labelledby="tab-resenas"
+          hidden
+        >
+          <p>Todavía no hay reseñas para este producto.</p>
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+        tabindex: control del orden de foco por teclado
+
+        Los usuarios que navegan con teclado (Tab, Shift+Tab)
+        necesitan poder acceder a todos los elementos interactivos.
+
+        Los elementos interactivos nativos (<a>, <button>, <input>,
+        <select>, <textarea>) ya son focusables por defecto —
+        no necesitan tabindex.
+
+        tabindex="0"  → hace focusable un elemento que no lo es
+                        nativamente (un <div>, <span>, <li>).
+                        Lo agrega al orden natural del teclado.
+
+        tabindex="-1" → el elemento NO recibe foco con Tab,
+                        pero SÍ puede recibir foco programáticamente
+                        con JavaScript (.focus()).
+                        Útil para modales: cuando se abre el modal,
+                        JavaScript mueve el foco al contenedor del modal.
+
+        tabindex="1"  → (y cualquier número positivo) fuerza un orden
+        tabindex="2"    de foco específico. NUNCA usar — rompe el orden
+        tabindex="3"    natural y confunde a los usuarios de teclado.
+                        Si el orden natural no está bien, la solución
+                        es reordenar el HTML, no usar tabindex positivo.
+      ========================================================= -->
+
+      <!-- Tarjeta de producto clickeable sin ser un enlace -->
+      <div
+        tabindex="0"
+        role="article"
+        aria-label="Campera de cuero, $62.999, ver detalle"
+      >
+        <!--
+          tabindex="0" → esta tarjeta recibe foco con Tab.
+          role="article" → semántica de artículo para el div.
+
+          En un caso real, lo ideal sería que la tarjeta sea un <a>
+          o contenga un <a> — así no necesitaría tabindex ni role.
+          Este ejemplo muestra el caso donde el HTML no es ideal
+          (por ejemplo, generado por una librería de terceros)
+          y se necesita arreglar la accesibilidad con ARIA.
+        -->
+        <img src="imagenes/campera-cuero.jpg" alt="Campera de cuero negra">
+        <h3>Campera de cuero</h3>
+        <p>$62.999</p>
+      </div>
+
+
+      <!-- Modal con tabindex="-1" -->
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-titulo"
+        aria-describedby="modal-descripcion"
+        tabindex="-1"
+        id="modal-producto"
+        hidden
+      >
+        <!--
+          role="dialog"     → el lector de pantalla anuncia "diálogo"
+                              y sabe que el contenido fuera del modal
+                              no es interactivo mientras está abierto.
+          aria-modal="true" → refuerza que es un modal verdadero.
+          aria-labelledby   → el nombre del modal viene del h2 adentro.
+          aria-describedby  → descripción del modal.
+          tabindex="-1"     → no recibe foco con Tab, pero JavaScript
+                              puede hacer modal.focus() cuando se abre,
+                              moviendo el foco al inicio del modal.
+          hidden            → empieza oculto.
+        -->
+
+        <h2 id="modal-titulo">Vista rápida — Campera de cuero</h2>
+        <p id="modal-descripcion">
+          Seleccioná tu talle y agregá el producto al carrito.
+        </p>
+
+        <img src="imagenes/campera-cuero.jpg" alt="Campera de cuero negra, vista frontal">
+
+        <form action="/api/carrito/" method="POST">
+          <fieldset>
+            <legend>Talle</legend>
+            <label><input type="radio" name="talle" value="m" checked> M</label>
+            <label><input type="radio" name="talle" value="l"> L</label>
+          </fieldset>
+          <button type="submit">Agregar al carrito</button>
+        </form>
+
+        <button
+          type="button"
+          aria-label="Cerrar vista rápida"
+          onclick="document.getElementById('modal-producto').hidden = true"
+        >
+          <!--
+            aria-label → porque el botón solo tiene una X o un ícono.
+            Sin aria-label el lector dice "botón" — el usuario no sabe
+            que cierra el modal.
+          -->
+          <svg aria-hidden="true" focusable="false" width="16" height="16">
+            <use href="icons/sprite.svg#icon-close"></use>
+          </svg>
+        </button>
+
+      </div>
+
+    </main>
+
+
+    <footer>
+      <nav aria-label="Navegación del pie de página">
+        <!--
+          Segundo <nav> de la página → aria-label obligatorio
+          para distinguirlo del nav del header.
+        -->
+        <ul>
+          <li><a href="terminos.html">Términos y condiciones</a></li>
+          <li><a href="privacidad.html">Política de privacidad</a></li>
+        </ul>
+      </nav>
+      <p>© 2025 StyleShop. Todos los derechos reservados.</p>
+    </footer>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  aria-label        → nombre alternativo para elementos sin texto visible.
+                      Botones de ícono, navs múltiples, elementos complejos.
+
+  aria-describedby  → conecta un elemento con su descripción extendida.
+                      Complementa, no reemplaza, el nombre del elemento.
+
+  aria-hidden="true"→ oculta el elemento a lectores de pantalla.
+                      Para íconos decorativos dentro de botones con label.
+
+  aria-expanded     → estado abierto/cerrado de menús y colapsables.
+                      false = cerrado, true = abierto. Va en el botón.
+
+  aria-controls     → conecta un botón con el elemento que controla.
+  aria-labelledby   → el nombre del elemento viene de otro elemento (por id).
+  aria-selected     → pestaña activa dentro de un tablist.
+  aria-live         → anuncia cambios dinámicos del DOM al lector.
+                      "polite" = espera, "assertive" = interrumpe.
+
+  role="alert"      → error urgente, se anuncia automáticamente.
+  role="status"     → confirmación no urgente, espera turno.
+  role="dialog"     → modal o ventana emergente.
+  role="tablist/tab/tabpanel" → sistema de pestañas accesible.
+
+  tabindex="0"      → hace focusable un elemento no interactivo.
+  tabindex="-1"     → focusable solo por JavaScript, no por Tab.
+  tabindex positivo → NUNCA usar.
+
+  REGLA DE ORO:
+  HTML semántico primero.
+  ARIA solo donde el HTML no alcanza.
+  ARIA mal usado es peor que nada.
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  [attr.aria-expanded]="menuAbierto"
+  [attr.aria-selected]="pestañaActiva === 'descripcion'"
+  [hidden]="!panelVisible"
+  Todos estos atributos ARIA se van a manejar dinámicamente
+  con property binding de Angular — la base la estamos
+  construyendo ahora en HTML.
+-->

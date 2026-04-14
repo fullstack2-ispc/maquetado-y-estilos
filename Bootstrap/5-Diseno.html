@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Utilidades Bootstrap</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="css/styleshop.css">
+  </head>
+
+  <body>
+
+    <!-- =============================================================
+      TEMA 3 — ESPACIADO: m-* y p-*
+
+      Bootstrap convierte el box model en clases utilitarias.
+      Formato: {propiedad}{lado}-{breakpoint}-{tamaño}
+
+      PROPIEDAD:
+      m → margin
+      p → padding
+
+      LADO:
+      (sin lado) → los 4 lados
+      t → top       b → bottom
+      s → start (left en LTR)    e → end (right en LTR)
+      x → horizontal (s + e)     y → vertical (t + b)
+
+      TAMAÑO (basado en $spacer = 1rem):
+      0 → 0
+      1 → 0.25rem (4px)
+      2 → 0.5rem  (8px)
+      3 → 1rem    (16px) ← el más usado
+      4 → 1.5rem  (24px)
+      5 → 3rem    (48px)
+      auto → margin: auto (centrar horizontalmente)
+
+      BREAKPOINTS: igual que la grilla
+      mt-md-3 → margin-top: 1rem a partir de 768px
+    ============================================================= -->
+
+    <main class="container py-5">
+      <!--
+        py-5 → padding-top y padding-bottom: 3rem
+        Separa el contenido del borde del viewport.
+      -->
+
+      <!-- SECCIÓN HERO de StyleShop con espaciados -->
+      <section class="mb-5 pb-4 border-bottom">
+        <!--
+          mb-5         → margin-bottom: 3rem (separa del siguiente bloque)
+          pb-4         → padding-bottom: 1.5rem
+          border-bottom→ línea separadora (utilidad de borde)
+        -->
+        <h1 class="mt-0 mb-2">Bienvenidos a StyleShop</h1>
+        <!--
+          mt-0 → elimina el margin-top del h1 (Bootstrap lo tiene por defecto)
+          mb-2 → margin-bottom pequeño antes del subtítulo
+        -->
+        <p class="mb-4">Descubrí la nueva colección.</p>
+        <!--
+          mb-4 → separa el párrafo del botón que sigue
+        -->
+
+        <!-- mx-auto: centrar un elemento de ancho fijo -->
+        <img
+          src="imagenes/hero-desktop.webp"
+          alt="Colección StyleShop"
+          class="w-100 mb-4"
+          width="1200"
+          height="400"
+          fetchpriority="high"
+        >
+        <!--
+          w-100  → width: 100%
+          mb-4   → separa la imagen de lo que sigue
+        -->
+      </section>
+
+
+      <!-- =============================================================
+        TEMA 4 — COLOR Y FONDO: text-* y bg-*
+
+        Bootstrap tiene una paleta semántica de colores:
+        primary   → azul (acción principal)
+        secondary → gris (acción secundaria)
+        success   → verde (confirmación, precio con descuento)
+        danger    → rojo (error, eliminar)
+        warning   → amarillo (alerta, stock bajo)
+        info      → celeste (información)
+        light     → gris claro (fondo suave)
+        dark      → negro/gris oscuro (texto, navbar)
+        white     → blanco
+        muted     → gris medio (texto secundario, descripciones)
+
+        TEXTO:    text-{color}
+        FONDO:    bg-{color}
+        BORDE:    border-{color}
+
+        En StyleShop vamos a sobreescribir "primary" con el color
+        de marca en styleshop.css — pero las clases siguen siendo las mismas.
+      ============================================================= -->
+
+      <section class="mb-5 pb-4 border-bottom">
+        <h2 class="mb-4">Colores en StyleShop</h2>
+
+        <!-- Badge de descuento en una card de producto -->
+        <div class="row g-3">
+
+          <!-- Producto con descuento -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <article class="border rounded p-3 position-relative">
+              <!--
+                rounded        → border-radius: 0.375rem (esquinas redondeadas)
+                position-relative → necesario para posicionar el badge
+              -->
+              <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                30% OFF
+              </span>
+              <!--
+                badge          → estilo de etiqueta pequeña
+                bg-danger      → fondo rojo
+                position-absolute top-0 end-0 → esquina superior derecha
+                m-2            → separación del borde del article
+              -->
+              <img
+                src="imagenes/campera-400.jpg"
+                alt="Campera de cuero"
+                class="w-100 mb-2"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mb-1">Campera de cuero</h3>
+              <p class="text-muted text-decoration-line-through mb-0 small">$89.999</p>
+              <!--
+                text-muted                 → color gris, precio tachado
+                text-decoration-line-through → tachado
+                small                      → font-size más pequeño
+              -->
+              <p class="text-success fw-bold fs-5 mb-0">$62.999</p>
+              <!--
+                text-success → verde (precio con descuento)
+                fw-bold      → font-weight: bold
+                fs-5         → font-size nivel 5 (1.25rem)
+              -->
+            </article>
+          </div>
+
+          <!-- Producto sin stock -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <article class="border rounded p-3 bg-light">
+              <!--
+                bg-light → fondo gris claro para producto no disponible
+              -->
+              <img
+                src="imagenes/jean-400.jpg"
+                alt="Jean slim fit"
+                class="w-100 mb-2 opacity-50"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <!--
+                opacity-50 → imagen semitransparente para indicar sin stock
+              -->
+              <h3 class="h6 mb-1 text-muted">Jean slim fit</h3>
+              <p class="text-danger fw-bold mb-0">Sin stock</p>
+              <!--
+                text-danger → rojo para sin stock
+              -->
+            </article>
+          </div>
+
+          <!-- Producto nuevo -->
+          <div class="col-12 col-sm-6 col-md-4">
+            <article class="border border-warning rounded p-3">
+              <!--
+                border-warning → borde amarillo para destacar novedad
+              -->
+              <span class="badge bg-warning text-dark mb-2">Nuevo</span>
+              <!--
+                bg-warning  → fondo amarillo
+                text-dark   → texto oscuro (el amarillo necesita texto oscuro)
+              -->
+              <img
+                src="imagenes/vestido-400.jpg"
+                alt="Vestido floral"
+                class="w-100 mb-2"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <h3 class="h6 mb-1">Vestido floral midi</h3>
+              <p class="fw-bold text-dark mb-0">$32.999</p>
+            </article>
+          </div>
+
+        </div>
+
+        <!-- Alertas de la tienda -->
+        <div class="mt-4">
+          <div class="alert alert-success" role="alert">
+            <!--
+              alert          → componente de alerta de Bootstrap
+              alert-success  → verde (confirmación)
+              role="alert"   → accesibilidad (Tema 10 Fase 1)
+            -->
+            ✓ Tu pedido fue confirmado. Te enviamos un email con el detalle.
+          </div>
+          <div class="alert alert-warning" role="alert">
+            ⚠ Quedan solo 3 unidades de la Campera de cuero en talle M.
+          </div>
+          <div class="alert alert-danger" role="alert">
+            ✗ Hubo un error al procesar el pago. Intentá de nuevo.
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =============================================================
+        TEMA 5 — TIPOGRAFÍA
+
+        Bootstrap establece una escala tipográfica completa.
+
+        TAMAÑOS DE FUENTE:
+        fs-1 → 2.5rem    fs-4 → 1.5rem
+        fs-2 → 2rem      fs-5 → 1.25rem
+        fs-3 → 1.75rem   fs-6 → 1rem (base)
+
+        PESOS:
+        fw-light  → 300    fw-semibold → 600
+        fw-normal → 400    fw-bold     → 700
+        fw-medium → 500    fw-bolder   → más que el padre
+
+        ESTILO:
+        fst-italic → cursiva    fst-normal → normal
+
+        ALINEACIÓN:
+        text-start  → izquierda
+        text-center → centrado
+        text-end    → derecha
+        text-{bp}-center → centrado a partir de ese breakpoint
+
+        DISPLAY HEADINGS: títulos extra grandes para heroes y banners
+        display-1 → 5rem      display-4 → 3.5rem
+        display-2 → 4.5rem    display-5 → 3rem
+        display-3 → 4rem      display-6 → 2.5rem
+
+        CLASES SEMÁNTICAS DE PÁRRAFO:
+        lead  → texto introductorio más grande (1.25rem, fw-normal)
+        small → texto pequeño (0.875em)
+
+        TRANSFORMACIONES:
+        text-uppercase    → MAYÚSCULAS
+        text-lowercase    → minúsculas
+        text-capitalize   → Primera Letra Mayúscula
+        text-truncate     → truncar con ... si no entra
+        text-wrap/nowrap  → control de salto de línea
+        text-break        → forzar salto en palabras largas
+      ============================================================= -->
+
+      <section class="mb-5 pb-4 border-bottom">
+        <h2 class="mb-4">Tipografía en StyleShop</h2>
+
+        <!-- Hero con display heading -->
+        <div class="bg-dark text-white p-5 rounded mb-4 text-center">
+          <p class="display-4 fw-bold mb-2">Nueva colección</p>
+          <!--
+            display-4 → título enorme para hero (3.5rem)
+            fw-bold   → negrita
+          -->
+          <p class="display-6 text-warning mb-3">Otoño-Invierno 2025</p>
+          <p class="lead text-white-50 mb-0">
+            Estilo, calidad y tendencia en un solo lugar.
+          </p>
+          <!--
+            lead         → párrafo introductorio destacado
+            text-white-50 → blanco al 50% de opacidad
+          -->
+        </div>
+
+        <!-- Jerarquía tipográfica en card de producto -->
+        <div class="row g-4">
+          <div class="col-md-6">
+            <article class="border rounded p-4">
+
+              <p class="text-uppercase text-muted small fw-semibold mb-1 ls-1">
+                Camperas · Cuero ecológico
+              </p>
+              <!--
+                text-uppercase → categoría en mayúsculas (convención de moda)
+                small          → tamaño reducido
+                fw-semibold    → peso medio, no tan pesado como bold
+              -->
+
+              <h3 class="fs-3 fw-bold mb-1">Campera de cuero ecológico</h3>
+              <!--
+                fs-3    → 1.75rem, más grande que el h3 por defecto
+                fw-bold → título de producto en negrita
+              -->
+
+              <p class="lead text-muted mb-3">
+                Cuero ecológico premium con forro de microfibra.
+              </p>
+              <!--
+                lead      → descripción destacada, más grande que un p normal
+                text-muted → color gris, secundario
+              -->
+
+              <div class="d-flex align-items-baseline gap-2 mb-3">
+                <!--
+                  d-flex            → display flex (lo vemos en CSS Fase 1 Tema 17)
+                  align-items-baseline → alinea textos de distinto tamaño
+                  gap-2             → espacio entre precio original y descuento
+                -->
+                <span class="fs-4 fw-bold text-dark">$62.999</span>
+                <span class="text-muted text-decoration-line-through small">$89.999</span>
+                <span class="badge bg-danger">30% OFF</span>
+              </div>
+
+              <p class="small text-muted mb-0">
+                Disponible en <strong>S, M, L, XL</strong> ·
+                Colores: <strong>negro</strong> y <strong>marrón</strong>
+              </p>
+              <!--
+                small   → texto secundario de detalle
+                strong  → énfasis en los valores específicos
+              -->
+
+            </article>
+          </div>
+
+          <!-- Texto truncado: útil en grillas de productos -->
+          <div class="col-md-6">
+            <div class="border rounded p-4 h-100">
+              <h3 class="fs-5 fw-bold mb-3">Truncado en grilla</h3>
+              <p class="text-truncate text-muted">
+                Esta es una descripción muy larga que no entra en una
+                sola línea y debe truncarse para que las cards de la
+                grilla tengan la misma altura sin importar el largo del texto.
+              </p>
+              <!--
+                text-truncate → overflow: hidden + text-overflow: ellipsis
+                                Requiere que el elemento sea block o inline-block
+                                con un ancho definido.
+              -->
+              <p class="small text-end text-muted mt-auto">
+                Texto en <span class="text-uppercase fw-semibold">small caps</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =============================================================
+        TEMA 6 — BOTONES: btn y variantes
+
+        ESTRUCTURA BASE: <button class="btn btn-{variante}">
+
+        VARIANTES SÓLIDAS (fondo de color):
+        btn-primary    btn-secondary    btn-success
+        btn-danger     btn-warning      btn-info
+        btn-light      btn-dark
+
+        VARIANTES OUTLINE (solo borde, sin fondo):
+        btn-outline-primary    btn-outline-secondary
+        btn-outline-success    btn-outline-danger
+        btn-outline-warning    btn-outline-dark
+        etc.
+
+        TAMAÑOS:
+        btn-lg → grande (padding y font-size mayores)
+        btn-sm → pequeño
+        (sin clase) → tamaño normal
+
+        ANCHO:
+        w-100 → botón de ancho completo (full-width)
+
+        ESTADOS:
+        disabled → visualmente inactivo (atributo HTML o clase)
+        active   → visualmente presionado
+
+        IMPORTANTE: usar <button> para acciones, <a class="btn"> para navegación.
+        Nunca <a href="#"> para acciones — es un error semántico y de accesibilidad.
+      ============================================================= -->
+
+      <section class="mb-5">
+        <h2 class="mb-4">Botones en StyleShop</h2>
+
+        <!-- Botones principales de la tienda -->
+        <div class="mb-4">
+          <h3 class="h6 text-muted text-uppercase mb-3">Acciones principales</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <!--
+              flex-wrap → los botones se van a la siguiente línea si no entran
+              gap-2     → espacio entre botones
+            -->
+            <button type="button" class="btn btn-dark">
+              Agregar al carrito
+            </button>
+            <!--
+              btn-dark → color de la marca StyleShop.
+              En styleshop.css vamos a personalizar btn-primary
+              con el color exacto de la marca.
+            -->
+            <button type="button" class="btn btn-outline-dark">
+              Agregar a favoritos
+            </button>
+            <!--
+              btn-outline-dark → sin fondo, solo borde oscuro.
+              Jerarquía visual: la acción principal (sólida)
+              tiene más peso que la secundaria (outline).
+            -->
+            <a href="productos.html" class="btn btn-outline-secondary">
+              Seguir comprando
+            </a>
+            <!--
+              <a> con clase btn → navegación que parece botón.
+              No es un <button> porque navega a otra página.
+            -->
+          </div>
+        </div>
+
+        <!-- Botones de tamaño en contexto -->
+        <div class="mb-4">
+          <h3 class="h6 text-muted text-uppercase mb-3">Tamaños</h3>
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-dark btn-lg">
+              Confirmar compra
+            </button>
+            <!--
+              btn-lg → el botón de checkout es grande, es la acción
+              más importante de la página. Tamaño = jerarquía.
+            -->
+            <button type="button" class="btn btn-dark">
+              Agregar al carrito
+            </button>
+            <button type="button" class="btn btn-outline-dark btn-sm">
+              Ver detalle
+            </button>
+            <!--
+              btn-sm → acciones secundarias, dentro de cards pequeñas
+            -->
+          </div>
+        </div>
+
+        <!-- Botón full-width: checkout y formularios -->
+        <div class="mb-4">
+          <h3 class="h6 text-muted text-uppercase mb-3">Ancho completo</h3>
+          <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <button type="button" class="btn btn-success w-100 btn-lg">
+                Confirmar compra · $106.997
+              </button>
+              <!--
+                w-100   → ancho completo dentro de su col
+                btn-success → verde para confirmación de compra
+              -->
+            </div>
+            <div class="col-12 col-md-4">
+              <button type="button" class="btn btn-dark w-100">
+                Agregar al carrito
+              </button>
+            </div>
+            <div class="col-12 col-md-4">
+              <button type="button" class="btn btn-outline-danger w-100">
+                Eliminar del carrito
+              </button>
+              <!--
+                btn-outline-danger → rojo outline para acción destructiva.
+                Outline porque es menos frecuente que agregar.
+              -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Estados: disabled y active -->
+        <div class="mb-4">
+          <h3 class="h6 text-muted text-uppercase mb-3">Estados</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-dark" disabled>
+              Sin stock
+            </button>
+            <!--
+              disabled → atributo HTML. Bloquea el clic Y es accesible:
+              el lector de pantalla anuncia "Sin stock, botón, desactivado".
+              No usar solo CSS para deshabilitar — no es accesible.
+            -->
+            <button type="button" class="btn btn-dark active" aria-pressed="true">
+              Talle M seleccionado
+            </button>
+            <!--
+              active       → apariencia de botón presionado
+              aria-pressed → comunica el estado al lector de pantalla
+            -->
+            <button type="button" class="btn btn-outline-secondary" disabled>
+              Procesando...
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo de botones: selector de talle -->
+        <div class="mb-4">
+          <h3 class="h6 text-muted text-uppercase mb-3">
+            Grupo de botones — Selector de talle
+          </h3>
+          <div class="btn-group" role="group" aria-label="Selección de talle">
+            <!--
+              btn-group → agrupa botones visualmente (sin espacio entre ellos)
+              role="group" + aria-label → accesibilidad del grupo
+            -->
+            <button type="button" class="btn btn-outline-dark btn-sm">XS</button>
+            <button type="button" class="btn btn-outline-dark btn-sm">S</button>
+            <button type="button" class="btn btn-dark btn-sm active" aria-pressed="true">M</button>
+            <button type="button" class="btn btn-outline-dark btn-sm">L</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" disabled>XL</button>
+          </div>
+          <p class="small text-muted mt-2">XL sin stock</p>
+        </div>
+
+
+        <!-- =============================================================
+          IMÁGENES RESPONSIVE: img-fluid y object-fit
+
+          img-fluid → max-width: 100%, height: auto
+                      La imagen nunca supera el ancho de su contenedor
+                      y mantiene su proporción. Equivale al CSS:
+                      img { max-width: 100%; height: auto; }
+
+          object-fit → controla cómo la imagen rellena su contenedor
+                       cuando tiene dimensiones fijas:
+                       cover   → rellena el espacio, puede recortarse
+                       contain → entra completa, puede quedar espacio vacío
+                       fill    → se estira (distorsiona)
+
+          En StyleShop object-fit: cover es fundamental para la grilla
+          de productos: todas las imágenes tienen la misma altura
+          aunque las fotos originales tengan proporciones distintas.
+        ============================================================= -->
+
+        <div class="mt-5">
+          <h3 class="h5 mb-4">Imágenes responsive en la grilla</h3>
+          <div class="row g-3">
+
+            <!-- Sin object-fit: alturas distintas -->
+            <div class="col-12 col-md-6">
+              <h4 class="h6 text-muted mb-2">Sin object-fit (alturas variables)</h4>
+              <div class="row g-2">
+                <div class="col-4">
+                  <img
+                    src="imagenes/campera-400.jpg"
+                    alt="Campera"
+                    class="img-fluid border"
+                    width="300"
+                    height="400"
+                  >
+                  <!--
+                    img-fluid → max-width: 100%
+                    La imagen mantiene su proporción original (3:4)
+                  -->
+                </div>
+                <div class="col-4">
+                  <img
+                    src="imagenes/remera-400.jpg"
+                    alt="Remera"
+                    class="img-fluid border"
+                    width="300"
+                    height="300"
+                  >
+                  <!--
+                    Esta imagen es cuadrada (1:1)
+                    Las cards tienen alturas distintas → grilla desprolija
+                  -->
+                </div>
+                <div class="col-4">
+                  <img
+                    src="imagenes/jean-400.jpg"
+                    alt="Jean"
+                    class="img-fluid border"
+                    width="300"
+                    height="450"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Con object-fit cover: alturas uniformes -->
+            <div class="col-12 col-md-6">
+              <h4 class="h6 text-muted mb-2">Con object-fit cover (alturas uniformes)</h4>
+              <div class="row g-2">
+                <div class="col-4">
+                  <img
+                    src="imagenes/campera-400.jpg"
+                    alt="Campera"
+                    class="img-fluid border"
+                    style="width:100%; height:150px; object-fit:cover"
+                    width="300"
+                    height="400"
+                  >
+                  <!--
+                    object-fit: cover → la imagen rellena 150px de alto
+                    exactos. Se recorta si es necesario, pero no se distorsiona.
+                    Todas las cards tienen la misma altura → grilla prolija.
+
+                    El style inline es temporal para el ejemplo.
+                    En styleshop.css esto va en una clase:
+                    .producto-img { width: 100%; height: 250px; object-fit: cover; }
+                  -->
+                </div>
+                <div class="col-4">
+                  <img
+                    src="imagenes/remera-400.jpg"
+                    alt="Remera"
+                    class="img-fluid border"
+                    style="width:100%; height:150px; object-fit:cover"
+                    width="300"
+                    height="300"
+                  >
+                </div>
+                <div class="col-4">
+                  <img
+                    src="imagenes/jean-400.jpg"
+                    alt="Jean"
+                    class="img-fluid border"
+                    style="width:100%; height:150px; object-fit:cover"
+                    width="300"
+                    height="450"
+                  >
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
+<!--
+  RESUMEN TEMAS 3-6:
+
+  ESPACIADO (m-* / p-*):
+  {m|p}{t|b|s|e|x|y}-{0..5|auto}
+  py-5 → padding vertical 3rem
+  mb-4 → margin-bottom 1.5rem
+  mx-auto → centrar horizontalmente
+
+  COLOR (text-* / bg-*):
+  text-{color}  bg-{color}  border-{color}
+  Paleta: primary secondary success danger warning info light dark muted
+  text-white-50 / opacity-50 → variantes con transparencia
+
+  TIPOGRAFÍA:
+  fs-{1..6}      → tamaño de fuente
+  fw-{light|normal|medium|semibold|bold}
+  display-{1..6} → títulos extra grandes para heroes
+  lead           → párrafo introductorio destacado
+  text-{start|center|end}
+  text-uppercase / text-truncate
+
+  BOTONES:
+  btn btn-{variante}          → sólido
+  btn btn-outline-{variante}  → solo borde
+  btn-{sm|lg}                 → tamaños
+  w-100                       → full-width
+  disabled / active           → estados
+  btn-group                   → grupo de botones (selector de talle)
+
+  IMÁGENES:
+  img-fluid       → max-width: 100%, height: auto
+  object-fit: cover → altura uniforme en grillas (via CSS propio)
+
+  JERARQUÍA DE BOTONES EN STYLESHOP:
+  Acción principal   → btn-dark (sólido, grande)
+  Acción secundaria  → btn-outline-dark
+  Navegación         → <a class="btn btn-outline-secondary">
+  Confirmación       → btn-success
+  Destrucción/error  → btn-outline-danger
+  Deshabilitado      → atributo disabled (no solo CSS)
+-->

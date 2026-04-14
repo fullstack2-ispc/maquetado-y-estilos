@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!--
+      Le dice al navegador cómo decodificar los caracteres del archivo.
+
+      UTF-8 soporta prácticamente todos los caracteres del mundo:
+      tildes (á, é, í), eñes (ñ), símbolos (€, ©), emojis, etc.
+
+      ¿Qué pasa si falta?
+      → Los caracteres especiales se muestran como símbolos extraños:
+        "Remera de algodón" se convierte en "Remera de algodÃ³n"
+
+      SIEMPRE debe ser la PRIMERA etiqueta dentro de <head>.
+      El navegador necesita saber el encoding antes de leer cualquier
+      otro contenido, incluido el <title>.
+    -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+      Controla cómo se escala la página en dispositivos móviles.
+
+      Sin esta línea, el navegador mobile asume que la página fue
+      diseñada para escritorio (980px de ancho) y la encoge para
+      que entre en la pantalla — todo se ve diminuto.
+
+      width=device-width   → el ancho de la página = ancho real del dispositivo
+      initial-scale=1.0    → sin zoom inicial, se muestra al 100%
+
+      ¿Qué pasa si falta?
+      → StyleShop se vería así en el celular:
+        [screenshot mental: toda la tienda encogida, ilegible]
+      → Las media queries de CSS dejan de funcionar correctamente.
+
+      Es la etiqueta más importante para el diseño responsive.
+    -->
+
+    <meta name="description" content="StyleShop — Tienda de ropa online con las últimas tendencias en moda femenina, masculina e infantil. Envíos a todo el país.">
+    <!--
+      Descripción breve de la página para motores de búsqueda.
+
+      Aparece como el texto debajo del título en los resultados de Google.
+      No afecta el ranking directamente, pero sí el porcentaje de clics:
+      una buena descripción invita a entrar.
+
+      Buenas prácticas:
+      - Entre 150 y 160 caracteres (lo que Google muestra completo)
+      - Única por página: productos.html, detalle.html y carrito.html
+        deberían tener descripciones distintas y específicas
+      - Incluir palabras clave naturalmente, sin spam
+
+      ¿Qué pasa si falta?
+      → Google genera automáticamente un fragmento tomando texto
+        de la página — generalmente queda mal y fuera de contexto.
+    -->
+
+    <title>StyleShop — Moda que te define</title>
+
+  </head>
+
+  <body>
+    <p>Bienvenidos a StyleShop</p>
+  </body>
+
+</html>
+
+<!--
+  ORDEN RECOMENDADO DENTRO DE <head>:
+
+  1. <meta charset>        → primero siempre, antes de cualquier texto
+  2. <meta viewport>       → segundo, antes de cualquier CSS
+  3. <meta description>    → SEO básico
+  4. <title>               → después del charset para evitar problemas de encoding
+  5. Estilos y scripts     → al final del head (los veremos en temas siguientes)
+
+  DIFERENCIA ENTRE LAS TRES:
+  
+  charset      → Para el NAVEGADOR: "así decodificás los caracteres"
+  viewport     → Para el DISPOSITIVO: "así escalás la página"
+  description  → Para GOOGLE: "esto es lo que muestra en resultados"
+-->

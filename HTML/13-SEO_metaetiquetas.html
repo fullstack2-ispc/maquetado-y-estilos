@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: quién lee el <head>
+
+      El <head> no es solo para el navegador.
+      Hay tres actores que lo leen y toman decisiones:
+
+      1. EL NAVEGADOR
+         → charset, viewport, title, estilos, scripts
+
+      2. LOS MOTORES DE BÚSQUEDA (Google, Bing)
+         → title, description, canonical, robots, Schema.org
+
+      3. LAS REDES SOCIALES (Facebook, Instagram, WhatsApp, Twitter/X)
+         → Open Graph (og:*), Twitter Cards
+
+      Cuando alguien comparte un producto de StyleShop en WhatsApp,
+      WhatsApp no abre la página — lee el <head> y construye
+      la vista previa con lo que encuentra ahí.
+      Si no hay Open Graph, la vista previa queda mal o vacía.
+
+      Este tema cubre las metaetiquetas que hacen que StyleShop
+      aparezca bien en Google y se vea profesional al compartirse.
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      1. METAETIQUETAS BÁSICAS DE SEO
+    ========================================================= -->
+
+    <title>Campera de cuero ecológico — StyleShop</title>
+    <!--
+      El title es el factor de SEO on-page más importante.
+      Aparece en:
+      - La pestaña del navegador
+      - Los resultados de Google (azul, clickeable)
+      - El historial del navegador
+      - Los bookmarks
+
+      Buenas prácticas:
+      - Entre 50 y 60 caracteres (lo que Google muestra completo)
+      - Keyword principal primero: "Campera de cuero" antes de "StyleShop"
+      - Único por página: cada URL tiene su propio title
+      - Formato recomendado: "Producto — Sección — Marca"
+        o "Producto | Marca" para páginas de detalle
+
+      MAL → <title>StyleShop</title>  (igual en todas las páginas)
+      MAL → <title>CAMPERA DE CUERO ECOLOGICO BARATA ENVIO GRATIS</title>
+      BIEN→ <title>Campera de cuero ecológico — StyleShop</title>
+    -->
+
+    <meta
+      name="description"
+      content="Campera de cuero ecológico con forro de microfibra. Disponible en talles S a XL, colores negro y marrón. Envío en 48hs. Comprá en StyleShop."
+    >
+    <!--
+      Aparece como el texto descriptivo debajo del título en Google.
+      No afecta el ranking directamente pero sí el CTR (tasa de clics).
+      Una buena description invita a entrar — una mala o ausente
+      hace que Google genere automáticamente un fragmento del contenido.
+
+      Buenas prácticas:
+      - Entre 150 y 160 caracteres
+      - Incluir beneficios concretos: "Envío en 48hs", "30 días de cambios"
+      - Llamado a la acción: "Comprá", "Descubrí", "Ver más"
+      - Única por página
+    -->
+
+    <meta name="robots" content="index, follow">
+    <!--
+      Le dice a los motores de búsqueda qué hacer con esta página.
+
+      index  → indexar esta página (incluirla en resultados de búsqueda)
+      follow → seguir los links de esta página para descubrir más contenido
+
+      Combinaciones comunes:
+      "index, follow"   → comportamiento por defecto. No hace falta escribirlo
+                          pero es buena práctica para que quede explícito.
+      "noindex, follow" → no indexar, pero sí seguir links.
+                          Para páginas de admin, checkout, thank-you.
+      "noindex, nofollow" → ignorar completamente.
+                            Para páginas de login, carritos, duplicados.
+
+      En StyleShop:
+      productos.html, detalle.html, index.html → index, follow
+      carrito.html, checkout.html, login.html  → noindex, follow
+    -->
+
+    <meta name="author" content="StyleShop">
+
+
+    <!-- =========================================================
+      2. URL CANÓNICA
+    ========================================================= -->
+
+    <link
+      rel="canonical"
+      href="https://www.styleshop.com/productos/campera-de-cuero-ecologico"
+    >
+    <!--
+      El canonical le dice a Google: "esta es la URL oficial de este contenido".
+
+      ¿Por qué es necesario?
+      El mismo producto puede ser accesible desde múltiples URLs:
+
+      https://styleshop.com/productos/campera-de-cuero-ecologico
+      https://www.styleshop.com/productos/campera-de-cuero-ecologico
+      https://styleshop.com/productos/campera-de-cuero-ecologico?color=negro
+      https://styleshop.com/productos/campera-de-cuero-ecologico?utm_source=instagram
+
+      Para Google son URLs distintas con el mismo contenido → contenido duplicado.
+      El canonical consolida toda la "reputación SEO" en una sola URL.
+
+      Cuándo es crítico en StyleShop:
+      - Filtros de productos: /productos?categoria=camperas&color=negro
+        → canonical apunta a /productos
+      - Parámetros UTM de campañas de marketing
+        → canonical apunta a la URL limpia
+      - Variantes de producto: /productos/campera?talle=M
+        → canonical apunta a /productos/campera
+
+      Siempre usar la URL completa (absoluta), con https y con www
+      (o sin www, pero consistente en todo el sitio).
+    -->
+
+
+    <!-- =========================================================
+      3. OPEN GRAPH
+      Controla cómo se ve StyleShop cuando se comparte en
+      Facebook, Instagram, WhatsApp, LinkedIn, Telegram, Slack.
+    ========================================================= -->
+
+    <meta property="og:type" content="product">
+    <!--
+      El tipo de contenido. Afecta cómo la plataforma muestra la vista previa.
+
+      Valores comunes:
+      "website"  → para el home y páginas genéricas
+      "product"  → para páginas de producto (Facebook lo muestra con precio)
+      "article"  → para posts de blog
+    -->
+
+    <meta property="og:title" content="Campera de cuero ecológico — StyleShop">
+    <!--
+      El título que aparece en la vista previa al compartir.
+      Puede ser igual al <title> o adaptado para redes sociales.
+      Máximo 60-90 caracteres.
+    -->
+
+    <meta
+      property="og:description"
+      content="Cuero ecológico de alta calidad, forro de microfibra. Disponible en negro y marrón. Envíos a todo el país en 48hs."
+    >
+    <!--
+      Descripción de la vista previa. Puede diferir de la meta description.
+      En redes sociales el tono puede ser más directo y emocional.
+      Máximo 200 caracteres (cada plataforma corta en un lugar distinto).
+    -->
+
+    <meta
+      property="og:image"
+      content="https://www.styleshop.com/imagenes/og/campera-cuero-og.jpg"
+    >
+    <!--
+      LA etiqueta más importante de Open Graph.
+      Es la imagen que aparece en la vista previa al compartir.
+
+      Requerimientos técnicos:
+      - URL absoluta (https://...) — no relativa
+      - Tamaño recomendado: 1200 x 630px (ratio 1.91:1)
+      - Mínimo: 600 x 315px
+      - Menos de 8MB
+      - JPG o PNG (WebP no funciona en todas las plataformas)
+
+      En StyleShop: no usar la misma imagen que el producto.
+      Crear una versión específica para OG con el logo de la marca
+      y el nombre del producto como overlay — se ve más profesional.
+    -->
+
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Campera de cuero ecológico negra sobre fondo blanco con el logo de StyleShop">
+    <!--
+      og:image:alt → accesibilidad en redes sociales.
+      Lectores de pantalla en Facebook y LinkedIn leen este alt.
+    -->
+
+    <meta property="og:url" content="https://www.styleshop.com/productos/campera-de-cuero-ecologico">
+    <!--
+      La URL canónica de esta página.
+      Debe coincidir con el <link rel="canonical">.
+    -->
+
+    <meta property="og:site_name" content="StyleShop">
+    <!--
+      El nombre del sitio. Aparece debajo del título en algunas plataformas.
+    -->
+
+    <meta property="og:locale" content="es_AR">
+    <!--
+      El idioma y la región del contenido.
+      es_AR → español de Argentina
+      es_ES → español de España
+      en_US → inglés de Estados Unidos
+    -->
+
+
+    <!-- Open Graph específico de producto -->
+    <meta property="product:price:amount" content="62999">
+    <meta property="product:price:currency" content="ARS">
+    <!--
+      Facebook y algunas otras plataformas muestran el precio
+      en la vista previa si se incluyen estas etiquetas.
+      Requiere que el sitio esté registrado en Facebook Business Manager.
+    -->
+
+
+    <!-- =========================================================
+      4. TWITTER CARDS
+      Open Graph funciona en casi todas las plataformas,
+      pero Twitter/X tiene su propio sistema de metaetiquetas.
+      Ambos pueden coexistir — Twitter usa og:* como fallback
+      si no encuentra twitter:*.
+    ========================================================= -->
+
+    <meta name="twitter:card" content="summary_large_image">
+    <!--
+      El tipo de card que muestra Twitter/X.
+
+      "summary"             → imagen pequeña a la izquierda, texto a la derecha
+      "summary_large_image" → imagen grande arriba, texto abajo (más impacto visual)
+      "app"                 → para apps móviles
+      "player"              → para video o audio
+
+      Para StyleShop siempre "summary_large_image" —
+      las imágenes de producto necesitan espacio para verse bien.
+    -->
+
+    <meta name="twitter:site" content="@StyleShopAR">
+    <!--
+      La cuenta de Twitter/X del sitio.
+      Aparece debajo de la card como "From @StyleShopAR".
+    -->
+
+    <meta name="twitter:title" content="Campera de cuero ecológico — StyleShop">
+    <meta name="twitter:description" content="Cuero ecológico premium. Envíos en 48hs a todo el país. ¡30% OFF esta semana!">
+    <meta name="twitter:image" content="https://www.styleshop.com/imagenes/og/campera-cuero-og.jpg">
+    <meta name="twitter:image:alt" content="Campera de cuero ecológico negra de StyleShop">
+
+
+    <!-- =========================================================
+      5. SCHEMA.ORG (JSON-LD)
+      Datos estructurados que Google entiende para mostrar
+      resultados enriquecidos (rich results) en la búsqueda.
+
+      JSON-LD → JavaScript Object Notation for Linked Data.
+      Es el formato preferido por Google. Va en un <script type="application/ld+json">
+      en el <head> o al final del <body>.
+
+      Resultados enriquecidos que puede mostrar Google para productos:
+      - Precio directamente en los resultados
+      - Disponibilidad (en stock / agotado)
+      - Calificación con estrellas
+      - Breadcrumb (ruta de navegación)
+
+      No garantiza que Google los muestre — lo decide el algoritmo —
+      pero sin Schema.org es imposible que aparezcan.
+    ========================================================= -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Campera de cuero ecológico",
+      "description": "Campera de cuero ecológico con forro de microfibra. Disponible en talles S a XL, colores negro y marrón.",
+      "image": [
+        "https://www.styleshop.com/imagenes/campera-cuero-frente.jpg",
+        "https://www.styleshop.com/imagenes/campera-cuero-espalda.jpg"
+      ],
+      "sku": "CAM-CUERO-001",
+      "brand": {
+        "@type": "Brand",
+        "name": "StyleShop"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://www.styleshop.com/productos/campera-de-cuero-ecologico",
+        "priceCurrency": "ARS",
+        "price": "62999",
+        "priceValidUntil": "2025-12-31",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": "StyleShop"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "reviewCount": "38"
+      }
+    }
+    </script>
+    <!--
+      Google lee este JSON y puede mostrar en los resultados:
+
+      Campera de cuero ecológico — StyleShop
+      ★★★★★ 4.7 (38 reseñas) · $62.999 · En stock
+      Campera de cuero ecológico con forro de microfibra...
+
+      Eso ocupa más espacio en Google, llama más la atención
+      y aumenta el CTR sin pagar publicidad.
+
+      @type: "Product" → le dice a Google que esto es un producto.
+      Otros tipos comunes:
+      @type: "Organization" → para la página Sobre Nosotros
+      @type: "BreadcrumbList" → para la navegación de migas de pan
+      @type: "FAQPage"        → para la página de preguntas frecuentes
+      @type: "LocalBusiness"  → si StyleShop tiene local físico
+    -->
+
+
+    <!-- Schema.org para Breadcrumb — aparece en los resultados de Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://www.styleshop.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Productos",
+          "item": "https://www.styleshop.com/productos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Camperas",
+          "item": "https://www.styleshop.com/productos/camperas"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Campera de cuero ecológico",
+          "item": "https://www.styleshop.com/productos/campera-de-cuero-ecologico"
+        }
+      ]
+    }
+    </script>
+    <!--
+      Google puede mostrar la ruta de navegación en los resultados:
+      styleshop.com › Productos › Camperas › Campera de cuero ecológico
+
+      Esto ayuda al usuario a entender dónde está el producto
+      dentro del sitio antes de entrar.
+    -->
+
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      El contenido del body para esta página es el mismo
+      que construimos en los temas anteriores.
+      Lo que cambió completamente es el <head>.
+    ========================================================= -->
+
+    <header>
+      <a href="index.html">
+        <img src="imagenes/logo-styleshop.svg" alt="StyleShop" width="160" height="48">
+      </a>
+      <nav aria-label="Navegación principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+
+      <!-- Breadcrumb visible — complementa el Schema.org -->
+      <nav aria-label="Ruta de navegación">
+        <ol>
+          <!--
+            <ol> porque el orden importa: la ruta tiene jerarquía.
+            Este breadcrumb visible debe coincidir con el
+            BreadcrumbList del Schema.org — Google los cruza.
+          -->
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="productos.html?categoria=camperas">Camperas</a></li>
+          <li aria-current="page">Campera de cuero ecológico</li>
+          <!--
+            aria-current="page" → le dice al lector de pantalla
+            que este es el ítem activo, la página actual.
+            El último ítem del breadcrumb nunca es un enlace.
+          -->
+        </ol>
+      </nav>
+
+      <article>
+        <h1>Campera de cuero ecológico</h1>
+        <p>$62.999</p>
+      </article>
+
+    </main>
+
+    <footer>
+      <p>© 2025 StyleShop. Todos los derechos reservados.</p>
+    </footer>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  METAETIQUETAS DE SEO BÁSICO:
+  <title>           → 50-60 chars. Keyword primero. Único por página.
+  meta description  → 150-160 chars. CTR, no ranking. Único por página.
+  meta robots       → index/noindex, follow/nofollow.
+  <link canonical>  → URL oficial del contenido. Evita duplicados.
+
+  OPEN GRAPH (og:*):
+  og:type           → "website", "product", "article"
+  og:title          → título de la vista previa al compartir
+  og:description    → descripción de la vista previa
+  og:image          → 1200x630px, JPG/PNG, URL absoluta
+  og:url            → debe coincidir con canonical
+  og:site_name      → nombre del sitio
+  og:locale         → "es_AR", "es_ES", "en_US"
+
+  TWITTER CARDS:
+  twitter:card      → "summary_large_image" para productos
+  twitter:site      → cuenta de Twitter del sitio
+  Resto             → igual que og:* (Twitter los usa como fallback)
+
+  SCHEMA.ORG (JSON-LD):
+  @type: "Product"        → precio, stock y reseñas en Google
+  @type: "BreadcrumbList" → ruta de navegación en resultados
+  Formato: <script type="application/ld+json"> en el <head>
+
+  DÓNDE APLICA EN STYLESHOP:
+  index.html           → og:type="website", Schema Organization
+  productos.html       → og:type="website", Schema BreadcrumbList
+  detalle.html         → og:type="product", Schema Product + Breadcrumb
+  contacto.html        → meta robots noindex
+
+  CONEXIÓN CON DJANGO (Fase 9):
+  Todas estas metaetiquetas van a ser dinámicas —
+  cada producto tiene su propio title, description, og:image.
+  Django va a inyectarlas en el template con los datos
+  que vienen de PostgreSQL:
+
+  <title>{{ producto.nombre }} — StyleShop</title>
+  <meta property="og:title" content="{{ producto.nombre }} — StyleShop">
+  <meta property="og:image" content="{{ producto.imagen_og.url }}">
+
+  Y en Angular con Server-Side Rendering (SSR):
+  this.meta.updateTag({ property: 'og:title', content: producto.nombre });
+  this.title.setTitle(producto.nombre + ' — StyleShop');
+-->

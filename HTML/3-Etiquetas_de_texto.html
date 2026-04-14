@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Campera de cuero — StyleShop">
+    <title>Campera de cuero — StyleShop</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      TÍTULOS: h1 al h6
+      
+      Los títulos definen JERARQUÍA, no tamaño visual.
+      El tamaño lo controla CSS — acá estamos hablando de estructura.
+
+      Regla fundamental:
+      - Un solo <h1> por página: es el tema principal del documento.
+      - Los niveles deben ser consecutivos: no saltar de h2 a h4.
+      - El navegador, Google y los lectores de pantalla usan esta
+        jerarquía para entender de qué trata la página.
+    ========================================================= -->
+
+    <h1>Campera de cuero</h1>
+    <!--
+      El título principal de esta página.
+      En detalle.html describe el producto específico.
+      En index.html sería algo como "Las últimas tendencias en StyleShop".
+      En productos.html sería "Todos los productos".
+
+      Google le da más peso al contenido del h1 para indexar la página.
+    -->
+
+    <h2>Descripción del producto</h2>
+    <!--
+      Subtítulo de una sección importante dentro de la página.
+      Divide el contenido en bloques temáticos.
+    -->
+
+    <h3>Materiales</h3>
+    <!--
+      Subtítulo dentro de una sección.
+      Acá estaría dentro de "Descripción del producto".
+    -->
+
+    <h4>Cuidado de la prenda</h4>
+    <!--
+      Subtema dentro de "Materiales".
+      h4, h5 y h6 se usan poco — cuando aparecen, el contenido
+      es realmente complejo y necesita múltiples niveles de jerarquía.
+    -->
+
+
+    <!-- =========================================================
+      PÁRRAFOS: <p>
+
+      Bloques de texto. Cada <p> es una unidad de contenido.
+      El navegador agrega espacio arriba y abajo automáticamente.
+      Ese espacio se controla con CSS — no con <br> ni con párrafos vacíos.
+    ========================================================= -->
+
+    <p>
+      La campera de cuero es una prenda atemporal que combina estilo y durabilidad.
+      Confeccionada en cuero ecológico de alta calidad, es perfecta para el uso diario
+      y resiste las condiciones climáticas más exigentes.
+    </p>
+
+    <p>
+      Disponible en talles S, M, L y XL. Para una mejor experiencia,
+      recomendamos consultar la guía de talles antes de realizar tu compra.
+    </p>
+    <!--
+      Dos párrafos separados = dos ideas distintas.
+      No meter todo en un solo <p> gigante.
+      No usar <br><br> para simular separación entre párrafos — para eso existe <p>.
+    -->
+
+
+    <!-- =========================================================
+      STRONG y EM: énfasis semántico
+
+      DIFERENCIA CLAVE con bold e italic de CSS:
+      
+      <strong> → énfasis IMPORTANTE. Semánticamente significa
+                 "este contenido es crítico". El lector de pantalla
+                 lo lee con más énfasis. Por defecto se ve en negrita,
+                 pero eso lo decide CSS.
+
+      <em>     → énfasis SUAVE, como cuando en una conversación
+                 pronunciás una palabra con más fuerza. Por defecto
+                 se ve en cursiva.
+
+      Cuándo NO usarlos:
+      Si querés texto en negrita solo por estética → usá CSS (font-weight: bold)
+      Si querés cursiva solo por estética → usá CSS (font-style: italic)
+      <strong> y <em> son para SIGNIFICADO, no para apariencia.
+    ========================================================= -->
+
+    <p>
+      <strong>Oferta por tiempo limitado:</strong> 30% de descuento
+      en toda la línea de camperas hasta el domingo.
+    </p>
+    <!--
+      <strong> acá porque "Oferta por tiempo limitado" es información
+      crítica que el usuario necesita notar — no es solo decoración.
+    -->
+
+    <p>
+      Este producto <em>no incluye</em> cinturón. El cinturón que aparece
+      en las fotos es solo a modo ilustrativo.
+    </p>
+    <!--
+      <em> acá porque "no incluye" necesita énfasis para evitar confusión,
+      como si lo dijeras con una pausa en una conversación.
+    -->
+
+
+    <!-- =========================================================
+      SPAN: contenedor inline sin semántica
+
+      <span> no significa nada por sí solo.
+      Su único propósito es ser un "gancho" para aplicar CSS o JS
+      a una parte específica del texto, sin romper el flujo inline.
+
+      Cuándo usarlo:
+      - Para estilizar una palabra dentro de un párrafo
+      - Para aplicar un color, tamaño o clase específica a un fragmento
+      - Cuando ninguna otra etiqueta semántica aplica
+    ========================================================= -->
+
+    <p>
+      Precio:
+      <span class="precio-original">$89.999</span>
+      <span class="precio-descuento">$62.999</span>
+    </p>
+    <!--
+      <span> acá porque necesitamos estilos distintos para cada precio,
+      pero ninguno de los dos es "importante" semánticamente —
+      son solo fragmentos de texto dentro del párrafo.
+      Con CSS (que viene en temas siguientes) les damos color y tamaño.
+    -->
+
+    <p>
+      Talle seleccionado: <span class="talle-seleccionado">M</span>
+    </p>
+    <!--
+      Otro uso típico: resaltar el valor dinámico dentro de un texto.
+      Cuando lleguemos a Angular, este <span> será donde va la interpolación {{ }}.
+    -->
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  h1–h6    → JERARQUÍA del contenido. Un h1 por página. Orden consecutivo.
+  p        → Bloques de texto. Nunca usar <br><br> para separar párrafos.
+  strong   → Énfasis importante (semántico, no estético).
+  em       → Énfasis suave (semántico, no estético).
+  span     → Gancho inline sin semántica, solo para CSS o JS.
+
+  LA PREGUNTA QUE SIEMPRE HAY QUE HACERSE:
+  "¿Estoy usando esta etiqueta porque el contenido LO ES,
+  o porque quiero que SE VEA así?"
+  Si es lo segundo → usá CSS, no la etiqueta.
+-->

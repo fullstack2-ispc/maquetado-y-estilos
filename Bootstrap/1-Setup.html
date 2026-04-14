@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Inicio</title>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: qué es Bootstrap y por qué existe
+
+      En la Fase 1 construimos el HTML semántico de StyleShop.
+      El resultado es funcional pero visualmente sin estilo:
+      texto negro sobre fondo blanco, listas con bullets,
+      botones del sistema operativo, formularios sin diseño.
+
+      Bootstrap es un framework de CSS (y algo de JavaScript)
+      que resuelve tres problemas de una vez:
+
+      1. RESET Y NORMALIZACIÓN
+         Cada navegador tiene sus propios estilos por defecto.
+         Chrome, Firefox y Safari renderizan distinto el mismo HTML.
+         Bootstrap incluye un reset (Reboot) que unifica el punto
+         de partida en todos los navegadores.
+
+      2. SISTEMA DE GRILLA
+         Construir layouts responsive desde cero es complejo.
+         Bootstrap tiene un sistema de 12 columnas probado
+         que funciona en todos los dispositivos.
+
+      3. COMPONENTES LISTOS
+         Navbar, cards, modales, formularios, botones —
+         componentes que aparecen en todos los proyectos,
+         ya diseñados y accesibles.
+
+      Lo que NO hace Bootstrap:
+      - No reemplaza saber CSS. Si no entendés el box model,
+        Flexbox y las media queries, Bootstrap se vuelve magia
+        negra que no podés depurar.
+      - No toma decisiones de diseño por vos. La identidad
+        visual de StyleShop (colores, tipografía, espaciados)
+        la seguimos definiendo nosotros.
+
+      Por eso aprendimos CSS primero en la Fase 1 — ahora
+      Bootstrap tiene sentido porque sabemos qué está haciendo
+      por debajo.
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      OPCIÓN 1: CDN (Content Delivery Network)
+
+      El archivo CSS de Bootstrap está en un servidor externo.
+      El navegador lo descarga desde ahí.
+
+      VENTAJAS:
+      - Zero configuración: una línea y Bootstrap funciona
+      - El CDN es rápido y está distribuido globalmente
+      - Si el usuario ya visitó otro sitio que usa el mismo CDN,
+        el archivo puede estar en caché — carga al instante
+
+      DESVENTAJAS:
+      - Necesitás internet para desarrollar
+      - No podés personalizar Bootstrap (cambiar colores base,
+        fuentes, breakpoints) — solo podés sobreescribir con CSS propio
+      - Dependés de que el CDN de jsDelivr esté disponible
+
+      CUÁNDO USAR:
+      - Prototipos y proyectos de clase
+      - Proyectos pequeños sin necesidad de personalización profunda
+      - Cuando querés arrancar en 30 segundos
+
+      integrity → hash criptográfico del archivo.
+                  Si el archivo del CDN fue modificado
+                  (ataque, corrupción), el navegador lo rechaza.
+                  Siempre incluirlo — es seguridad gratuita.
+
+      crossorigin="anonymous" → necesario junto con integrity
+                                para que el navegador pueda
+                                verificar el hash.
+    ========================================================= -->
+
+    <!-- Bootstrap CSS via CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+
+    <!-- CSS propio de StyleShop — SIEMPRE después de Bootstrap -->
+    <link rel="stylesheet" href="css/styleshop.css">
+    <!--
+      El orden importa:
+      1. Bootstrap CSS  → establece la base
+      2. StyleShop CSS  → sobreescribe y personaliza
+
+      Si ponemos nuestro CSS antes de Bootstrap, Bootstrap
+      sobreescribe nuestros estilos — el orden es al revés.
+    -->
+
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      El JavaScript de Bootstrap
+
+      Bootstrap 5 tiene componentes que necesitan JS:
+      Navbar mobile (toggler), Modal, Offcanvas, Carousel,
+      Toast, Dropdown, Accordion, Tooltip, Popover.
+
+      El JS va AL FINAL del body — no en el head.
+      Motivo: el JS de Bootstrap manipula el DOM.
+      Si el script carga antes que el HTML, el DOM no existe
+      todavía y Bootstrap no encuentra los elementos.
+
+      bundle → incluye Popper.js (necesario para tooltips
+               y dropdowns). La versión sin bundle requiere
+               importar Popper por separado.
+               Para empezar: siempre usar bundle.
+    ========================================================= -->
+
+    <p>Contenido de StyleShop acá</p>
+
+    <!-- Bootstrap JS via CDN — al final del body -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
+
+
+<!-- =========================================================
+  OPCIÓN 2: npm (Node Package Manager)
+
+  Bootstrap se instala como dependencia del proyecto.
+  El archivo CSS vive en node_modules/ de tu máquina.
+  Un bundler (Vite, Webpack, Angular CLI) lo procesa y sirve.
+
+  INSTALACIÓN:
+  npm install bootstrap@5.3.3
+
+  VENTAJAS:
+  - Funciona sin internet (una vez instalado)
+  - Podés importar solo los componentes que usás
+    → bundle final más liviano
+  - Podés personalizar las variables Sass de Bootstrap
+    (colores, breakpoints, tipografía) antes de compilar
+  - Control total de la versión
+
+  DESVENTAJAS:
+  - Requiere Node.js instalado
+  - Requiere entender el tooling (npm, bundlers)
+  - Más configuración inicial
+
+  CUÁNDO USAR:
+  - Proyectos profesionales
+  - Cuando necesitás personalizar Bootstrap con Sass
+  - En el proyecto Angular (la CLI lo maneja automáticamente)
+
+  EN ANGULAR (adelanto de Fase 8):
+  ng new styleshop
+  npm install bootstrap@5.3.3 ng-bootstrap
+  → en angular.json agregar Bootstrap al array de styles:
+  "styles": ["node_modules/bootstrap/dist/css/bootstrap.min.css"]
+  → ng-bootstrap no necesita el JS de Bootstrap separado
+    porque reimplementa los componentes en Angular puro.
+========================================================= -->
+
+
+<!-- =========================================================
+  ESTRUCTURA DE ARCHIVOS DEL PROYECTO STYLESHOP
+
+  Fase 2 (HTML + Bootstrap CDN):
+
+  styleshop/
+  ├── index.html
+  ├── productos.html
+  ├── detalle.html
+  ├── carrito.html
+  ├── checkout.html
+  ├── login.html
+  ├── contacto.html
+  ├── css/
+  │   └── styleshop.css       ← nuestros estilos propios
+  ├── js/
+  │   └── styleshop.js        ← nuestro JS propio (Fase 1 Tema 11)
+  └── imagenes/
+      ├── logo-styleshop.svg
+      ├── hero-desktop.webp
+      ├── campera-400.jpg
+      └── ...
+
+  Fase 9 (Angular + Django — adelanto):
+
+  styleshop-frontend/         ← proyecto Angular
+  ├── src/
+  │   ├── app/
+  │   │   ├── components/
+  │   │   ├── services/
+  │   │   └── pages/
+  │   ├── assets/
+  │   └── styles.css
+  ├── angular.json
+  └── package.json            ← Bootstrap y ng-bootstrap acá
+
+  styleshop-backend/          ← proyecto Django
+  ├── manage.py
+  ├── styleshop/
+  │   └── settings.py
+  ├── productos/
+  ├── usuarios/
+  └── pedidos/
+========================================================= -->
+
+
+<!-- =========================================================
+  VERIFICACIÓN: cómo saber que Bootstrap está funcionando
+
+  Tres formas de verificar sin escribir código extra:
+
+  1. Abrí la consola de DevTools (F12 → Console) y escribí:
+     bootstrap.Tooltip.VERSION
+     Si Bootstrap JS cargó, responde con "5.3.3"
+     Si no cargó, da "ReferenceError: bootstrap is not defined"
+
+  2. Mirá el tab Sources (o Network) de DevTools:
+     Deberías ver bootstrap.min.css y bootstrap.bundle.min.js
+     como recursos descargados.
+
+  3. Agregá este elemento y fijate que tenga color azul y
+     forma de botón redondeado (no el botón gris del OS):
+     <button class="btn btn-primary">Test Bootstrap</button>
+     Si se ve azul → Bootstrap CSS está activo.
+     Si se ve gris del sistema → Bootstrap CSS no cargó.
+========================================================= -->
+
+<!--
+  RESUMEN DEL TEMA:
+
+  Bootstrap 5 → framework CSS + JS para interfaces responsive.
+                Resuelve: reset, grilla, componentes.
+                No reemplaza saber CSS.
+
+  CDN  → una línea, sin configuración. Para prototipos y clase.
+  npm  → instalación local. Para proyectos profesionales y Angular.
+
+  ORDEN EN EL HTML:
+  <head>
+    Bootstrap CSS  → primero
+    StyleShop CSS  → después (sobreescribe Bootstrap)
+  </head>
+  <body>
+    ... contenido ...
+    Bootstrap JS bundle → al final del body
+  </body>
+
+  integrity + crossorigin → seguridad en recursos CDN. Siempre incluir.
+
+  CONEXIÓN CON FASE 8 (ng-bootstrap):
+  Cuando migremos a Angular, Bootstrap CSS se importa via npm.
+  El JS de Bootstrap desaparece — ng-bootstrap reimplementa
+  todos los componentes interactivos como componentes Angular.
+  El CSS de Bootstrap sigue siendo el mismo.
+-->

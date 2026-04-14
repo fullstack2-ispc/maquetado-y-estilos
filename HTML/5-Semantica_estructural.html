@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StyleShop — Tienda de ropa online">
+    <title>StyleShop — Inicio</title>
+  </head>
+
+  <body>
+
+    <!-- =========================================================
+      ANTES DE ARRANCAR: el problema que resuelve este tema
+
+      Durante años, todo se construía así:
+
+      <div id="header">...</div>
+      <div id="nav">...</div>
+      <div id="content">...</div>
+      <div id="footer">...</div>
+
+      El resultado visual era idéntico, pero el navegador, Google
+      y los lectores de pantalla veían solo una pila de cajas
+      sin ningún significado. No sabían qué era importante,
+      qué era navegación, qué era contenido principal.
+
+      HTML5 introdujo etiquetas semánticas: cada una le dice
+      explícitamente al navegador QUÉ ES ese bloque de contenido,
+      no solo cómo se ve.
+    ========================================================= -->
+
+
+    <!-- =========================================================
+      <header>
+
+      Encabezado de la página o de una sección.
+      Típicamente contiene: logo, nombre del sitio, navegación
+      principal, buscador, carrito.
+
+      Puede haber más de un <header> en la página:
+      uno para el sitio completo y otros dentro de <article>
+      o <section> si esa sección tiene su propio encabezado.
+
+      NO confundir con <head>:
+      <head>   → metainformación del documento (invisible)
+      <header> → encabezado visible de la página o sección
+    ========================================================= -->
+
+    <header>
+
+      <img src="imagenes/logo-styleshop.svg" alt="StyleShop" width="160" height="48">
+
+      <!-- =========================================================
+        <nav>
+
+        Bloque de navegación principal. Agrupa los enlaces
+        que permiten moverse por el sitio.
+
+        Debe usarse solo para navegación SIGNIFICATIVA:
+        menú principal, paginación, breadcrumb.
+        No para cualquier grupo de enlaces (por ejemplo,
+        los links del footer no siempre necesitan un <nav>).
+
+        Los lectores de pantalla identifican el <nav> y permiten
+        al usuario saltearlo o ir directo a él — por eso importa.
+      ========================================================= -->
+
+      <nav>
+        <!--
+          La convención profesional es construir la navegación
+          como una <ul> de enlaces. Tiene sentido semántico:
+          el menú ES una lista de opciones sin orden obligatorio.
+          CSS después se encarga de mostrarlo horizontal.
+        -->
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+        </ul>
+      </nav>
+
+    </header>
+
+
+    <!-- =========================================================
+      <main>
+
+      Contenido PRINCIPAL y ÚNICO de la página.
+      Lo que diferencia esta página de todas las demás del sitio.
+
+      Reglas importantes:
+      - Solo puede haber UN <main> por página.
+      - No debe contener contenido que se repite en otras páginas
+        (eso va en <header> o <footer>).
+      - Los lectores de pantalla tienen un atajo directo para
+        saltar al <main> — esencial para usuarios que navegan
+        con teclado o lector de pantalla.
+    ========================================================= -->
+
+    <main>
+
+      <!-- =========================================================
+        <section>
+
+        Agrupa contenido temáticamente relacionado dentro de la página.
+        Cada <section> debería poder tener su propio título (h2, h3...).
+
+        Pregunta para decidir si usar <section>:
+        "¿Este bloque tiene un tema propio que podría aparecer
+        en el índice de la página?"
+        Si la respuesta es sí → <section>.
+        Si el bloque es solo estructural o de layout → <div>.
+      ========================================================= -->
+
+      <section>
+        <!--
+          Sección hero: la primera pantalla que ve el usuario.
+          Tiene su propio tema (la propuesta de valor de StyleShop)
+          → merece un <section>.
+        -->
+        <h1>Las últimas tendencias están acá</h1>
+        <p>Descubrí nuestra nueva colección de primavera-verano.</p>
+        <a href="productos.html">Ver colección</a>
+      </section>
+
+
+      <section>
+        <!--
+          Sección de productos destacados.
+          Otro tema propio → otra <section>.
+        -->
+        <h2>Productos destacados</h2>
+
+        <!-- =========================================================
+          <article>
+
+          Contenido INDEPENDIENTE y REUTILIZABLE.
+          Debería tener sentido por sí solo, fuera de contexto:
+          si lo copiaras a otro sitio, ¿seguiría siendo comprensible?
+          Si la respuesta es sí → <article>.
+
+          Casos típicos: posts de blog, noticias, tarjetas de producto,
+          comentarios, reviews.
+
+          Diferencia clave con <section>:
+          <section> → agrupa contenido relacionado dentro de la página
+          <article> → contenido autocontenido que existe por sí solo
+
+          Una <section> puede contener varios <article>.
+          Un <article> puede contener varias <section> internas.
+        ========================================================= -->
+
+        <article>
+          <!--
+            Cada producto es un <article>: tiene sentido por sí solo.
+            Podría aparecer en un feed, en resultados de búsqueda,
+            en una comparación — siempre sería comprensible.
+          -->
+          <img
+            src="imagenes/campera-cuero.jpg"
+            alt="Campera de cuero negra, vista frontal"
+            width="300"
+            height="300"
+          >
+          <h3>Campera de cuero</h3>
+          <p>Cuero ecológico premium. Disponible en S, M, L, XL.</p>
+          <p><span class="precio">$62.999</span></p>
+          <a href="detalle.html?id=1">Ver producto</a>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/remera-basica.jpg"
+            alt="Remera básica blanca de algodón, vista frontal"
+            width="300"
+            height="300"
+          >
+          <h3>Remera básica</h3>
+          <p>100% algodón. Talles del XS al XXL.</p>
+          <p><span class="precio">$8.999</span></p>
+          <a href="detalle.html?id=2">Ver producto</a>
+        </article>
+
+        <article>
+          <img
+            src="imagenes/jean-slim.jpg"
+            alt="Jean slim fit azul oscuro, vista frontal"
+            width="300"
+            height="300"
+          >
+          <h3>Jean slim fit</h3>
+          <p>Denim de alta resistencia. Tiro medio.</p>
+          <p><span class="precio">$24.999</span></p>
+          <a href="detalle.html?id=3">Ver producto</a>
+        </article>
+
+      </section>
+
+
+      <section>
+        <!--
+          Sección de propuesta de valor / beneficios.
+          Otro tema propio → otra <section>.
+        -->
+        <h2>¿Por qué elegir StyleShop?</h2>
+
+        <ul>
+          <li>Envíos a todo el país en 48hs</li>
+          <li>30 días de cambios y devoluciones</li>
+          <li>Pago en hasta 12 cuotas sin interés</li>
+          <li>Atención al cliente de lunes a sábado</li>
+        </ul>
+      </section>
+
+    </main>
+
+
+    <!-- =========================================================
+      <footer>
+
+      Pie de página del sitio.
+      Típicamente contiene: copyright, links legales,
+      redes sociales, datos de contacto, mapa del sitio.
+
+      Como <header>, puede haber más de uno:
+      uno para el sitio y otros dentro de <article>
+      si ese artículo necesita su propio pie.
+
+      No es obligatorio que esté al final del <body>,
+      pero por semántica y convención siempre va ahí.
+    ========================================================= -->
+
+    <footer>
+
+      <section>
+        <!--
+          <section> dentro de <footer> para agrupar
+          temáticamente los bloques del pie de página.
+        -->
+        <h3>StyleShop</h3>
+        <p>Moda que te define desde 2020.</p>
+      </section>
+
+      <section>
+        <h3>Navegación</h3>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="terminos.html">Términos y condiciones</a></li>
+          <li><a href="privacidad.html">Política de privacidad</a></li>
+        </ul>
+      </section>
+
+      <p>© 2025 StyleShop. Todos los derechos reservados.</p>
+
+    </footer>
+
+  </body>
+</html>
+
+<!--
+  RESUMEN DEL TEMA:
+
+  <header>  → encabezado del sitio o de una sección. Puede repetirse.
+  <nav>     → navegación significativa. Usar solo para menús principales.
+  <main>    → contenido único de la página. Solo uno por página.
+  <section> → bloque temático con título propio. Si no tiene tema → <div>.
+  <article> → contenido autocontenido y reutilizable. Tiene sentido solo.
+  <footer>  → pie del sitio o de una sección. Puede repetirse.
+
+  LA PREGUNTA QUE SIEMPRE HAY QUE HACERSE:
+  
+  ¿Es navegación principal?               → <nav>
+  ¿Es el contenido único de la página?    → <main>
+  ¿Tiene un tema propio con título?       → <section>
+  ¿Tiene sentido fuera de contexto?       → <article>
+  ¿Es solo estructura visual sin tema?    → <div>
+
+  JERARQUÍA TÍPICA DE STYLESHOP:
+  
+  <body>
+    <header>         → logo + <nav>
+      <nav>          → menú principal
+    <main>           → contenido de cada página
+      <section>      → bloques temáticos
+        <article>    → productos individuales
+    <footer>         → pie de página
+-->
