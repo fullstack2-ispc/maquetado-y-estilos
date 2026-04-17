@@ -3,290 +3,412 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StyleShop — Responsive UI</title>
-
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+  <title>StyleShop — Botones e Imágenes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+    crossorigin="anonymous">
 </head>
+<body class="container py-5">
 
-<body>
+  <!-- ============================================================
+    BOTONES — btn + variantes
 
-<!-- =========================================================
-NAVBAR RESPONSIVE CON TOGGLER
-========================================================= -->
+    Regla semántica:
+    <button> → acción (agregar, eliminar, enviar)
+    <a class="btn"> → navegación (ir a otra página)
+    Nunca <a href="#"> para acciones — error de accesibilidad.
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    Variantes sólidas:  btn-{color}
+    Variantes outline:  btn-outline-{color}
+    Tamaños:            btn-sm / btn-lg
+    Ancho completo:     w-100
+    Estados:            disabled / active + aria-pressed
+  ============================================================ -->
 
-  <div class="container">
+  <section class="mb-5 pb-4 border-bottom">
+    <h2 class="mb-4">Botones de StyleShop</h2>
 
-    <!-- LOGO -->
-    <a class="navbar-brand fw-bold" href="#">
-      StyleShop
-    </a>
+    <!-- Jerarquía de acciones en la página de detalle -->
+    <h3 class="h6 text-muted text-uppercase mb-3">Jerarquía de acciones</h3>
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-    <!-- BOTÓN HAMBURGUESA (TOGGLER) -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarContenido"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button type="button" class="btn btn-dark btn-lg">
+        Agregar al carrito
+      </button>
+      <!--
+        Acción principal → sólido + grande.
+        Es lo más importante de la página de detalle.
+        btn-dark porque es el color base de StyleShop.
+        En styleshop.css sobreescribimos btn-primary con
+        el color de marca — podríamos usar btn-primary acá.
+      -->
 
-    <!-- CONTENIDO COLAPSABLE -->
-    <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarContenido">
+      <button type="button" class="btn btn-outline-dark btn-lg">
+        Agregar a favoritos
+      </button>
+      <!--
+        Acción secundaria → outline.
+        Mismo tamaño que la principal para no perder jerarquía
+        en el grupo, pero visualmente más liviana.
+      -->
 
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-2 gap-lg-3">
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">Hombre</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">Mujer</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">Ofertas</a>
-        </li>
-
-        <!-- BOTÓN RESPONSIVE EN NAVBAR -->
-        <li class="nav-item">
-          <a class="btn btn-outline-light w-100 w-lg-auto" href="#">
-            Iniciar sesión
-          </a>
-        </li>
-
-        <!-- CARRITO -->
-        <li class="nav-item">
-          <a class="nav-link fw-bold" href="#">
-            🛒 (3)
-          </a>
-        </li>
-
-      </ul>
-
-    </div>
-
-  </div>
-
-</nav>
-
-
-<!-- =========================================================
-CONTENIDO PRINCIPAL
-========================================================= -->
-
-<main class="container my-5">
-
-  <h1 class="mb-2">Productos destacados</h1>
-  <p class="text-muted mb-5">Ejemplo responsive · StyleShop</p>
-
-
-  <!-- =======================================================
-  GRILLA DE PRODUCTOS
-  ======================================================= -->
-
-  <div class="row g-4">
-
-    <!-- PRODUCTO 1 -->
-    <div class="col-12 col-sm-6 col-lg-4">
-
-      <article class="border p-3 h-100 d-flex flex-column">
-
-        <!-- IMAGEN RESPONSIVE -->
-        <div class="ratio ratio-1x1 mb-3">
-          <img
-            src="https://via.placeholder.com/400"
-            alt="Remera oversize"
-            class="img-fluid object-fit-cover"
-            loading="lazy"
-          >
-        </div>
-
-        <!-- CATEGORÍA -->
-        <p class="text-muted text-uppercase small mb-1">
-          Indumentaria
-        </p>
-
-        <!-- NOMBRE -->
-        <h3 class="fs-6 fw-bold mb-2">
-          Remera oversize negra
-        </h3>
-
-        <!-- PRECIO -->
-        <p class="fw-bold mb-3">
-          $12.999
-        </p>
-
-        <!-- BOTÓN RESPONSIVE -->
-        <a href="#" class="btn btn-dark w-100 mt-auto">
-          Agregar al carrito
-        </a>
-
-      </article>
+      <a href="productos.html" class="btn btn-outline-secondary btn-lg">
+        Seguir comprando
+      </a>
+      <!--
+        <a> como btn → navega a otra página.
+        btn-outline-secondary → la menos importante del grupo.
+      -->
 
     </div>
 
 
-    <!-- PRODUCTO 2 (OFERTA) -->
-    <div class="col-12 col-sm-6 col-lg-4">
-
-      <article class="border p-3 h-100 d-flex flex-column">
-
-        <div class="ratio ratio-1x1 mb-3">
-          <img
-            src="https://via.placeholder.com/400"
-            alt="Zapatillas urbanas"
-            class="img-fluid object-fit-cover"
-            loading="lazy"
-          >
-        </div>
-
-        <p class="text-muted text-uppercase small mb-1">
-          Calzado
-        </p>
-
-        <h3 class="fs-6 fw-bold mb-2">
-          Zapatillas urbanas blancas
-        </h3>
-
-        <!-- PRECIO CON DESCUENTO -->
-        <div class="d-flex gap-2 align-items-baseline mb-3">
-          <span class="fw-bold text-danger">$18.999</span>
-          <span class="small text-muted text-decoration-line-through">
-            $25.999
-          </span>
-        </div>
-
-        <a href="#" class="btn btn-dark w-100 mt-auto">
-          Comprar ahora
-        </a>
-
-      </article>
-
-    </div>
-
-
-    <!-- PRODUCTO 3 (SIN STOCK) -->
-    <div class="col-12 col-sm-6 col-lg-4">
-
-      <article class="border p-3 h-100 d-flex flex-column">
-
-        <div class="ratio ratio-1x1 mb-3">
-          <img
-            src="https://via.placeholder.com/400"
-            alt="Campera de cuero"
-            class="img-fluid object-fit-cover"
-            loading="lazy"
-          >
-        </div>
-
-        <p class="text-muted text-uppercase small mb-1">
-          Camperas
-        </p>
-
-        <h3 class="fs-6 fw-bold text-muted mb-2">
-          Campera de cuero premium
-        </h3>
-
-        <p class="fw-bold text-muted mb-3">
-          $62.999
-        </p>
-
-        <!-- BOTÓN DESHABILITADO -->
-        <button class="btn btn-secondary w-100 mt-auto" disabled>
-          Sin stock
+    <!-- Full-width: checkout -->
+    <h3 class="h6 text-muted text-uppercase mb-3">Ancho completo — Checkout</h3>
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-md-5">
+        <button type="button" class="btn btn-success w-100 btn-lg">
+          Confirmar compra · $106.997
         </button>
+        <!--
+          btn-success → verde para confirmación.
+          w-100 → ocupa todo el ancho del col.
+          Es el CTA más importante del sitio.
+        -->
+      </div>
+      <div class="col-12 col-md-4">
+        <button type="button" class="btn btn-dark w-100">
+          Agregar al carrito
+        </button>
+      </div>
+      <div class="col-12 col-md-3">
+        <button type="button" class="btn btn-outline-danger w-100">
+          Eliminar
+        </button>
+        <!--
+          btn-outline-danger → rojo outline para acción destructiva.
+          Outline porque es menos frecuente que agregar.
+          Si fuera sólido llamaría demasiado la atención.
+        -->
+      </div>
+    </div>
 
-      </article>
+
+    <!-- Estados: disabled y active -->
+    <h3 class="h6 text-muted text-uppercase mb-3">Estados</h3>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+
+      <button type="button" class="btn btn-dark" disabled>
+        Sin stock
+      </button>
+      <!--
+        disabled como atributo HTML → bloquea el clic Y es accesible.
+        El lector de pantalla anuncia "Sin stock, botón, desactivado".
+        NO deshabilitar solo con CSS opacity/pointer-events — no es accesible.
+      -->
+
+      <button type="button" class="btn btn-dark active" aria-pressed="true">
+        Talle M · Seleccionado
+      </button>
+      <!--
+        active       → apariencia presionada
+        aria-pressed → comunica el estado al lector de pantalla.
+        Cuando el usuario cambie el talle, JS cambia
+        active y aria-pressed al botón correspondiente.
+      -->
+
+      <button type="button" class="btn btn-outline-secondary" disabled>
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Procesando...
+      </button>
+      <!--
+        spinner-border → spinner de carga de Bootstrap.
+        spinner-border-sm → versión pequeña para dentro del botón.
+        me-2 → margin-end: 0.5rem (espacio entre spinner y texto).
+        Útil mientras el request al backend está en curso.
+      -->
 
     </div>
 
-  </div>
 
-
-  <!-- =======================================================
-  BOTONES RESPONSIVE — EJEMPLOS DIDÁCTICOS
-  ======================================================= -->
-
-  <section class="mt-5">
-
-    <h2 class="h5 text-muted mb-3">Botones responsive</h2>
-
-    <div class="d-flex flex-column flex-md-row gap-3">
-
-      <!-- FULL WIDTH SIEMPRE -->
-      <a href="#" class="btn btn-dark w-100">
-        w-100 (full width siempre)
-      </a>
-
-      <!-- RESPONSIVE -->
-      <a href="#" class="btn btn-outline-dark w-100 w-md-auto">
-        w-100 en mobile / auto en desktop
-      </a>
-
-      <!-- DIFERENTES TAMAÑOS -->
-      <a href="#" class="btn btn-dark btn-lg">
-        Botón grande
-      </a>
-
+    <!-- btn-group: selector de talle -->
+    <h3 class="h6 text-muted text-uppercase mb-3">Grupo — Selector de talle</h3>
+    <div class="btn-group mb-2" role="group" aria-label="Selección de talle">
+      <!--
+        btn-group → pega los botones entre sí, sin espacio.
+                    Borde compartido entre botones adyacentes.
+        role="group" + aria-label → accesibilidad del grupo completo.
+      -->
+      <button type="button" class="btn btn-outline-dark btn-sm">XS</button>
+      <button type="button" class="btn btn-outline-dark btn-sm">S</button>
+      <button type="button" class="btn btn-dark btn-sm active" aria-pressed="true">M</button>
+      <button type="button" class="btn btn-outline-dark btn-sm">L</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" disabled>XL</button>
+      <!--
+        M → active + aria-pressed (talle seleccionado)
+        XL → disabled (sin stock)
+        Los demás → outline (disponibles, no seleccionados)
+      -->
     </div>
+    <p class="small text-muted">XL sin stock</p>
 
   </section>
 
 
-  <!-- =======================================================
-  IMÁGENES RESPONSIVE — COMPARACIÓN
-  ======================================================= -->
+  <!-- ============================================================
+    IMÁGENES RESPONSIVE
 
-  <section class="mt-5">
+    img-fluid → max-width: 100%, height: auto.
+                La imagen nunca supera el ancho de su contenedor.
+                Equivale a: img { max-width: 100%; height: auto; }
 
-    <h2 class="h5 text-muted mb-3">Imágenes responsive</h2>
+    object-fit → controla cómo la imagen rellena dimensiones fijas:
+                 cover   → rellena sin distorsión, puede recortarse
+                 contain → entra completa, puede haber espacio vacío
 
-    <div class="row g-3">
+    En StyleShop object-fit: cover es crítico para la grilla:
+    todas las imágenes tienen la misma altura aunque las fotos
+    originales tengan proporciones distintas.
 
-      <!-- CON IMG-FLUID -->
-      <div class="col-6">
-        <img
-          src="https://via.placeholder.com/600x400"
-          class="img-fluid"
-          alt="Imagen responsive"
-        >
-        <p class="small text-muted mt-1">
-          Con img-fluid
-        </p>
+    ratio → Bootstrap genera una caja con aspect ratio fijo.
+            Alternativa moderna a height fija + object-fit.
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="mb-4">Imágenes responsive</h2>
+
+    <!-- Comparación: sin vs con object-fit -->
+    <div class="row g-4 mb-5">
+
+      <div class="col-12 col-md-6">
+        <h3 class="h6 text-muted mb-3">Sin object-fit — alturas variables</h3>
+        <div class="row g-2">
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80" alt="Campera" class="img-fluid border rounded" width="300" height="450">
+          </div>
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80" alt="Remera" class="img-fluid border rounded" width="300" height="300">
+          </div>
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80" alt="Jean" class="img-fluid border rounded" width="300" height="400">
+          </div>
+        </div>
+        <!--
+          Cada imagen mantiene su proporción original.
+          La grilla se ve despareja — las cards tienen alturas distintas.
+          Problema muy común en ecommerce con fotos de distintos proveedores.
+        -->
       </div>
 
-      <!-- SIN IMG-FLUID -->
-      <div class="col-6">
-        <img
-          src="https://via.placeholder.com/600x400"
-          alt="Imagen no responsive"
-        >
-        <p class="small text-muted mt-1">
-          Sin img-fluid (puede romper layout)
-        </p>
+      <div class="col-12 col-md-6">
+        <h3 class="h6 text-muted mb-3">Con object-fit cover — alturas uniformes</h3>
+        <div class="row g-2">
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80" alt="Campera" class="img-fluid border rounded producto-img" width="300" height="450">
+          </div>
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80" alt="Remera" class="img-fluid border rounded producto-img" width="300" height="300">
+          </div>
+          <div class="col-4">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80" alt="Jean" class="img-fluid border rounded producto-img" width="300" height="400">
+          </div>
+        </div>
+        <!--
+          .producto-img en styleshop.css:
+          .producto-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: top center;
+          }
+          object-position: top center → en ropa, la parte importante
+          suele estar arriba (el cuello, el diseño frontal).
+          Sin esto, cover centra la imagen y puede recortar la parte clave.
+        -->
       </div>
 
     </div>
 
+
+    <!-- ratio: aspect ratio fijo con Bootstrap -->
+    <h3 class="h6 text-muted text-uppercase mb-3">
+      Ratio — Aspect ratio fijo (alternativa moderna)
+    </h3>
+    <div class="row g-3 mb-4">
+
+      <div class="col-6 col-md-3">
+        <div class="ratio ratio-1x1">
+          <!--
+            ratio-1x1 → cuadrado perfecto (1:1).
+            Bootstrap genera un contenedor con padding-top: 100%
+            y posiciona el hijo como absolute fill.
+            La imagen rellena el cuadrado sin importar sus dimensiones.
+
+            Otros ratios disponibles:
+            ratio-4x3   → formato TV clásico
+            ratio-16x9  → formato video/widescreen
+            ratio-21x9  → ultrawide / banner
+          -->
+          <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80" alt="Campera" class="img-fluid rounded" style="object-fit:cover" width="300" height="450">
+        </div>
+        <p class="small text-center text-muted mt-1">ratio-1x1</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="ratio ratio-4x3">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80" alt="Remera" class="img-fluid rounded" style="object-fit:cover" width="300" height="300">
+        </div>
+        <p class="small text-center text-muted mt-1">ratio-4x3</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="ratio ratio-16x9">
+          <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80" alt="Jean" class="img-fluid rounded" style="object-fit:cover" width="300" height="400">
+        </div>
+        <p class="small text-center text-muted mt-1">ratio-16x9</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="ratio ratio-21x9">
+          <img src="https://images.unsplash.com/photo-1760533091973-1262bf57d244?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Hero" class="img-fluid rounded" style="object-fit:cover" width="1920" height="600">
+        </div>
+        <p class="small text-center text-muted mt-1">ratio-21x9 — banners</p>
+      </div>
+
+    </div>
+
+
+    <!-- Caso real: card de producto con ratio -->
+    <h3 class="h6 text-muted text-uppercase mb-3">Card de producto con ratio-1x1</h3>
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <article class="border rounded overflow-hidden">
+          <!--
+            overflow-hidden → recorta la imagen si sobresale del border-radius.
+            Sin esto las esquinas redondeadas del article
+            no afectan a la imagen que está adentro.
+          -->
+          <div class="ratio ratio-1x1">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80" alt="Campera de cuero negra" style="object-fit:cover" width="300" height="450">
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Campera de cuero</h3>
+            <p class="fw-bold mb-2">$62.999</p>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="border rounded overflow-hidden">
+          <div class="ratio ratio-1x1">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80" alt="Remera básica blanca" style="object-fit:cover" width="300" height="300">
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Remera básica</h3>
+            <p class="fw-bold mb-2">$8.999</p>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="border rounded overflow-hidden">
+          <div class="ratio ratio-1x1">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80" alt="Jean slim fit" style="object-fit:cover" width="300" height="400">
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Jean slim fit</h3>
+            <p class="fw-bold mb-2 text-muted text-decoration-line-through">$24.999</p>
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100" disabled>
+              Sin stock
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="border rounded overflow-hidden">
+
+          <div class="position-relative">
+            <!--
+              El wrapper position-relative va AFUERA del ratio.
+              Así el badge se posiciona sobre el conjunto (ratio + imagen)
+              sin que las reglas de .ratio lo afecten.
+            -->
+
+            <div class="ratio ratio-1x1">
+              <img
+                src="https://images.unsplash.com/photo-1633448968693-9f97386389fa?q=80&w=687&auto=format&fit=crop"
+                alt="Vestido floral"
+                style="object-fit:cover"
+                width="300"
+                height="400"
+              >
+            </div>
+
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">
+              30% OFF
+            </span>
+            <!--
+              Ahora el badge es hijo del div position-relative,
+              no del div.ratio. Se posiciona correctamente
+              sobre la imagen sin heredar width/height del ratio.
+            -->
+
+          </div>
+
+          <div class="p-3">
+            <h3 class="h6 mb-1">Vestido floral midi</h3>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fw-bold">$22.999</span>
+              <span class="small text-muted text-decoration-line-through">$32.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+
+        </article>
+      </div>
+    </div>
+
   </section>
-
-</main>
-
-
-<!-- =========================================================
-BOOTSTRAP JS (necesario para toggler)
-========================================================= -->
-
-<script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+  crossorigin="anonymous"></script>
 </body>
 </html>
+<!--
+  RESUMEN TEMA 4:
+
+  BOTONES:
+  btn btn-{variante}         → sólido (acción principal)
+  btn btn-outline-{variante} → outline (acción secundaria)
+  btn-sm / btn-lg            → tamaños
+  w-100                      → ancho completo
+  disabled                   → atributo HTML, no solo CSS
+  active + aria-pressed      → estado seleccionado accesible
+  btn-group                  → botones pegados (selector de talle)
+  spinner-border-sm          → loading dentro del botón
+
+  JERARQUÍA EN STYLESHOP:
+  Confirmar compra   → btn-success w-100 btn-lg
+  Agregar al carrito → btn-dark (o btn-dark w-100 en detalle)
+  Acción secundaria  → btn-outline-dark
+  Eliminar           → btn-outline-danger
+  Navegar            → <a class="btn btn-outline-secondary">
+  Sin stock          → disabled
+
+  IMÁGENES:
+  img-fluid          → max-width:100%, height:auto
+  object-fit: cover  → altura uniforme sin distorsión
+  object-position    → controla qué parte se recorta
+  ratio ratio-1x1    → aspect ratio fijo (Bootstrap)
+  overflow-hidden    → en el article para respetar border-radius
+-->

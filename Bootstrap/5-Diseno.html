@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StyleShop — Utilidades Bootstrap</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    >
-    <link rel="stylesheet" href="css/styleshop.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+    crossorigin="anonymous">
   </head>
 
   <body>
@@ -69,7 +66,7 @@
 
         <!-- mx-auto: centrar un elemento de ancho fijo -->
         <img
-          src="imagenes/hero-desktop.webp"
+          src="https://images.unsplash.com/photo-1760533091973-1262bf57d244?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Colección StyleShop"
           class="w-100 mb-4"
           width="1200"
@@ -81,7 +78,6 @@
           mb-4   → separa la imagen de lo que sigue
         -->
       </section>
-
 
       <!-- =============================================================
         TEMA 4 — COLOR Y FONDO: text-* y bg-*
@@ -106,102 +102,74 @@
         de marca en styleshop.css — pero las clases siguen siendo las mismas.
       ============================================================= -->
 
-      <section class="mb-5 pb-4 border-bottom">
-        <h2 class="mb-4">Colores en StyleShop</h2>
 
-        <!-- Badge de descuento en una card de producto -->
-        <div class="row g-3">
+        <section class="mb-5 pb-4 border-bottom">
+          <h2 class="mb-4">Colores en StyleShop</h2>
 
-          <!-- Producto con descuento -->
-          <div class="col-12 col-sm-6 col-md-4">
-            <article class="border rounded p-3 position-relative">
-              <!--
-                rounded        → border-radius: 0.375rem (esquinas redondeadas)
-                position-relative → necesario para posicionar el badge
-              -->
-              <span class="badge bg-danger position-absolute top-0 end-0 m-2">
-                30% OFF
-              </span>
-              <!--
-                badge          → estilo de etiqueta pequeña
-                bg-danger      → fondo rojo
-                position-absolute top-0 end-0 → esquina superior derecha
-                m-2            → separación del borde del article
-              -->
-              <img
-                src="imagenes/campera-400.jpg"
-                alt="Campera de cuero"
-                class="w-100 mb-2"
-                width="300"
-                height="300"
-                loading="lazy"
-              >
-              <h3 class="h6 mb-1">Campera de cuero</h3>
-              <p class="text-muted text-decoration-line-through mb-0 small">$89.999</p>
-              <!--
-                text-muted                 → color gris, precio tachado
-                text-decoration-line-through → tachado
-                small                      → font-size más pequeño
-              -->
-              <p class="text-success fw-bold fs-5 mb-0">$62.999</p>
-              <!--
-                text-success → verde (precio con descuento)
-                fw-bold      → font-weight: bold
-                fs-5         → font-size nivel 5 (1.25rem)
-              -->
-            </article>
-          </div>
+          <div class="row g-3"> 
 
-          <!-- Producto sin stock -->
-          <div class="col-12 col-sm-6 col-md-4">
-            <article class="border rounded p-3 bg-light">
-              <!--
-                bg-light → fondo gris claro para producto no disponible
-              -->
-              <img
-                src="imagenes/jean-400.jpg"
-                alt="Jean slim fit"
-                class="w-100 mb-2 opacity-50"
-                width="300"
-                height="300"
-                loading="lazy"
-              >
-              <!--
-                opacity-50 → imagen semitransparente para indicar sin stock
-              -->
-              <h3 class="h6 mb-1 text-muted">Jean slim fit</h3>
-              <p class="text-danger fw-bold mb-0">Sin stock</p>
-              <!--
-                text-danger → rojo para sin stock
-              -->
-            </article>
-          </div>
+            <!-- Producto con descuento -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <article class="border rounded overflow-hidden position-relative">
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2" style="z-index:10">
+                  30% OFF
+                </span>
+                <div style="height:280px; overflow:hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+                    alt="Campera de cuero negra con cierre plateado"
+                    style="width:100%; height:100%; object-fit:cover; object-position: center top"
+                    width="400" height="600" loading="lazy"
+                  >
+                </div>
+                <div class="p-3">
+                  <h3 class="h6 mb-1">Campera de cuero</h3>
+                  <p class="text-muted text-decoration-line-through mb-0 small">$89.999</p>
+                  <p class="text-success fw-bold fs-5 mb-0">$62.999</p>
+                </div>
+              </article>
+            </div>
 
-          <!-- Producto nuevo -->
-          <div class="col-12 col-sm-6 col-md-4">
-            <article class="border border-warning rounded p-3">
-              <!--
-                border-warning → borde amarillo para destacar novedad
-              -->
-              <span class="badge bg-warning text-dark mb-2">Nuevo</span>
-              <!--
-                bg-warning  → fondo amarillo
-                text-dark   → texto oscuro (el amarillo necesita texto oscuro)
-              -->
-              <img
-                src="imagenes/vestido-400.jpg"
-                alt="Vestido floral"
-                class="w-100 mb-2"
-                width="300"
-                height="300"
-                loading="lazy"
-              >
-              <h3 class="h6 mb-1">Vestido floral midi</h3>
-              <p class="fw-bold text-dark mb-0">$32.999</p>
-            </article>
-          </div>
+            <!-- Producto sin stock -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <article class="border rounded overflow-hidden bg-light">  <!-- overflow-hidden -->
+                <div style="height:280px; overflow:hidden">  <!-- mismo contenedor de imagen -->
+                  <img
+                    src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
+                    alt="Jean slim fit"
+                    style="width:100%; height:100%; object-fit:cover; opacity: 0.5"  
+                    width="400" height="600" loading="lazy"
+                  >
+                </div>
+                <div class="p-3">
+                  <h3 class="h6 mb-1 text-muted">Jean slim fit</h3>
+                  <p class="text-danger fw-bold mb-0">Sin stock</p>
+                </div>
+              </article>
+            </div>
 
-        </div>
+            <!-- Producto nuevo -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <article class="border border-warning rounded overflow-hidden position-relative">  <!-- overflow-hidden -->
+                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2" style="z-index:10">
+                  Nuevo  <!-- badge posicionado igual que el descuento -->
+                </span>
+                <div style="height:280px; overflow:hidden">  <!-- mismo contenedor -->
+                  <img
+                    src="https://images.unsplash.com/photo-1633448968693-9f97386389fa?w=400&q=80"
+                    alt="Vestido floral"
+                    style="width:100%; height:100%; object-fit:cover"
+                    width="400" height="600" loading="lazy"
+                  >
+                </div>
+                <div class="p-3">
+                  <h3 class="h6 mb-1">Vestido floral midi</h3>
+                  <p class="fw-bold text-dark mb-0">$32.999</p>
+                </div>
+              </article>
+            </div>
+
+          </div><!-- /row -->
 
         <!-- Alertas de la tienda -->
         <div class="mt-4">
@@ -557,7 +525,7 @@
               <div class="row g-2">
                 <div class="col-4">
                   <img
-                    src="imagenes/campera-400.jpg"
+                    src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
                     alt="Campera"
                     class="img-fluid border"
                     width="300"
@@ -570,7 +538,7 @@
                 </div>
                 <div class="col-4">
                   <img
-                    src="imagenes/remera-400.jpg"
+                    src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
                     alt="Remera"
                     class="img-fluid border"
                     width="300"
@@ -583,7 +551,7 @@
                 </div>
                 <div class="col-4">
                   <img
-                    src="imagenes/jean-400.jpg"
+                    src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
                     alt="Jean"
                     class="img-fluid border"
                     width="300"
@@ -599,7 +567,7 @@
               <div class="row g-2">
                 <div class="col-4">
                   <img
-                    src="imagenes/campera-400.jpg"
+                    src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
                     alt="Campera"
                     class="img-fluid border"
                     style="width:100%; height:150px; object-fit:cover"
@@ -612,13 +580,13 @@
                     Todas las cards tienen la misma altura → grilla prolija.
 
                     El style inline es temporal para el ejemplo.
-                    En styleshop.css esto va en una clase:
+                    En styleshop.css esto debería ir en una clase:
                     .producto-img { width: 100%; height: 250px; object-fit: cover; }
                   -->
                 </div>
                 <div class="col-4">
                   <img
-                    src="imagenes/remera-400.jpg"
+                    src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
                     alt="Remera"
                     class="img-fluid border"
                     style="width:100%; height:150px; object-fit:cover"
@@ -628,7 +596,7 @@
                 </div>
                 <div class="col-4">
                   <img
-                    src="imagenes/jean-400.jpg"
+                    src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
                     alt="Jean"
                     class="img-fluid border"
                     style="width:100%; height:150px; object-fit:cover"
@@ -647,11 +615,9 @@
     </main>
 
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+  crossorigin="anonymous"></script>
   </body>
 </html>
 

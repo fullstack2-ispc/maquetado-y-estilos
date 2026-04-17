@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StyleShop — Productos</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    >
-    <link rel="stylesheet" href="css/styleshop.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+    crossorigin="anonymous">
+    
   </head>
 
   <body>
@@ -70,7 +68,6 @@
       <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <!--
           Por ahora solo ponemos las clases de layout.
-          Los componentes Navbar los vemos en el Tema 8.
           El foco de este tema es el sistema de grilla.
         -->
         <div class="container">
@@ -99,12 +96,11 @@
                 (lo vemos en detalle en Tema 3 — espaciados).
         -->
         <img
-          src="imagenes/hero-desktop.webp"
-          alt="Colección Otoño-Invierno 2025 — StyleShop"
+          src="https://images.unsplash.com/photo-1760533091973-1262bf57d244?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Colección Otoño-Invierno 2026 — StyleShop"
           class="w-100"
-          width="1920"
-          height="600"
-          fetchpriority="high"
+          style="height: 60vh; object-fit: cover; object-position: top;"
+          loading="eager"
         >
         <!--
           w-100 → width: 100%. La imagen ocupa todo el ancho
@@ -219,7 +215,7 @@
             -->
             <article class="border p-3">
               <img
-                src="imagenes/campera-400.jpg"
+                src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
                 alt="Campera de cuero negra"
                 class="w-100"
                 width="300"
@@ -235,7 +231,7 @@
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <article class="border p-3">
               <img
-                src="imagenes/remera-400.jpg"
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
                 alt="Remera básica blanca"
                 class="w-100"
                 width="300"
@@ -251,7 +247,7 @@
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <article class="border p-3">
               <img
-                src="imagenes/jean-400.jpg"
+                src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
                 alt="Jean slim fit azul"
                 class="w-100"
                 width="300"
@@ -266,14 +262,14 @@
 
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <article class="border p-3">
-              <img
-                src="imagenes/buzo-400.jpg"
-                alt="Buzo oversize gris"
-                class="w-100"
-                width="300"
-                height="300"
-                loading="lazy"
-              >
+              <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden;">
+                <img
+                  src="https://images.unsplash.com/photo-1666443762372-c86511e64151?q=80&w=2127&auto=format&fit=crop"
+                  alt="Buzo oversize gris"
+                  style="width: 100%; height: 100%; object-fit: cover;"
+                  loading="lazy"
+                >
+              </div>
               <h3 class="h6 mt-2">Buzo oversize</h3>
               <p class="fw-bold">$18.999</p>
               <a href="detalle.html?id=4" class="btn btn-dark w-100">Ver producto</a>
@@ -283,11 +279,9 @@
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <article class="border p-3">
               <img
-                src="imagenes/vestido-400.jpg"
+                src="https://images.unsplash.com/photo-1633448968693-9f97386389fa?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Vestido floral midi"
-                class="w-100"
-                width="300"
-                height="300"
+                style="width: 100%; height: 100%; object-fit: cover;"
                 loading="lazy"
               >
               <h3 class="h6 mt-2">Vestido floral midi</h3>
@@ -299,11 +293,9 @@
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <article class="border p-3">
               <img
-                src="imagenes/camisa-400.jpg"
+                src="https://images.unsplash.com/photo-1668603145969-26173ef4e895?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Camisa de lino beige"
-                class="w-100"
-                width="300"
-                height="300"
+                style="width: 100%; height: 100%; object-fit: cover;"
                 loading="lazy"
               >
               <h3 class="h6 mt-2">Camisa de lino</h3>
@@ -431,65 +423,73 @@
 
 
         <!-- =====================================================
-          COLUMNAS ANIDADAS (nested grid)
+      COLUMNAS ANIDADAS (nested grid)
 
-          Una col puede contener su propio row con sus propias col.
-          El row interno divide en 12 el ancho de la col padre.
-          Útil para layouts complejos dentro de una sección.
-        ===================================================== -->
+      Una col puede contener su propio row con sus propias col.
+      El row interno divide en 12 el ancho de la col padre.
+      Útil para layouts complejos dentro de una sección.
+    ===================================================== -->
 
-        <h2 class="h5 text-muted mt-5 mb-3">
-          Ejemplo: grilla anidada (footer de StyleShop)
-        </h2>
+<h2 class="h5 text-muted mt-5 mb-3">
+  Ejemplo: grilla anidada (footer de StyleShop)
+</h2>
 
         <div class="row g-4">
 
-          <div class="col-12 col-md-6 col-lg-3">
-            <!--
-              mobile → 100%
-              md     → 50% (dos columnas)
-              lg     → 25% (cuatro columnas)
-            -->
+          <!-- Columna izquierda: ocupa 1/4 en lg, sin anidamiento -->
+          <div class="col-12 col-lg-3">
             <div class="border p-3 bg-light">
               <strong>StyleShop</strong>
               <p class="small">Moda que te define desde 2020.</p>
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="border p-3 bg-light">
-              <strong>Navegación</strong>
-              <ul class="list-unstyled small">
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Productos</a></li>
-                <li><a href="#">Contacto</a></li>
-              </ul>
-            </div>
-          </div>
+          <!-- Columna derecha: ocupa 3/4 en lg, y ADENTRO tiene su propio row -->
+          <div class="col-12 col-lg-9">
 
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="border p-3 bg-light">
-              <strong>Atención al cliente</strong>
-              <ul class="list-unstyled small">
-                <li><a href="#">Preguntas frecuentes</a></li>
-                <li><a href="#">Cambios y devoluciones</a></li>
-                <li><a href="#">Seguimiento de pedidos</a></li>
-              </ul>
-            </div>
-          </div>
+            <!-- ↓ Acá empieza el nested grid: divide los 3/4 del padre en 12 -->
+            <div class="row g-4">
 
-          <div class="col-12 col-md-6 col-lg-3">
-            <div class="border p-3 bg-light">
-              <strong>Legal</strong>
-              <ul class="list-unstyled small">
-                <li><a href="#">Términos y condiciones</a></li>
-                <li><a href="#">Política de privacidad</a></li>
-              </ul>
+              <div class="col-12 col-md-4">
+                <div class="border p-3 bg-light">
+                  <strong>Navegación</strong>
+                  <ul class="list-unstyled small">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Contacto</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <div class="border p-3 bg-light">
+                  <strong>Atención al cliente</strong>
+                  <ul class="list-unstyled small">
+                    <li><a href="#">Preguntas frecuentes</a></li>
+                    <li><a href="#">Cambios y devoluciones</a></li>
+                    <li><a href="#">Seguimiento de pedidos</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <div class="border p-3 bg-light">
+                  <strong>Legal</strong>
+                  <ul class="list-unstyled small">
+                    <li><a href="#">Términos y condiciones</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
+            <!-- fin nested row -->
+
           </div>
+          <!-- fin col-lg-9 -->
 
         </div>
-        <!-- fin footer grid -->
+        <!-- fin row principal -->
 
       </section>
       <!-- fin container principal -->
@@ -497,11 +497,9 @@
     </main>
 
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmLEmBrGOD0kEfMTjKjrfGnFYFe"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+  crossorigin="anonymous"></script>
 
   </body>
 </html>

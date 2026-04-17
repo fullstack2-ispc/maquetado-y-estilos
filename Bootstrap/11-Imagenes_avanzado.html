@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleShop — Guía de imágenes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+      rel="stylesheet" 
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+      crossorigin="anonymous">
+  <style>
+    /* ============================================================
+      POR QUÉ LOS ESTILOS VAN ACÁ Y NO EN UN ARCHIVO EXTERNO
+
+      En un proyecto real van en styleshop.css.
+      Los ponemos en <style> en este archivo para que los alumnos
+      vean exactamente qué CSS produce cada efecto visual,
+      sin tener que saltar entre archivos.
+
+      Cuando dominen el concepto, los mueven a styleshop.css.
+    ============================================================ */
+
+
+    /* ============================================================
+      PROBLEMA 1 — LA IMAGEN SE ESTIRA O DISTORSIONA
+
+      Causa: el contenedor tiene dimensiones fijas y la imagen
+      rellena ese espacio ignorando su proporción original.
+
+      Solución: object-fit
+    ============================================================ */
+
+    .img-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /*
+        cover → escala la imagen hasta que cubre TODO el contenedor.
+        Mantiene la proporción. Puede recortar los bordes.
+        Es el valor más usado en ecommerce.
+      */
+    }
+
+    .img-contain {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /*
+        contain → escala la imagen hasta que ENTRA COMPLETA.
+        Mantiene la proporción. Puede dejar espacio vacío.
+        Útil para logos, íconos, diagramas.
+      */
+    }
+
+
+    /* ============================================================
+      PATRÓN BASE: contenedor con altura fija + imagen cover
+
+      Este es el patrón que usan MercadoLibre, Zara, H&M.
+      No .ratio — sino un contenedor con altura explícita.
+      Más control, menos sorpresas.
+    ============================================================ */
+
+    .img-container {
+      width: 100%;
+      overflow: hidden;
+      /*
+        overflow: hidden → recorta lo que la imagen tenga
+        fuera del contenedor. Sin esto la imagen puede
+        "salirse" visualmente aunque object-fit esté aplicado.
+      */
+    }
+
+    /* Alturas estándar para StyleShop */
+    .img-container--cuadrada   { height: 280px; }  /* grilla de productos */
+    .img-container--alta       { height: 380px; }  /* detalle de producto */
+    .img-container--banner     { height: 480px; }  /* hero, lookbook */
+    .img-container--miniatura  { height: 80px;  }  /* carrito, reviews */
+
+
+    /* ============================================================
+      PROBLEM 2 — object-position: qué parte de la imagen se ve
+
+      Cuando cover recorta la imagen, por defecto muestra el centro.
+      Pero en ropa, el centro puede no ser la parte más importante.
+
+      object-position: x y
+      Valores: top, center, bottom, left, right, o porcentajes.
+    ============================================================ */
+
+    .img-position-top    { object-position: center top;    }
+    /* Ropa: muestra la parte superior (cuello, diseño frontal) */
+
+    .img-position-center { object-position: center center; }
+    /* Default: muestra el centro */
+
+    .img-position-bottom { object-position: center bottom; }
+    /* Calzado: muestra la parte inferior */
+
+    .img-position-face   { object-position: center 20%;   }
+    /* Modelo con ropa: muestra el área del torso/cara */
+
+
+    /* ============================================================
+      PROBLEMA 3 — EL BADGE TAPA TODA LA IMAGEN
+
+      Causa: el badge es hijo directo de .ratio,
+      que aplica width:100% height:100% a todos sus hijos.
+
+      Solución: wrapper position-relative FUERA del .ratio,
+      o usar .img-container en lugar de .ratio.
+
+      Con .img-container este problema no existe porque
+      no tiene esa regla CSS agresiva.
+    ============================================================ */
+
+    .img-wrapper {
+      position: relative;
+      /*
+        El wrapper es el contexto de posicionamiento.
+        Los badges y overlays se posicionan relativos a él,
+        no al ratio ni a la imagen.
+      */
+    }
+
+    .img-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      /*
+        z-index: 10 → sobre la imagen y el overlay.
+        top/left con valor fijo: más predecible que las
+        clases top-0 start-0 m-2 de Bootstrap en este contexto.
+      */
+    }
+
+    .img-badge--derecha {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      left: auto;
+      z-index: 10;
+    }
+
+
+    /* ============================================================
+      PROBLEMA 4 — EL LAYOUT SE "ROMPE" CUANDO CARGA LA IMAGEN
+      (Cumulative Layout Shift — CLS)
+
+      Causa: el navegador no sabe el alto de la imagen antes
+      de descargarla, así que primero renderiza sin espacio
+      y después "salta" cuando la imagen aparece.
+
+      Solución A: width y height en el HTML (siempre hacer esto)
+      Solución B: contenedor con altura fija (nuestro .img-container)
+      Solución C: .ratio de Bootstrap (aspect ratio reservado)
+
+      Las tres soluciones previenen el CLS.
+      Nosotros usamos A + B juntas — es la más robusta.
+    ============================================================ */
+
+
+    /* ============================================================
+      PROBLEMA 5 — EL BORDE REDONDEADO NO AFECTA A LA IMAGEN
+
+      Causa: border-radius en el article o contenedor no recorta
+      la imagen que está adentro — la imagen desborda por las esquinas.
+
+      Solución: overflow: hidden en el contenedor o en el wrapper.
+    ============================================================ */
+
+    .card-producto {
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      /*
+        overflow: hidden acá → recorta TODO lo que salga
+        del border-radius, incluyendo la imagen.
+        Sin esto las esquinas de la imagen quedan cuadradas
+        aunque el card tenga border-radius.
+      */
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .card-producto:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-4px);
+      /*
+        Efecto hover sutil: sombra + elevación.
+        transition en el selector base garantiza animación
+        tanto al entrar como al salir del hover.
+      */
+    }
+
+
+    /* ============================================================
+      OVERLAY: oscurecer la imagen para texto legible encima
+
+      Problema común: texto blanco sobre imagen clara → ilegible.
+      Solución: pseudo-elemento ::after que actúa como overlay.
+    ============================================================ */
+
+    .img-overlay-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .img-overlay-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      /*
+        inset: 0 → shorthand de top:0 right:0 bottom:0 left:0
+        Cubre exactamente el contenedor.
+      */
+      background: linear-gradient(
+        to bottom,
+        transparent 40%,
+        rgba(0, 0, 0, 0.7) 100%
+      );
+      /*
+        Gradiente de transparente a negro.
+        El texto va abajo donde el gradiente es oscuro.
+        La imagen sigue visible arriba donde es transparente.
+      */
+    }
+
+    .img-overlay-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      color: white;
+      z-index: 2;
+      /*
+        z-index: 2 → sobre el ::after (z-index: 1 implícito)
+      */
+    }
+
+
+    /* ============================================================
+      IMAGEN CON ZOOM EN HOVER — galería de detalle de producto
+    ============================================================ */
+
+    .img-zoom-wrapper {
+      overflow: hidden;
+      /*
+        overflow: hidden → contiene el zoom dentro del contenedor.
+        Sin esto la imagen "se sale" al hacer hover.
+      */
+    }
+
+    .img-zoom-wrapper img {
+      transition: transform 0.4s ease;
+    }
+
+    .img-zoom-wrapper:hover img {
+      transform: scale(1.08);
+      /*
+        scale(1.08) → zoom del 8%.
+        Más sutil que scale(1.2) — el objetivo es dar vida,
+        no desorientar al usuario.
+      */
+    }
+
+
+    /* ============================================================
+      SKELETON LOADER — placeholder mientras la imagen carga
+
+      Problema: la imagen tarda en cargar y el usuario ve
+      un espacio vacío o el alt text.
+      Solución: mostrar un placeholder animado ("skeleton")
+      que ocupa el mismo espacio que la imagen.
+    ============================================================ */
+
+    @keyframes skeleton-pulse {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+
+    .img-skeleton {
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+      );
+      background-size: 200% 100%;
+      animation: skeleton-pulse 1.5s infinite;
+      /*
+        El gradiente se mueve de izquierda a derecha
+        simulando un brillo que "barre" el placeholder.
+        Es el mismo efecto que Facebook, LinkedIn, YouTube.
+      */
+    }
+
+
+    /* ============================================================
+      IMAGEN ROTA — qué mostrar cuando src falla
+    ============================================================ */
+
+    img {
+      /* Estilo global para imágenes rotas */
+    }
+
+    .img-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+      color: #adb5bd;
+      font-size: 0.875rem;
+    }
+
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+
+  <h1 class="mb-2">Guía de imágenes — StyleShop</h1>
+  <p class="lead text-muted mb-5">
+    Cada sección muestra el problema, la causa y la solución.
+  </p>
+
+
+  <!-- ============================================================
+    SECCIÓN 1 — object-fit: el problema más común
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">1. object-fit — la base de todo</h2>
+    <p class="text-muted mb-4">
+      Mismo contenedor (280px × 280px), misma imagen, distinto <code>object-fit</code>.
+    </p>
+
+    <div class="row g-4">
+
+      <!-- SIN object-fit -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-danger mb-2">❌ Sin object-fit</p>
+        <div style="width:100%; height:280px; border:1px solid #dee2e6; overflow:hidden">
+          <img
+            src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+            alt="Campera de cuero"
+            width="400"
+            height="600"
+            style="width:100%; height:100%"
+          >
+          <!--
+            width:100% height:100% sin object-fit → la imagen se ESTIRA
+            para llenar el contenedor. Proporción rota.
+            Error muy común cuando se fuerzan dimensiones sin object-fit.
+          -->
+        </div>
+        <p class="small text-muted mt-2">La imagen se estira. Proporción rota.</p>
+      </div>
+
+      <!-- object-fit: cover -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-success mb-2">✓ object-fit: cover</p>
+        <div class="img-container img-container--cuadrada border">
+          <img
+            src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+            alt="Campera de cuero"
+            class="img-cover img-position-top"
+            width="400"
+            height="600"
+          >
+        </div>
+        <p class="small text-muted mt-2">Rellena el espacio. Se puede recortar.</p>
+      </div>
+
+      <!-- object-fit: contain -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-primary mb-2">≠ object-fit: contain</p>
+        <div class="img-container img-container--cuadrada border bg-white">
+          <img
+            src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+            alt="Campera de cuero"
+            class="img-contain"
+            width="400"
+            height="600"
+          >
+        </div>
+        <p class="small text-muted mt-2">Entra completa. Puede haber espacios.</p>
+      </div>
+
+      <!-- img-fluid (Bootstrap) sola -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-warning mb-2">⚠ Solo img-fluid</p>
+        <div class="border bg-white">
+          <img
+            src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+            alt="Campera de cuero"
+            class="img-fluid"
+            width="400"
+            height="600"
+          >
+        </div>
+        <p class="small text-muted mt-2">
+          Respeta proporciones pero las cards tienen alturas distintas.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 2 — object-position: qué parte de la imagen se muestra
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">2. object-position — controlá el recorte</h2>
+    <p class="text-muted mb-4">
+      Misma imagen con <code>cover</code>. Distinto <code>object-position</code>.
+      La URL de Unsplash es una foto de modelo con ropa — se nota la diferencia.
+    </p>
+
+    <div class="row g-4">
+
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold mb-2">object-position: center top</p>
+        <div class="img-container img-container--cuadrada border rounded">
+          <img
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80"
+            alt="Modelo con vestido"
+            class="img-cover"
+            style="object-position: center top"
+            width="400"
+            height="600"
+          >
+          <!--
+            center top → muestra la parte de arriba de la imagen.
+            Para modelos con ropa: muestra la cara y el torso.
+            Recomendado para ropa de mujer y looks completos.
+          -->
+        </div>
+        <p class="small text-muted mt-2">
+          <code>center top</code> — muestra cara y torso. ✓ Ropa
+        </p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold mb-2">object-position: center center</p>
+        <div class="img-container img-container--cuadrada border rounded">
+          <img
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80"
+            alt="Modelo con vestido"
+            class="img-cover"
+            style="object-position: center center"
+            width="400"
+            height="600"
+          >
+          <!--
+            center center → el default de cover.
+            Puede cortar la cabeza o los pies del modelo.
+          -->
+        </div>
+        <p class="small text-muted mt-2">
+          <code>center center</code> — default. Puede cortar la cara.
+        </p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold mb-2">object-position: center 20%</p>
+        <div class="img-container img-container--cuadrada border rounded">
+          <img
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80"
+            alt="Modelo con vestido"
+            class="img-cover"
+            style="object-position: center 20%"
+            width="400"
+            height="600"
+          >
+          <!--
+            center 20% → el punto focal está al 20% desde arriba.
+            Punto medio entre top y center — muy útil para fotos de moda.
+          -->
+        </div>
+        <p class="small text-muted mt-2">
+          <code>center 20%</code> — punto focal de moda. ✓ Recomendado
+        </p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold mb-2">object-position: center bottom</p>
+        <div class="img-container img-container--cuadrada border rounded">
+          <img
+            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80"
+            alt="Zapatillas"
+            class="img-cover"
+            style="object-position: center bottom"
+            width="400"
+            height="300"
+          >
+          <!--
+            center bottom → muestra la parte de abajo.
+            Para calzado: muestra la suela y el diseño del pie.
+          -->
+        </div>
+        <p class="small text-muted mt-2">
+          <code>center bottom</code> — ✓ Para calzado y accesorios
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 3 — El problema del badge con .ratio y su solución
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">3. Badges sobre imágenes — el problema de .ratio</h2>
+    <p class="text-muted mb-4">
+      <code>.ratio</code> aplica <code>width:100%; height:100%</code> a todos sus hijos directos.
+      Eso destruye el badge. La solución es usar un wrapper externo.
+    </p>
+
+    <div class="row g-4">
+
+      <!-- MAL: badge dentro del ratio -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-danger mb-2">❌ Badge dentro de .ratio</p>
+        <article class="card-producto">
+          <div class="ratio ratio-1x1 position-relative">
+            <img
+              src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80"
+              alt="Vestido floral"
+              class="img-cover"
+              width="400"
+              height="500"
+            >
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">
+              30% OFF
+            </span>
+            <!--
+              El badge es hijo directo de .ratio →
+              hereda width:100% height:100% →
+              se convierte en un cuadrado rojo que tapa todo.
+            -->
+          </div>
+        </article>
+        <p class="small text-muted mt-2">
+          El badge hereda <code>width:100% height:100%</code> del .ratio.
+        </p>
+      </div>
+
+      <!-- BIEN: badge fuera del ratio, wrapper position-relative -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-success mb-2">✓ Wrapper externo + badge fuera</p>
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <!--
+              img-wrapper tiene position:relative.
+              El badge se posiciona relativo a él, no al ratio.
+            -->
+            <div class="ratio ratio-1x1">
+              <img
+                src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80"
+                alt="Vestido floral"
+                class="img-cover"
+                width="400"
+                height="500"
+              >
+            </div>
+            <span class="badge bg-danger img-badge">30% OFF</span>
+            <!--
+              El badge está fuera del .ratio pero dentro del wrapper.
+              No hereda las reglas de .ratio.
+              Se posiciona correctamente en la esquina.
+            -->
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Vestido floral midi</h3>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fw-bold">$22.999</span>
+              <span class="small text-muted text-decoration-line-through">$32.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- MEJOR: usando img-container en vez de ratio (sin el problema) -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-primary mb-2">✓✓ Sin .ratio — más control</p>
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <!--
+              Con img-container no existe el problema del ratio.
+              El badge puede estar directamente adentro del wrapper.
+            -->
+            <div class="img-container img-container--cuadrada">
+              <img
+                src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80"
+                alt="Vestido floral"
+                class="img-cover img-zoom-wrapper"
+                width="400"
+                height="500"
+              >
+            </div>
+            <span class="badge bg-danger img-badge">30% OFF</span>
+            <span class="badge bg-dark img-badge--derecha">Nuevo</span>
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Vestido floral midi</h3>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fw-bold">$22.999</span>
+              <span class="small text-muted text-decoration-line-through">$32.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Múltiples badges -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-primary mb-2">✓ Múltiples badges</p>
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada">
+              <img
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
+                alt="Remera básica"
+                class="img-cover"
+                style="object-position: center top"
+                width="400"
+                height="400"
+              >
+            </div>
+            <!-- Badge izquierda: descuento -->
+            <span class="badge bg-danger img-badge">-20%</span>
+            <!-- Badge derecha: categoría -->
+            <span class="badge bg-secondary img-badge--derecha">Básicos</span>
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Remera básica</h3>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="fw-bold">$7.199</span>
+              <span class="small text-muted text-decoration-line-through">$8.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 4 — Overlay: texto legible sobre imagen
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">4. Overlay — texto legible sobre imagen</h2>
+    <p class="text-muted mb-4">
+      Texto blanco sobre imagen clara → ilegible. La solución es un gradiente oscuro.
+    </p>
+
+    <div class="row g-4">
+
+      <!-- Sin overlay: texto ilegible -->
+      <div class="col-12 col-md-4">
+        <p class="small fw-semibold text-danger mb-2">❌ Sin overlay</p>
+        <div class="img-wrapper rounded overflow-hidden" style="height:320px">
+          <div class="img-container" style="height:320px">
+            <img
+              src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+              alt="Tienda de ropa"
+              class="img-cover"
+              width="800"
+              height="500"
+            >
+          </div>
+          <div style="position:absolute; bottom:0; left:0; right:0; padding:1.5rem; color:white">
+            <h3 class="h5 mb-1">Nueva colección</h3>
+            <p class="small mb-0">Otoño-Invierno 2025</p>
+          </div>
+        </div>
+        <p class="small text-muted mt-2">El texto blanco sobre imagen clara es ilegible.</p>
+      </div>
+
+      <!-- Con overlay gradiente -->
+      <div class="col-12 col-md-4">
+        <p class="small fw-semibold text-success mb-2">✓ Con gradiente oscuro</p>
+        <div class="img-overlay-wrapper rounded overflow-hidden" style="height:320px">
+          <div class="img-container" style="height:320px">
+            <img
+              src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80"
+              alt="Tienda de ropa"
+              class="img-cover"
+              width="800"
+              height="500"
+            >
+          </div>
+          <!--
+            El ::after del .img-overlay-wrapper aplica el gradiente.
+            El contenido va en .img-overlay-content (z-index:2).
+          -->
+          <div class="img-overlay-content">
+            <p class="small text-white-50 text-uppercase fw-semibold mb-1">
+              Colección
+            </p>
+            <h3 class="h4 mb-2">Otoño-Invierno 2025</h3>
+            <a href="productos.html" class="btn btn-light btn-sm">
+              Ver colección
+            </a>
+          </div>
+        </div>
+        <p class="small text-muted mt-2">Gradiente de transparente a negro. Texto siempre legible.</p>
+      </div>
+
+      <!-- Overlay con fondo semitransparente sólido -->
+      <div class="col-12 col-md-4">
+        <p class="small fw-semibold text-success mb-2">✓ Overlay sólido en hover</p>
+        <div
+          class="img-wrapper rounded overflow-hidden"
+          style="height:320px; cursor:pointer"
+          onmouseenter="this.querySelector('.overlay-hover').style.opacity='1'"
+          onmouseleave="this.querySelector('.overlay-hover').style.opacity='0'"
+        >
+          <div class="img-container img-zoom-wrapper" style="height:320px">
+            <img
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+              alt="Modelo con vestido"
+              class="img-cover"
+              style="object-position: center 20%; transition: transform 0.4s ease"
+              width="800"
+              height="1000"
+            >
+          </div>
+          <div
+            class="overlay-hover"
+            style="
+              position:absolute; inset:0;
+              background: rgba(0,0,0,0.5);
+              display:flex; align-items:center; justify-content:center;
+              opacity:0; transition: opacity 0.3s ease;
+            "
+          >
+            <button type="button" class="btn btn-light">Vista rápida</button>
+          </div>
+        </div>
+        <p class="small text-muted mt-2">Overlay aparece en hover. JS mínimo — Angular lo maneja mejor.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 5 — Zoom en hover: galería de detalle
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">5. Zoom en hover — galería del producto</h2>
+    <p class="text-muted mb-4">
+      El zoom se aplica a la <code>img</code> con <code>transform: scale()</code>.
+      El <code>overflow:hidden</code> en el wrapper contiene el zoom.
+    </p>
+
+    <div class="row g-4">
+      <div class="col-12 col-md-6">
+
+        <!-- Galería principal con zoom -->
+        <div class="img-zoom-wrapper rounded overflow-hidden border" style="height:460px">
+          <img
+            src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80"
+            alt="Campera de cuero negra, vista frontal"
+            class="img-cover"
+            style="object-position: center top"
+            width="600"
+            height="800"
+          >
+        </div>
+
+        <!-- Miniaturas -->
+        <div class="row g-2 mt-2">
+          <div class="col-3">
+            <div class="img-zoom-wrapper rounded border overflow-hidden" style="height:80px; cursor:pointer; outline:2px solid #212529">
+              <img
+                src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200&q=80"
+                alt="Vista frontal"
+                class="img-cover"
+                width="200"
+                height="200"
+              >
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="img-zoom-wrapper rounded border overflow-hidden" style="height:80px; cursor:pointer">
+              <img
+                src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=200&q=80"
+                alt="Vista trasera"
+                class="img-cover"
+                width="200"
+                height="200"
+              >
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="img-zoom-wrapper rounded border overflow-hidden" style="height:80px; cursor:pointer">
+              <img
+                src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=200&q=80"
+                alt="Detalle del cierre"
+                class="img-cover"
+                width="200"
+                height="200"
+              >
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="img-zoom-wrapper rounded border overflow-hidden" style="height:80px; cursor:pointer">
+              <img
+                src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=200&q=80"
+                alt="Vista lateral"
+                class="img-cover"
+                width="200"
+                height="200"
+              >
+            </div>
+          </div>
+        </div>
+        <p class="small text-muted mt-2">
+          Hover sobre cualquier imagen para ver el zoom.
+          El borde en la primera miniatura indica imagen activa
+          — Angular lo maneja con property binding.
+        </p>
+
+      </div>
+
+      <!-- Info del producto -->
+      <div class="col-12 col-md-6">
+        <p class="text-uppercase text-muted small fw-semibold mb-1">Camperas · Cuero ecológico</p>
+        <h2 class="h3 fw-bold mb-1">Campera de cuero ecológico</h2>
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="h4 fw-bold mb-0">$62.999</span>
+          <span class="text-muted text-decoration-line-through">$89.999</span>
+          <span class="badge bg-danger">30% OFF</span>
+        </div>
+        <p class="text-muted mb-4">
+          Cuero ecológico premium con forro de microfibra. Disponible en negro y marrón.
+        </p>
+        <div class="btn-group mb-4" role="group" aria-label="Selección de talle">
+          <button type="button" class="btn btn-outline-dark btn-sm">S</button>
+          <button type="button" class="btn btn-dark btn-sm active" aria-pressed="true">M</button>
+          <button type="button" class="btn btn-outline-dark btn-sm">L</button>
+          <button type="button" class="btn btn-outline-dark btn-sm" disabled>XL</button>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-dark btn-lg">Agregar al carrito</button>
+          <button type="button" class="btn btn-outline-dark">Agregar a favoritos</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 6 — Skeleton loader
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">6. Skeleton loader — mientras carga</h2>
+    <p class="text-muted mb-4">
+      Reemplazá temporalmente las imágenes con skeletons.
+      En Angular esto se maneja con <code>*ngIf</code> y el evento <code>(load)</code> de la imagen.
+    </p>
+
+    <div class="row g-4">
+
+      <!-- Skeleton de card de producto -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-muted mb-2">Skeleton (cargando...)</p>
+        <article class="card-producto">
+          <!-- Imagen skeleton -->
+          <div class="img-skeleton" style="height:280px"></div>
+          <div class="p-3">
+            <!-- Texto skeleton -->
+            <div class="img-skeleton rounded mb-2" style="height:14px; width:80%"></div>
+            <div class="img-skeleton rounded mb-3" style="height:14px; width:50%"></div>
+            <div class="img-skeleton rounded" style="height:36px"></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Card real (lo que aparece después de cargar) -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-success mb-2">Cargado ✓</p>
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada">
+              <img
+                src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
+                alt="Jean slim fit azul"
+                class="img-cover"
+                style="object-position: center top"
+                width="400"
+                height="500"
+                loading="lazy"
+              >
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Jean slim fit</h3>
+            <p class="fw-bold mb-2">$24.999</p>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Skeleton + carga real con JS básico -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-primary mb-2">Transición skeleton → imagen</p>
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada">
+
+              <!-- Skeleton: visible mientras carga -->
+              <div
+                class="img-skeleton position-absolute"
+                id="skeleton-demo"
+                style="inset:0"
+              ></div>
+
+              <!-- Imagen: invisible hasta que carga -->
+              <img
+                src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&q=80"
+                alt="Buzo oversize gris"
+                class="img-cover"
+                style="opacity:0; transition: opacity 0.3s ease"
+                width="400"
+                height="400"
+                loading="lazy"
+                onload="
+                  this.style.opacity='1';
+                  document.getElementById('skeleton-demo').style.display='none'
+                "
+              >
+              <!--
+                onload → cuando la imagen termina de cargar:
+                1. La hace visible (opacity: 1)
+                2. Oculta el skeleton
+
+                En Angular esto se hace con:
+                (load)="imagenCargada = true"
+                [style.opacity]="imagenCargada ? 1 : 0"
+                [hidden]="imagenCargada" en el skeleton
+              -->
+
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="h6 mb-1">Buzo oversize</h3>
+            <p class="fw-bold mb-2">$18.999</p>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Skeleton de banner -->
+      <div class="col-6 col-md-3">
+        <p class="small fw-semibold text-muted mb-2">Skeleton de banner</p>
+        <div class="img-skeleton rounded" style="height:180px"></div>
+        <div class="mt-2">
+          <div class="img-skeleton rounded mb-2" style="height:20px; width:70%"></div>
+          <div class="img-skeleton rounded" style="height:14px; width:90%"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    SECCIÓN 7 — Grilla de productos completa y real
+    Todo junto: card-producto + img-wrapper + badges + hover + skeleton
+  ============================================================ -->
+
+  <section class="mb-5">
+    <h2 class="h4 mb-1">7. Grilla completa — StyleShop</h2>
+    <p class="text-muted mb-4">
+      Todo lo visto aplicado en la grilla real de productos.
+    </p>
+
+    <div class="row g-4">
+
+      <!-- Producto 1: con descuento -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada img-zoom-wrapper">
+              <img
+                src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+                alt="Campera de cuero negra con cierre plateado"
+                class="img-cover"
+                style="object-position: center top"
+                width="400"
+                height="600"
+                fetchpriority="high"
+              >
+            </div>
+            <span class="badge bg-danger img-badge">30% OFF</span>
+          </div>
+          <div class="p-3">
+            <p class="text-muted small text-uppercase fw-semibold mb-1">Camperas</p>
+            <h3 class="h6 mb-2">Campera de cuero ecológico</h3>
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="fw-bold">$62.999</span>
+              <span class="small text-muted text-decoration-line-through">$89.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Producto 2: sin stock -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <article class="card-producto" style="opacity: 0.7">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada">
+              <img
+                src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80"
+                alt="Jean slim fit azul oscuro"
+                class="img-cover"
+                style="object-position: center top; filter: grayscale(30%)"
+                width="400"
+                height="500"
+                loading="lazy"
+              >
+              <!--
+                filter: grayscale(30%) → imagen levemente desaturada
+                para indicar sin stock visualmente.
+                No completamente gris — el producto todavía
+                tiene identidad visual.
+              -->
+            </div>
+            <span class="badge bg-secondary img-badge">Sin stock</span>
+          </div>
+          <div class="p-3">
+            <p class="text-muted small text-uppercase fw-semibold mb-1">Pantalones</p>
+            <h3 class="h6 mb-2">Jean slim fit</h3>
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="fw-bold text-muted">$24.999</span>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100" disabled>
+              Sin stock
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Producto 3: nuevo -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada img-zoom-wrapper">
+              <img
+                src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80"
+                alt="Vestido floral midi colorido"
+                class="img-cover"
+                style="object-position: center 15%"
+                width="400"
+                height="500"
+                loading="lazy"
+              >
+            </div>
+            <span class="badge bg-dark img-badge">Nuevo</span>
+          </div>
+          <div class="p-3">
+            <p class="text-muted small text-uppercase fw-semibold mb-1">Vestidos</p>
+            <h3 class="h6 mb-2">Vestido floral midi</h3>
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="fw-bold">$32.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Producto 4: normal -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <article class="card-producto">
+          <div class="img-wrapper">
+            <div class="img-container img-container--cuadrada img-zoom-wrapper">
+              <img
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80"
+                alt="Remera básica blanca de algodón"
+                class="img-cover"
+                style="object-position: center top"
+                width="400"
+                height="400"
+                loading="lazy"
+              >
+            </div>
+          </div>
+          <div class="p-3">
+            <p class="text-muted small text-uppercase fw-semibold mb-1">Remeras</p>
+            <h3 class="h6 mb-2">Remera básica algodón</h3>
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="fw-bold">$8.999</span>
+            </div>
+            <button type="button" class="btn btn-dark btn-sm w-100">
+              Agregar al carrito
+            </button>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+
+</div><!-- fin container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+  crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+<!--
+══════════════════════════════════════════════════════
+  CHEATSHEET DE IMÁGENES — STYLESHOP
+══════════════════════════════════════════════════════
+
+  PATRÓN BASE (usar siempre):
+  ─────────────────────────────
+  <article class="card-producto">
+    <div class="img-wrapper">                          ← position:relative para badges
+      <div class="img-container img-container--cuadrada img-zoom-wrapper">
+        <img src="..." alt="..." class="img-cover"
+             style="object-position: center top"
+             width="400" height="400" loading="lazy">
+      </div>
+      <span class="badge bg-danger img-badge">-20%</span>   ← badge FUERA del ratio
+    </div>
+    <div class="p-3">...</div>
+  </article>
+
+  CLASES PROPIAS (styleshop.css):
+  ─────────────────────────────────
+  .img-cover          → object-fit: cover
+  .img-container      → width:100% overflow:hidden
+  .img-container--cuadrada → height: 280px
+  .img-container--alta     → height: 380px
+  .img-container--banner   → height: 480px
+  .img-wrapper        → position: relative
+  .img-badge          → position:absolute top:12px left:12px z-index:10
+  .img-zoom-wrapper   → overflow:hidden + img transition scale en hover
+  .img-overlay-wrapper → ::after con gradiente oscuro
+  .img-skeleton       → animación de pulso gris
+
+  object-position según tipo de imagen:
+  ────────────────────────────────────────
+  Ropa en modelo     → center top  o  center 20%
+  Producto solo      → center center
+  Calzado            → center bottom
+  Hero/banner        → center center  (la imagen ya está encuadrada)
+
+  REGLAS DE ORO:
+  ───────────────
+  1. NUNCA poner el badge dentro de .ratio
+  2. SIEMPRE overflow:hidden en el wrapper de la imagen
+  3. SIEMPRE width y height en el <img> (evita CLS)
+  4. object-position SIEMPRE junto a object-fit:cover
+  5. loading="lazy" en todo lo que esté below the fold
+  6. fetchpriority="high" solo en la primera imagen visible
+
+  CONEXIÓN CON ANGULAR (Fase 4):
+  ────────────────────────────────
+  onload="..."          → (load)="imagenCargada = true"
+  style="opacity:0"     → [style.opacity]="imagenCargada ? 1 : 0"
+  skeleton display:none → [hidden]="imagenCargada"
+  badge visible/oculto  → [hidden]="!producto.descuento"
+  object-position       → [style.objectPosition]="producto.focalPoint"
+-->
