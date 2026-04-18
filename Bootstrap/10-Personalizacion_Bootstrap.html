@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleShop — Personalización de Bootstrap</title>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║          ORDEN DE CARGA — MUY IMPORTANTE                                 ║
+    ╠══════════════════════════════════════════════════════════════════════════╣
+    ║  1. Bootstrap CSS (CDN)  → define todas las variables --bs-*             ║
+    ║  2. Google Fonts         → carga las fuentes de la marca                 ║
+    ║  3. archivo-principal.css → sobreescribe variables y agrega estilos      ║
+    ║ (en este caso lo vemos en 10-Personalizacion_Bootstrap.css))             ║
+    ║                                                                          ║
+    ║ Si archivo-principal.css se carga ANTES de Bootstrap, Bootstrap pisaría  ║
+    ║  nuestras sobreescrituras y no tendrían ningún efecto.                   ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    -->
+
+    <!-- 1. Bootstrap CSS — siempre primero -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    >
+
+    <!-- 2. Google Fonts con preconnect
+         preconnect → abre la conexión TCP antes de que el CSS la necesite.
+         display=swap → muestra la fuente del sistema mientras carga la web,
+         evitando el "flash de texto invisible" (FOIT). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- 3. Nuestro CSS — siempre después de Bootstrap -->
+    <link rel="stylesheet" href="10-Personalizacion_Bootstrap.css">
+
+  </head>
+
+  <body>
+
+    <!-- ================================================================
+         NAVBAR — usa --bs-primary (azul noche) como fondo
+         bg-primary aplica el color primario sobreescrito en 10-Personalizacion_Bootstrap.css
+         ================================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold font-display" href="#">StyleShop</a>
+        <button class="navbar-toggler" type="button"
+          data-bs-toggle="collapse" data-bs-target="#navMain">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="navbar-nav ms-auto gap-1">
+            <li class="nav-item"><a class="nav-link" href="#">Mujer</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Hombre</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
+          </ul>
+          <div class="ms-3 d-flex gap-2">
+            <button class="btn btn-sm btn-outline-light">Ingresar</button>
+            <button class="btn btn-sm btn-coral">
+              Carrito <span class="badge bg-white text-dark ms-1">3</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+    <main class="container my-5">
+
+      <!-- Encabezado del tema -->
+      <div class="mb-5">
+        <p class="seccion-titulo">Tema 10</p>
+        <h1 class="display-styleshop mb-2">Personalización de Bootstrap</h1>
+        <p class="text-muted fs-5">
+          Tres enfoques, desde el más simple hasta el profesional completo.
+        </p>
+      </div>
+
+
+      <!-- ================================================================
+           SECCIÓN A: LOS TRES MÉTODOS
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Los tres métodos</p>
+        <h2 class="h3 mb-1">¿Cómo se personaliza Bootstrap?</h2>
+        <p class="text-muted mb-4">
+          Hay tres formas, de menor a mayor potencia. Para este tema trabajamos
+          con los dos primeros; el tercero lo veremos cuando usemos bundlers.
+        </p>
+
+        <div class="row g-4 mb-4">
+
+          <!-- Método 1 -->
+          <div class="col-12 col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">Método 1</span>
+                <h3 class="fs-5 mb-1">CSS Custom Properties</h3>
+                <p class="text-muted small mb-3">
+                  Sobreescribir las variables <code>--bs-*</code> en <code>:root</code>
+                  o en el selector del componente.
+                </p>
+                <ul class="list-unstyled small mb-0">
+                  <li class="mb-1">✅ Sin instalación ni build step</li>
+                  <li class="mb-1">✅ Funciona con CDN</li>
+                  <li class="mb-1">✅ Ideal para proyectos simples</li>
+                  <li class="mb-1">⚠️ El CSS de Bootstrap se descarga completo</li>
+                  <li>⚠️ No se pueden eliminar componentes no usados</li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <span class="chip-variable">:root { --bs-primary: ... }</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Método 2 -->
+          <div class="col-12 col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <span class="badge bg-danger mb-2">Método 2</span>
+                <h3 class="fs-5 mb-1">Sass con variables</h3>
+                <p class="text-muted small mb-3">
+                  Sobreescribir las variables <code>$primary</code>, <code>$font-family-base</code>
+                  antes de importar Bootstrap.
+                </p>
+                <ul class="list-unstyled small mb-0">
+                  <li class="mb-1">✅ El CSS generado es más pequeño</li>
+                  <li class="mb-1">✅ Permite desactivar módulos enteros</li>
+                  <li class="mb-1">✅ Estándar profesional</li>
+                  <li class="mb-1">⚠️ Requiere Node.js y un bundler</li>
+                  <li>⚠️ Curva de aprendizaje inicial</li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <span class="chip-variable">$primary: #1a1a2e;</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Método 3 -->
+          <div class="col-12 col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">Método 3</span>
+                <h3 class="fs-5 mb-1">Bootstrap Customize Tool</h3>
+                <p class="text-muted small mb-3">
+                  Interfaz web oficial que genera un CSS de Bootstrap
+                  ya configurado para descargar.
+                </p>
+                <ul class="list-unstyled small mb-0">
+                  <li class="mb-1">✅ Sin código ni instalación</li>
+                  <li class="mb-1">✅ Útil para prototipos rápidos</li>
+                  <li class="mb-1">⚠️ No es reproducible en equipo</li>
+                  <li>⚠️ Difícil de mantener a largo plazo</li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a href="https://getbootstrap.com/docs/5.3/customize/overview/" target="_blank"
+                   class="small text-muted">getbootstrap.com → Customize</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="nota-pedagogica">
+          <strong>¿Cuál usar en producción?</strong>
+          En proyectos reales con equipo y control de versiones, el estándar es el
+          <strong>Método 2 (Sass)</strong>. El Método 1 es perfecto para aprender,
+          para proyectos pequeños, o cuando no podés configurar un bundler.
+          En Angular, el archivo <code>src/styles.scss</code> actúa como el punto
+          de entrada donde aplicás cualquiera de los dos métodos.
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN B: CÓMO FUNCIONA LA CASCADA
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">La mecánica</p>
+        <h2 class="h3 mb-1">La cascada CSS y el orden de los archivos</h2>
+        <p class="text-muted mb-4">
+          Entender por qué funciona es tan importante como saber cómo hacerlo.
+        </p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-12 col-lg-7">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <h3 class="fs-6 fw-semibold mb-3">El orden en el &lt;head&gt;</h3>
+                <pre class="bg-dark text-light rounded p-3 small mb-3" style="overflow-x:auto"><code><span class="text-warning">&lt;!-- 1. Bootstrap PRIMERO --&gt;</span>
+&lt;link href="bootstrap.min.css" rel="stylesheet"&gt;
+
+<span class="text-warning">&lt;!-- 2. Nuestro CSS DESPUÉS --&gt;</span>
+&lt;link href="10-Personalizacion_Bootstrap.css" rel="stylesheet"&gt;</code></pre>
+                <p class="small text-muted mb-0">
+                  CSS Custom Properties respetan la cascada normal.
+                  El último valor declarado en el mismo selector gana.
+                  Nuestro <code>:root</code> en <code>archivo-principal.css</code> viene después
+                  del de Bootstrap, así que nuestras variables sobreescriben las originales.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <h3 class="fs-6 fw-semibold mb-3">Dos niveles de sobreescritura</h3>
+
+                <div class="mb-3 pb-3 border-bottom">
+                  <p class="fw-medium small mb-1">Nivel global → <code>:root</code></p>
+                  <p class="text-muted small mb-1">Afecta <em>todos</em> los componentes</p>
+                  <pre class="bg-dark text-light rounded p-2 small mb-0"><code>:root {
+  --bs-primary: #1a1a2e;
+}</code></pre>
+                </div>
+
+                <div>
+                  <p class="fw-medium small mb-1">Nivel componente → selector específico</p>
+                  <p class="text-muted small mb-1">Afecta <em>solo</em> ese componente</p>
+                  <pre class="bg-dark text-light rounded p-2 small mb-0"><code>.card {
+  --bs-card-border-radius: 8px;
+}
+.navbar {
+  --bs-navbar-padding-y: 1rem;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nota-pedagogica">
+          <strong>Regla de oro</strong>
+          Si el cambio es de identidad visual (color de marca, tipografía, radios globales):
+          usá <code>:root</code>. Si es un ajuste puntual de un componente específico:
+          usá el selector del componente. Mezclar ambos sin criterio genera CSS difícil de mantener.
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN C: COMPARACIÓN BOOTSTRAP VS STYLESHOP
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Comparación visual</p>
+        <h2 class="h3 mb-1">Bootstrap por defecto vs StyleShop personalizado</h2>
+        <p class="text-muted mb-4">El mismo HTML — distintas variables CSS.</p>
+
+        <div class="row g-4 mb-4">
+
+          <!-- Bootstrap por defecto (simulado con estilos inline) -->
+          <div class="col-12 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-white border-bottom">
+                <span class="badge bg-secondary">Sin personalizar</span>
+                <span class="ms-2 small text-muted">Bootstrap 5 por defecto</span>
+              </div>
+              <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <button style="background:#0d6efd;border:1px solid #0d6efd;color:white;
+                    border-radius:6px;padding:6px 14px;font-weight:400;font-size:14px">
+                    btn-primary
+                  </button>
+                  <button style="background:#dc3545;border:1px solid #dc3545;color:white;
+                    border-radius:6px;padding:6px 14px;font-weight:400;font-size:14px">
+                    btn-danger
+                  </button>
+                  <button style="background:transparent;border:1px solid #0d6efd;color:#0d6efd;
+                    border-radius:6px;padding:6px 14px;font-weight:400;font-size:14px">
+                    btn-outline-primary
+                  </button>
+                </div>
+                <input type="text" placeholder="Input de Bootstrap"
+                  style="border-radius:6px;border:1px solid #dee2e6;padding:6px 12px;
+                    display:block;width:100%;margin-bottom:12px;font-size:14px">
+                <div class="d-flex gap-2 flex-wrap">
+                  <span style="background:#0d6efd;color:white;font-size:11px;
+                    padding:4px 8px;border-radius:4px;font-weight:700">badge primary</span>
+                  <span style="background:#dc3545;color:white;font-size:11px;
+                    padding:4px 8px;border-radius:4px;font-weight:700">-30%</span>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <table class="table table-sm small mb-0 tabla-comparacion">
+                  <tbody>
+                    <tr><td class="text-muted"><code>--bs-primary</code></td><td>#0d6efd</td></tr>
+                    <tr><td class="text-muted"><code>--bs-danger</code></td><td>#dc3545</td></tr>
+                    <tr><td class="text-muted"><code>border-radius</code></td><td>6px</td></tr>
+                    <tr><td class="text-muted"><code>font-weight btn</code></td><td>400</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- StyleShop personalizado -->
+          <div class="col-12 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-white border-bottom">
+                <span class="badge bg-primary">StyleShop</span>
+                <span class="ms-2 small text-muted">Variables de marca activas</span>
+              </div>
+              <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <button class="btn btn-dark btn-sm">btn-dark</button>
+                  <button class="btn btn-coral btn-sm">btn-coral</button>
+                  <button class="btn btn-outline-coral btn-sm">btn-outline-coral</button>
+                </div>
+                <input type="text" class="form-control mb-3"
+                  placeholder="Input StyleShop (probá el foco)">
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="badge bg-primary">badge primary</span>
+                  <span class="badge bg-danger">-30%</span>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <table class="table table-sm small mb-0 tabla-comparacion">
+                  <tbody>
+                    <tr><td class="text-muted"><code>--bs-primary</code></td><td class="fw-medium">#1a1a2e</td></tr>
+                    <tr><td class="text-muted"><code>--bs-danger</code></td><td class="fw-medium text-coral">#e94560</td></tr>
+                    <tr><td class="text-muted"><code>border-radius</code></td><td class="fw-medium">4px</td></tr>
+                    <tr><td class="text-muted"><code>font-weight btn</code></td><td class="fw-medium">500</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN D: TIPOGRAFÍA
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Tipografía de marca</p>
+        <h2 class="h3 mb-4">Fuente body + fuente display editorial</h2>
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body p-4">
+            <div class="row g-4">
+              <div class="col-12 col-md-6">
+                <p class="seccion-titulo">Fuente del body</p>
+                <p class="mb-1" style="font-size:2rem;font-weight:500">Inter — La fuente del body</p>
+                <p class="text-muted small mb-3">
+                  Sobreescrita vía <span class="chip-variable">--bs-body-font-family</span>.<br>
+                  Afecta todo el texto de la página.
+                </p>
+                <p class="small">
+                  ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                  abcdefghijklmnopqrstuvwxyz<br>
+                  0123456789 · Regular / Medium / SemiBold
+                </p>
+              </div>
+              <div class="col-12 col-md-6">
+                <p class="seccion-titulo">Fuente display (títulos editoriales)</p>
+                <p class="font-display mb-1" style="font-size:2rem">Playfair Display — Solo títulos</p>
+                <p class="text-muted small mb-3">
+                  Clase <span class="chip-variable">.font-display</span> propia.<br>
+                  Se usa solo en nombres de producto y banners.
+                </p>
+                <p class="font-display small">
+                  ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                  abcdefghijklmnopqrstuvwxyz<br>
+                  Bold 700 · tracking -0.02em
+                </p>
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <p class="seccion-titulo mb-2">Tamaño fluido con clamp()</p>
+            <p class="display-styleshop mb-1">Colección Invierno 2026</p>
+            <pre class="bg-dark text-light rounded p-3 small mt-3"><code>font-size: clamp(2rem, 5vw, 4rem);
+/*
+  clamp(mínimo, preferido, máximo)
+  · móvil pequeño   → 2rem  (mínimo garantizado)
+  · viewport medio  → 5vw   (escala suave con el viewport)
+  · pantalla grande → 4rem  (máximo permitido)
+  Reemplaza 3 media queries con una sola línea de CSS.
+*/</code></pre>
+          </div>
+        </div>
+
+        <div class="nota-pedagogica">
+          <strong>Buena práctica: preconnect + display=swap</strong>
+          Siempre cargá Google Fonts con <code>rel="preconnect"</code> en los dos dominios
+          (googleapis.com y gstatic.com). Agregá <code>display=swap</code> en la URL de la fuente.
+          Resultado: el navegador prepara la conexión antes de necesitarla, y el texto se muestra
+          con la fuente del sistema mientras carga, eliminando el "flash de texto invisible".
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN E: IMAGEN DE PRODUCTO
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Imágenes de catálogo</p>
+        <h2 class="h3 mb-1">aspect-ratio + object-fit: la solución a la grilla rota</h2>
+        <p class="text-muted mb-4">
+          Sin <code>aspect-ratio</code>, cada imagen con distinto tamaño quiebra la grilla.
+          Con dos líneas de CSS, todas tienen la misma altura visual.
+        </p>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+              alt="Campera" class="img-producto rounded">
+            <p class="small text-muted text-center mt-1">aspect-ratio: 3/4</p>
+          </div>
+          <div class="col-6 col-md-3">
+            <img src="https://images.unsplash.com/photo-1633448968693-9f97386389fa?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Vestido" class="img-producto rounded">
+            <p class="small text-muted text-center mt-1">object-fit: cover</p>
+          </div>
+          <div class="col-6 col-md-3">
+            <img src="https://images.pexels.com/photos/533442/pexels-photo-533442.jpeg?_gl=1*1dm7pfp*_ga*MTc5MzI0MzQyOC4xNzc2NDYxMjU4*_ga_8JE65Q40S6*czE3NzY1NDg0NjUkbzQkZzEkdDE3NzY1NDg2NzkkajU5JGwwJGgw"
+              alt="Zapatillas" class="img-producto rounded">
+            <p class="small text-muted text-center mt-1">object-position: top center</p>
+          </div>
+          <div class="col-6 col-md-3">
+            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80"
+              alt="Campera naranja" class="img-producto rounded">
+            <p class="small text-muted text-center mt-1">Todas iguales ✔</p>
+          </div>
+        </div>
+
+        <pre class="bg-dark text-light rounded p-3 small"><code>.img-producto {
+  width: 100%;
+  aspect-ratio: 3 / 4;          /* proporción retrato estándar en moda  */
+  object-fit: cover;             /* recorta sin deformar                 */
+  object-position: top center;  /* prioriza la parte superior (la cara) */
+  display: block;                /* elimina el espacio inferior de img   */
+}</code></pre>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN F: TARJETAS DE PRODUCTO — resultado final
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Resultado final</p>
+        <h2 class="h3 mb-1">Tarjeta de producto — todo junto</h2>
+        <p class="text-muted mb-4">
+          Variables globales + variables de componente + clases propias = identidad visual consistente.
+        </p>
+
+        <div class="row g-3 mb-5">
+          <div class="col-12 col-sm-6 col-lg-3">
+            <article class="card card-producto h-100 border-0 shadow-sm">
+              <div class="position-relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
+                  alt="Campera de cuero negra" class="img-producto">
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">-30%</span>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p class="text-muted text-uppercase small mb-1"
+                  style="letter-spacing:0.05em;font-size:0.7rem">Camperas · Cuero</p>
+                <h3 class="fs-6 fw-medium mb-2">Campera de cuero negra</h3>
+                <div class="d-flex align-items-baseline gap-2 mb-3">
+                  <span class="fw-bold text-coral">$43.999</span>
+                  <span class="text-muted text-decoration-line-through small">$62.999</span>
+                </div>
+                <button class="btn btn-dark btn-sm w-100 mt-auto">Agregar al carrito</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-3">
+            <article class="card card-producto h-100 border-0 shadow-sm">
+              <div class="position-relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1633448968693-9f97386389fa?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Vestido floral" class="img-producto">
+                <span class="badge bg-dark position-absolute top-0 start-0 m-2">Nuevo</span>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p class="text-muted text-uppercase small mb-1"
+                  style="letter-spacing:0.05em;font-size:0.7rem">Vestidos · Floral</p>
+                <h3 class="fs-6 fw-medium mb-2">Vestido floral midi</h3>
+                <div class="d-flex align-items-baseline gap-2 mb-3">
+                  <span class="fw-bold text-coral">$32.999</span>
+                </div>
+                <button class="btn btn-dark btn-sm w-100 mt-auto">Agregar al carrito</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-3">
+            <article class="card card-producto h-100 border-0 shadow-sm">
+              <div class="position-relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80"
+                  alt="Campera naranja" class="img-producto">
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p class="text-muted text-uppercase small mb-1"
+                  style="letter-spacing:0.05em;font-size:0.7rem">Camperas</p>
+                <h3 class="fs-6 fw-medium mb-2">Campera naraja</h3>
+                <div class="d-flex align-items-baseline gap-2 mb-3">
+                  <span class="fw-bold text-coral">$28.999</span>
+                </div>
+                <button class="btn btn-outline-coral btn-sm w-100 mt-auto">Agregar al carrito</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-3">
+            <article class="card card-producto h-100 border-0 shadow-sm">
+              <div class="position-relative overflow-hidden">
+                <img src="https://images.pexels.com/photos/533442/pexels-photo-533442.jpeg?_gl=1*1dm7pfp*_ga*MTc5MzI0MzQyOC4xNzc2NDYxMjU4*_ga_8JE65Q40S6*czE3NzY1NDg0NjUkbzQkZzEkdDE3NzY1NDg2NzkkajU5JGwwJGgw"
+                  alt="Zapatillas blancas" class="img-producto">
+                <span class="badge bg-danger position-absolute top-0 end-0 m-2">-15%</span>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p class="text-muted text-uppercase small mb-1"
+                  style="letter-spacing:0.05em;font-size:0.7rem">Calzado · Sport</p>
+                <h3 class="fs-6 fw-medium mb-2">Zapatillas urbanas blancas</h3>
+                <div class="d-flex align-items-baseline gap-2 mb-3">
+                  <span class="fw-bold text-coral">$54.999</span>
+                  <span class="text-muted text-decoration-line-through small">$64.999</span>
+                </div>
+                <button class="btn btn-dark btn-sm w-100 mt-auto">Agregar al carrito</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN G: MÉTODO AVANZADO CON SASS
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Para cuando uses bundlers</p>
+        <h2 class="h3 mb-1">El método profesional: Sass</h2>
+        <p class="text-muted mb-4">
+          Cuando el proyecto usa Vite, Webpack o Angular, el estándar es sobreescribir
+          las variables Sass de Bootstrap antes de importarlo.
+        </p>
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body p-4">
+            <h3 class="fs-6 fw-semibold mb-3">
+              Archivo: <code>src/styles.scss</code> (Angular) o <code>src/main.scss</code> (Vite)
+            </h3>
+            <pre class="bg-dark text-light rounded p-3 small mb-4"><code><span class="text-warning">// ❶ Variables Sass de Bootstrap — ANTES de importar Bootstrap</span>
+$primary:                #1a1a2e;
+$danger:                 #e94560;
+$font-family-sans-serif: 'Inter', system-ui, sans-serif;
+$border-radius:          4px;
+$border-radius-lg:       8px;
+$enable-shadows:         false;
+$enable-negative-margins: true;
+
+<span class="text-warning">// ❷ Funciones de Bootstrap (requerido antes de variables-map)</span>
+@import 'bootstrap/scss/functions';
+
+<span class="text-warning">// ❸ Variables de Bootstrap</span>
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-map';
+
+<span class="text-warning">// ❹ Opciones y mixins</span>
+@import 'bootstrap/scss/mixins';
+
+<span class="text-warning">// ❺ Solo los módulos que usamos (en vez de @import 'bootstrap')</span>
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/utilities/api'; <span class="text-muted">// siempre al final</span>
+
+<span class="text-warning">// ❻ Nuestros estilos al final</span>
+@import 'styleshop/variables';
+@import 'styleshop/componentes';</code></pre>
+
+            <div class="nota-pedagogica">
+              <strong>¿Por qué Sass genera un CSS más pequeño?</strong>
+              Con CSS Custom Properties, el navegador descarga el CSS completo de Bootstrap
+              y aplica las variables en tiempo de ejecución. Con Sass, los valores se propagan
+              en tiempo de compilación: si no importás <code>accordion.scss</code>, no aparece
+              en el CSS final. Un proyecto real puede reducir el peso de Bootstrap al 30–40%
+              del archivo completo.
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN H: TABLA DE VARIABLES
+           ================================================================ -->
+
+      <section class="seccion-demo">
+        <p class="seccion-titulo">Referencia rápida</p>
+        <h2 class="h3 mb-1">Variables usadas en StyleShop</h2>
+        <p class="text-muted mb-4">Podés usar esta tabla como guía para tus propios proyectos.</p>
+
+        <div class="table-responsive mb-4">
+          <table class="table table-sm table-bordered small tabla-comparacion align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Variable</th>
+                <th>Valor StyleShop</th>
+                <th>Default Bootstrap</th>
+                <th>Afecta a</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--bs-primary</code></td><td><code>#1a1a2e</code></td><td class="text-muted"><code>#0d6efd</code></td><td>btn-primary, links, focus rings</td></tr>
+              <tr><td><code>--bs-primary-rgb</code></td><td><code>26, 26, 46</code></td><td class="text-muted"><code>13, 110, 253</code></td><td>Fondo activo, anillos de foco con opacidad</td></tr>
+              <tr><td><code>--bs-danger</code></td><td><code>#e94560</code></td><td class="text-muted"><code>#dc3545</code></td><td>btn-danger, badge bg-danger, text-danger</td></tr>
+              <tr><td><code>--bs-body-font-family</code></td><td><code>Inter, system-ui</code></td><td class="text-muted"><code>system-ui</code></td><td>Todo el texto del body</td></tr>
+              <tr><td><code>--bs-body-bg</code></td><td><code>#f8f8f8</code></td><td class="text-muted"><code>#fff</code></td><td>Fondo del &lt;body&gt;</td></tr>
+              <tr><td><code>--bs-border-radius</code></td><td><code>4px</code></td><td class="text-muted"><code>6px</code></td><td>Botones, inputs, alerts, badges</td></tr>
+              <tr><td><code>--bs-border-radius-lg</code></td><td><code>8px</code></td><td class="text-muted"><code>8px</code></td><td>Cards, modals, dropdowns</td></tr>
+              <tr><td><code>--bs-border-color</code></td><td><code>#e8e8e8</code></td><td class="text-muted"><code>#dee2e6</code></td><td>Inputs, cards, tablas, separadores</td></tr>
+              <tr><td><code>--bs-navbar-padding-y</code></td><td><code>1rem</code></td><td class="text-muted"><code>0.5rem</code></td><td>Alto de la navbar</td></tr>
+              <tr><td><code>--bs-card-border-radius</code></td><td><code>8px</code></td><td class="text-muted"><code>6px</code></td><td>Radio de las cards</td></tr>
+              <tr><td><code>--bs-offcanvas-width</code></td><td><code>380px</code></td><td class="text-muted"><code>400px</code></td><td>Ancho del offcanvas</td></tr>
+              <tr><td><code>--bs-btn-border-radius</code></td><td><code>4px</code></td><td class="text-muted"><code>6px</code></td><td>Radio de todos los botones</td></tr>
+              <tr><td><code>--bs-btn-font-weight</code></td><td><code>500</code></td><td class="text-muted"><code>400</code></td><td>Peso tipográfico de todos los botones</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="nota-pedagogica">
+          <strong>¿Dónde encontrar todas las variables de un componente?</strong>
+          Abrí DevTools (F12) → inspeccioná cualquier componente de Bootstrap → pestaña "Computed"
+          o buscá <code>--bs-</code> en "Styles". También podés consultar la documentación oficial
+          en <strong>getbootstrap.com/docs/5.3/customize/css-variables/</strong>.
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           SECCIÓN I: CHECKLIST PROFESIONAL
+           ================================================================ -->
+
+      <section class="seccion-demo mb-5">
+        <p class="seccion-titulo">Checklist</p>
+        <h2 class="h3 mb-4">Estándar profesional de personalización</h2>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <h3 class="fs-6 fw-bold mb-3 text-success">✅ Siempre hacer</h3>
+                <ul class="small mb-0" style="line-height:2">
+                  <li>Cargar Bootstrap <strong>antes</strong> de tu CSS propio</li>
+                  <li>Definir las variables de marca con prefijo propio (<code>--ss-*</code>)</li>
+                  <li>Sobreescribir siempre el par <code>--bs-primary</code> + <code>--bs-primary-rgb</code></li>
+                  <li>Sobreescribir en <code>:root</code> para cambios globales</li>
+                  <li>Sobreescribir en el selector para cambios de componente</li>
+                  <li>Personalizar el color de foco (accesibilidad)</li>
+                  <li>Usar <code>preconnect</code> + <code>display=swap</code> en Google Fonts</li>
+                  <li>Definir <code>aspect-ratio</code> en imágenes de catálogo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <h3 class="fs-6 fw-bold mb-3 text-danger">❌ Nunca hacer</h3>
+                <ul class="small mb-0" style="line-height:2">
+                  <li>Editar los archivos de Bootstrap directamente</li>
+                  <li>Cargar tu CSS <strong>antes</strong> de Bootstrap</li>
+                  <li>Usar <code>!important</code> en estilos de componentes</li>
+                  <li>Mezclar colores hardcodeados con variables CSS</li>
+                  <li>Eliminar el outline de foco (<code>outline: none</code>)</li>
+                  <li>Duplicar estilos de Bootstrap manualmente</li>
+                  <li>Usar <code>transition: all</code> en componentes interactivos</li>
+                  <li>Cargar Google Fonts sin <code>display=swap</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous">
+    </script>
+
+  </body>
+</html>

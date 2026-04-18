@@ -13,7 +13,8 @@
   <body>
 
     <!-- =============================================================
-      TEMA 3 — ESPACIADO: m-* y p-*
+      TEMA 5 - DISEÑO
+      ESPACIADO: m-* y p-*
 
       Bootstrap convierte el box model en clases utilitarias.
       Formato: {propiedad}{lado}-{breakpoint}-{tamaño}
@@ -64,7 +65,8 @@
           mb-4 → separa el párrafo del botón que sigue
         -->
 
-        <!-- mx-auto: centrar un elemento de ancho fijo -->
+        <!-- mx-auto: centrar un elemento de ancho fijo, pero si esto se prueba en
+         otro tamaño de pantalla no funciona. Para entender esto mejor, ver tema 11 -->
         <img
           src="https://images.unsplash.com/photo-1760533091973-1262bf57d244?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Colección StyleShop"
@@ -80,7 +82,7 @@
       </section>
 
       <!-- =============================================================
-        TEMA 4 — COLOR Y FONDO: text-* y bg-*
+        COLOR Y FONDO: text-* y bg-*
 
         Bootstrap tiene una paleta semántica de colores:
         primary   → azul (acción principal)
@@ -98,8 +100,8 @@
         FONDO:    bg-{color}
         BORDE:    border-{color}
 
-        En StyleShop vamos a sobreescribir "primary" con el color
-        de marca en styleshop.css — pero las clases siguen siendo las mismas.
+        En StyleShop o en cualquier proyecto deberíamos sobreescribir "primary" con el color
+        de marca en styleshop.css (archivo css principal)— pero las clases siguen siendo las mismas.
       ============================================================= -->
 
 
@@ -193,7 +195,7 @@
 
 
       <!-- =============================================================
-        TEMA 5 — TIPOGRAFÍA
+        TIPOGRAFÍA
 
         Bootstrap establece una escala tipográfica completa.
 
@@ -330,7 +332,7 @@
 
 
       <!-- =============================================================
-        TEMA 6 — BOTONES: btn y variantes
+        BOTONES: btn y variantes
 
         ESTRUCTURA BASE: <button class="btn btn-{variante}">
 
@@ -377,7 +379,7 @@
             </button>
             <!--
               btn-dark → color de la marca StyleShop.
-              En styleshop.css vamos a personalizar btn-primary
+              En un archivo como styleshop.css vamos a personalizar btn-primary
               con el color exacto de la marca.
             -->
             <button type="button" class="btn btn-outline-dark">
@@ -622,8 +624,7 @@
 </html>
 
 <!--
-  RESUMEN TEMAS 3-6:
-
+  RESUMEN DISEÑO:
   ESPACIADO (m-* / p-*):
   {m|p}{t|b|s|e|x|y}-{0..5|auto}
   py-5 → padding vertical 3rem

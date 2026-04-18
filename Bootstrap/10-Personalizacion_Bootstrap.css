@@ -1,0 +1,496 @@
+/* ================================================================
+   styleshop.css — Personalización de Bootstrap para StyleShop
+   ─────────────────────────────────────────────────────────────────
+   ORDEN DE CARGA EN EL HTML:
+   1. bootstrap.min.css  (CDN) → define todas las variables --bs-*
+   2. styleshop.css      (este archivo) → sobreescribe y extiende
+
+   Si este archivo se carga ANTES de Bootstrap, las sobreescrituras
+   no tendrán efecto porque Bootstrap las pisaría con sus valores.
+   ─────────────────────────────────────────────────────────────────
+   ÍNDICE
+   1. Variables propias de marca  (--ss-*)
+   2. Sobreescritura global de Bootstrap  (:root → --bs-*)
+   3. Personalización por componente  (.navbar, .card, .btn…)
+   4. Clases utilitarias propias  (.text-coral, .btn-coral…)
+   5. Tipografía de marca  (.font-display, .display-styleshop)
+   6. Estilos de imagen de producto  (.img-producto)
+   7. Estilos auxiliares de la demo pedagógica
+   ================================================================ */
+
+
+/* ================================================================
+   1. VARIABLES PROPIAS DE MARCA  (--ss-*)
+   ─────────────────────────────────────────────────────────────────
+   Buena práctica: definir PRIMERO la paleta de la marca con un
+   prefijo personalizado. En este proyecto usamos --ss- (StyleShop).
+
+   ¿Por qué un prefijo propio?
+   · Evita colisiones con las variables de Bootstrap (--bs-*)
+   · Si un día cambiás de framework, solo actualizás este bloque
+   · Deja claro qué es de la marca y qué es de la biblioteca
+   · Facilita el mantenimiento en equipos grandes
+
+   Convención de prefijos recomendada:
+   --bs-*   → Bootstrap (no tocar)
+   --ss-*   → StyleShop (nuestras variables de marca)
+   --[xx]-* → En tus proyectos, usá las iniciales del producto
+   ================================================================ */
+
+:root {
+  /* Paleta de colores de marca */
+  --ss-azul-noche:    #1a1a2e;  /* color principal — navbar, botones    */
+  --ss-coral:         #e94560;  /* acento — precios, badges, highlights  */
+  --ss-coral-oscuro:  #c73652;  /* estado hover del coral               */
+  --ss-gris-fondo:    #f8f8f8;  /* fondo general de la página           */
+  --ss-gris-borde:    #e8e8e8;  /* bordes de tarjetas y separadores     */
+
+  /* Tipografía de marca */
+  --ss-fuente:        'Inter', system-ui, -apple-system, sans-serif;
+  --ss-fuente-titulo: 'Playfair Display', Georgia, serif;
+
+  /* Espaciado y forma */
+  --ss-radio:         4px;  /* border-radius más anguloso que Bootstrap (6px) */
+  --ss-radio-tarjeta: 8px;
+}
+
+
+/* ================================================================
+   2. SOBREESCRITURA GLOBAL DE BOOTSTRAP  (:root → --bs-*)
+   ─────────────────────────────────────────────────────────────────
+   Bootstrap 5 define sus valores como CSS Custom Properties en :root.
+   Como la cascada CSS usa el ÚLTIMO valor declarado, y este archivo
+   se carga DESPUÉS de Bootstrap, nuestras sobreescrituras ganan.
+
+   ¿Qué conviene sobreescribir globalmente?
+   · Colores de marca (primary, danger, success…)
+   · Tipografía del body
+   · Border-radius base
+   · Color de bordes
+   · Fondo del body
+
+   Estos cambios afectan TODOS los componentes de Bootstrap
+   a la vez, sin tocar nada en el HTML.
+   ================================================================ */
+
+:root {
+  /* ── COLOR PRIMARIO ────────────────────────────────────────────
+     --bs-primary es el azul que Bootstrap usa en btn-primary,
+     links, outline, progress bars, etc.
+     Lo reemplazamos por el azul noche de StyleShop.
+
+     IMPORTANTE: siempre sobreescribir el par -rgb junto con
+     el color. Bootstrap usa la versión RGB en rgba() para
+     estados con transparencia: focus rings, fondo active,
+     variantes de color con opacidad, etc.
+     Formato: los tres canales R, G, B separados por coma,
+     sin # ni paréntesis.
+  ──────────────────────────────────────────────────────────────── */
+  --bs-primary:               var(--ss-azul-noche);
+  --bs-primary-rgb:           26, 26, 46;
+  --bs-primary-text-emphasis: var(--ss-azul-noche); /* links dentro de alertas */
+  --bs-primary-bg-subtle:     #e8e8f0;              /* fondo sutil de alertas  */
+  --bs-primary-border-subtle: #c5c5d9;              /* borde sutil de alertas  */
+
+  /* ── COLOR PELIGRO / ACENTO ────────────────────────────────────
+     En StyleShop el coral cumple la función de "danger":
+     precios rebajados, badges de oferta, alertas de stock.
+     Sobreescribir --bs-danger adapta btn-danger, badge bg-danger,
+     text-danger y alert-danger de una sola vez.
+  ──────────────────────────────────────────────────────────────── */
+  --bs-danger:               var(--ss-coral);
+  --bs-danger-rgb:           233, 69, 96;
+  --bs-danger-text-emphasis: var(--ss-coral-oscuro);
+
+  /* ── FONDO DEL BODY ────────────────────────────────────────────
+     Bootstrap usa blanco puro (#fff) por defecto.
+     Un gris muy claro (#f8f8f8) da más "aire" visual
+     y hace que las tarjetas blancas destaquen sobre el fondo.
+  ──────────────────────────────────────────────────────────────── */
+  --bs-body-bg: var(--ss-gris-fondo);
+
+  /* ── TIPOGRAFÍA GLOBAL ─────────────────────────────────────────
+     Una sola línea cambia la fuente de TODO el contenido
+     de Bootstrap (headings, párrafos, inputs, botones, etc.).
+     Bootstrap hereda font-family del body gracias a que
+     define --bs-body-font-family y lo aplica en body {}.
+  ──────────────────────────────────────────────────────────────── */
+  --bs-body-font-family: var(--ss-fuente);
+
+  /* ── BORDER-RADIUS ─────────────────────────────────────────────
+     Bootstrap tiene 5 niveles de radio:
+     --bs-border-radius-sm   → 0.25rem (~4px)  — badges, small
+     --bs-border-radius      → 0.375rem (~6px) — botones, inputs
+     --bs-border-radius-lg   → 0.5rem  (~8px)  — cards, dropdowns
+     --bs-border-radius-xl   → 1rem    (~16px) — modales
+     --bs-border-radius-xxl  → 2rem    (~32px) — offcanvas
+
+     StyleShop usa esquinas más angulosas (estética fashion):
+  ──────────────────────────────────────────────────────────────── */
+  --bs-border-radius:     var(--ss-radio);        /* 4px  */
+  --bs-border-radius-lg:  var(--ss-radio-tarjeta); /* 8px  */
+  --bs-border-radius-xl:  12px;
+  --bs-border-radius-xxl: 16px;
+
+  /* ── COLOR DE BORDE GLOBAL ─────────────────────────────────────
+     Afecta inputs, cards, tablas, separadores, etc.
+  ──────────────────────────────────────────────────────────────── */
+  --bs-border-color: var(--ss-gris-borde);
+}
+
+
+/* ================================================================
+   3. PERSONALIZACIÓN POR COMPONENTE
+   ─────────────────────────────────────────────────────────────────
+   Cada componente de Bootstrap tiene sus propias variables CSS.
+   Las sobreescribimos en el SELECTOR DEL COMPONENTE, no en :root.
+
+   ¿Por qué en el selector y no en :root?
+   a) El cambio aplica solo a ese componente, sin efectos colaterales
+   b) Si Bootstrap actualiza el nombre de una variable global,
+      solo afecta al componente que la usa, no todo el sistema
+
+   Cómo encontrar las variables de cada componente:
+   · Abrí DevTools → inspeccioná el componente
+   · En "Computed" o "Styles" buscá variables --bs-*
+   · También están documentadas en getbootstrap.com/docs
+   ================================================================ */
+
+/* ── NAVBAR ──────────────────────────────────────────────────── */
+.navbar {
+  --bs-navbar-padding-y: 1rem;
+  /*
+    Default de Bootstrap: 0.5rem
+    StyleShop: 1rem — más espaciosa, más "premium"
+    Equivalente a agregar py-3 en el HTML, pero sin
+    contaminar el markup con clases de utilidad.
+  */
+}
+
+/* ── CARD ────────────────────────────────────────────────────── */
+.card {
+  --bs-card-border-radius: var(--ss-radio-tarjeta); /* 8px */
+  --bs-card-border-color:  var(--ss-gris-borde);
+  --bs-card-border-width:  1px;
+  --bs-card-spacer-y:      1rem; /* padding vertical del card-body  */
+  --bs-card-spacer-x:      1rem; /* padding horizontal del card-body */
+  --bs-card-bg:            #fff; /* fondo explícito para que destaque
+                                    sobre el fondo gris del body     */
+}
+
+/* Variante: tarjeta de producto con hover de elevación */
+.card-producto {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /*
+    Transicionamos solo transform y box-shadow.
+    Evitar "transition: all" → anima propiedades innecesarias
+    (color, font-size) y puede causar parpadeos o degradar
+    el rendimiento en listas largas.
+  */
+}
+.card-producto:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+  /*
+    translateY negativo → la tarjeta "sube".
+    La sombra crece para reforzar la ilusión de elevación.
+    rgba con alpha bajo (0.09) → sutil, no invasivo.
+  */
+}
+
+/* ── BOTONES ─────────────────────────────────────────────────── */
+.btn {
+  --bs-btn-border-radius: var(--ss-radio); /* 4px: anguloso */
+  --bs-btn-font-weight:   500;
+  /*
+    font-weight 500 (Medium) en todos los botones:
+    más presencia y claridad que el 400 (Regular),
+    sin el peso visual del 700 (Bold).
+  */
+  --bs-btn-padding-x: 1.25rem; /* más espacio lateral que el default (0.75rem) */
+}
+
+/* Botón oscuro principal (CTA de StyleShop) */
+.btn-dark {
+  --bs-btn-bg:                 var(--ss-azul-noche);
+  --bs-btn-border-color:       var(--ss-azul-noche);
+  --bs-btn-hover-bg:           #0f0f1c; /* versión más oscura del azul noche */
+  --bs-btn-hover-border-color: #0f0f1c;
+}
+
+/* ── FORMULARIOS ─────────────────────────────────────────────── */
+.form-control,
+.form-select {
+  --bs-border-radius: var(--ss-radio); /* 4px */
+  /*
+    Los inputs heredan el border-radius de Bootstrap (6px).
+    Sin esta sobreescritura, serían más redondeados que los botones:
+    inconsistencia visual entre inputs y botones.
+  */
+}
+
+/* Focus de inputs: coral en lugar del azul de Bootstrap */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--ss-coral);
+  box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.2);
+  /*
+    0.25rem = 4px: mismo tamaño que el focus ring de Bootstrap.
+    rgba con 0.2: sutil, visible pero no invasivo.
+    Importante para accesibilidad (WCAG 2.1 — 2.4.7):
+    el foco siempre debe ser visible.
+  */
+}
+
+/* ── BADGES ──────────────────────────────────────────────────── */
+.badge {
+  --bs-badge-border-radius: var(--ss-radio); /* 4px */
+  --bs-badge-font-weight:   600;
+  --bs-badge-padding-x:     0.55em;
+  --bs-badge-padding-y:     0.35em;
+}
+
+/* ── ACCORDION ───────────────────────────────────────────────── */
+.accordion {
+  --bs-accordion-border-color:         var(--ss-gris-borde);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.2);
+  --bs-accordion-active-color:         var(--ss-azul-noche);
+  --bs-accordion-active-bg:            #f0f0f5;
+  /*
+    Cuando el botón del accordion recibe foco, el outline
+    es coral en lugar del azul de Bootstrap.
+    Importante: siempre personalizar el focus, nunca eliminarlo.
+  */
+}
+
+/* ── MODAL ───────────────────────────────────────────────────── */
+.modal-content {
+  --bs-modal-border-radius:      var(--ss-radio-tarjeta); /* 8px */
+  --bs-modal-border-color:       var(--ss-gris-borde);
+  --bs-modal-header-padding:     1.25rem 1.5rem;
+  --bs-modal-footer-border-color: var(--ss-gris-borde);
+}
+
+/* ── OFFCANVAS ───────────────────────────────────────────────── */
+.offcanvas {
+  --bs-offcanvas-width:        380px;
+  --bs-offcanvas-border-color: var(--ss-gris-borde);
+  /*
+    Default de Bootstrap: 400px.
+    StyleShop: 380px, más compacto.
+    También podría ser 100vw para mobile-first completo,
+    o min(380px, 90vw) para que no desborde en pantallas chicas.
+  */
+}
+
+/* ── TABLA ───────────────────────────────────────────────────── */
+.table {
+  --bs-table-border-color: var(--ss-gris-borde);
+  --bs-table-striped-bg:   rgba(0, 0, 0, 0.02); /* rayas muy sutiles */
+}
+
+/* ── ALERT ───────────────────────────────────────────────────── */
+.alert {
+  --bs-alert-border-radius: var(--ss-radio);
+}
+
+
+/* ================================================================
+   4. CLASES UTILITARIAS PROPIAS
+   ─────────────────────────────────────────────────────────────────
+   Bootstrap tiene utilidades para sus colores del sistema.
+   Nuestro coral (#e94560) no es un color del sistema de Bootstrap,
+   así que creamos nuestras propias clases utilitarias siguiendo
+   exactamente la convención de Bootstrap:
+
+   .text-{color}  → color del texto
+   .bg-{color}    → background del elemento
+   .btn-{nombre}  → botón personalizado
+
+   Seguir la convención hace el código más predecible para
+   cualquier desarrollador que conozca Bootstrap.
+   ================================================================ */
+
+/* Utilidades de texto y fondo */
+.text-coral { color: var(--ss-coral) !important; }
+.bg-coral   { background-color: var(--ss-coral) !important; }
+
+/*
+  Usamos !important para que funcionen como las utilidades de Bootstrap.
+  Bootstrap también usa !important en .text-primary, .bg-danger, etc.
+  En utilidades puras, !important es correcto y esperado.
+  NO usar !important en estilos de componentes o layouts.
+*/
+
+/* Botón coral: sigue la estructura de variables de Bootstrap
+   para botones. Más correcto y mantenible que sobreescribir
+   propiedades directamente con !important. */
+.btn-coral {
+  --bs-btn-color:               #fff;
+  --bs-btn-bg:                  var(--ss-coral);
+  --bs-btn-border-color:        var(--ss-coral);
+  --bs-btn-hover-color:         #fff;
+  --bs-btn-hover-bg:            var(--ss-coral-oscuro);
+  --bs-btn-hover-border-color:  var(--ss-coral-oscuro);
+  --bs-btn-active-bg:           var(--ss-coral-oscuro);
+  --bs-btn-active-border-color: var(--ss-coral-oscuro);
+  --bs-btn-focus-shadow-rgb:    233, 69, 96;
+  /*
+    --bs-btn-focus-shadow-rgb define el color del ring de foco.
+    Accesibilidad: el foco del botón coral debe ser coral, no azul.
+    Formato: R, G, B separados por coma (sin # ni paréntesis).
+  */
+}
+
+/* Versión outline del botón coral */
+.btn-outline-coral {
+  --bs-btn-color:              var(--ss-coral);
+  --bs-btn-border-color:       var(--ss-coral);
+  --bs-btn-hover-color:        #fff;
+  --bs-btn-hover-bg:           var(--ss-coral);
+  --bs-btn-hover-border-color: var(--ss-coral);
+  --bs-btn-active-color:       #fff;
+  --bs-btn-active-bg:          var(--ss-coral-oscuro);
+  --bs-btn-focus-shadow-rgb:   233, 69, 96;
+}
+
+
+/* ================================================================
+   5. TIPOGRAFÍA DE MARCA
+   ─────────────────────────────────────────────────────────────────
+   Bootstrap tiene .font-monospace para código.
+   No tiene una clase para fuente serif.
+   La creamos nosotros para los títulos editoriales
+   (home, páginas de categoría, detalle de producto).
+
+   Nunca aplicar la fuente display a cuerpos de texto:
+   es difícil de leer en tamaños pequeños.
+   ================================================================ */
+
+/* Para nombres de producto en vista de detalle */
+.font-display {
+  font-family: var(--ss-fuente-titulo);
+  letter-spacing: -0.02em;
+  /*
+    letter-spacing negativo → tracking ajustado.
+    Estilo editorial, común en tipografía de moda.
+    Solo funciona bien en tamaños grandes (fs-3 o mayor).
+  */
+}
+
+/* Para títulos de sección grandes (hero, banners) */
+.display-styleshop {
+  font-family: var(--ss-fuente-titulo);
+  font-size: clamp(2rem, 5vw, 4rem);
+  /*
+    clamp(mínimo, preferido, máximo):
+    · En móvil pequeño (375px): ~2rem
+    · En desktop grande (1440px): ~4rem
+    · El valor del medio (5vw) escala proporcional al viewport
+    Resultado: texto fluido SIN media queries.
+    Equivale al comportamiento que Bootstrap logra
+    con .display-1…6, pero adaptado a nuestra escala.
+  */
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+
+/* ================================================================
+   6. IMAGEN DE PRODUCTO — ratio y recorte consistente
+   ─────────────────────────────────────────────────────────────────
+   El problema más común en catálogos: cada imagen tiene
+   un tamaño diferente y la grilla se rompe.
+
+   Solución: definir aspect-ratio + object-fit una sola vez.
+   Todas las imágenes tienen el mismo alto visual,
+   independientemente de sus dimensiones originales.
+   ================================================================ */
+
+.img-producto {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  /*
+    3/4 = proporción retrato estándar en fotografía de moda.
+    El navegador calcula el alto automáticamente según el ancho.
+    Reemplaza el viejo truco de padding-top: 133%.
+  */
+  object-fit: cover;
+  /*
+    cover → la imagen cubre el área sin deformarse.
+    Recorta el exceso. Alternativas:
+    · contain → muestra la imagen completa (con espacios vacíos)
+    · fill    → estira la imagen (no usar: deforma)
+  */
+  object-position: top center;
+  /*
+    En fotografía de moda el punto de interés está arriba
+    (la cara o la parte superior del outfit).
+    top center evita que se recorte la cara al hacer zoom.
+  */
+  display: block; /* elimina el espacio inferior que crean los <img> inline */
+}
+
+
+/* ================================================================
+   7. ESTILOS AUXILIARES DE LA DEMO PEDAGÓGICA
+   ─────────────────────────────────────────────────────────────────
+   Estos estilos NO son parte de la personalización de Bootstrap.
+   Son estilos propios del layout de esta página de clase.
+   En un proyecto real vivirían en su propio archivo o componente.
+   ================================================================ */
+
+/* Panel de nota / explicación pedagógica */
+.nota-pedagogica {
+  background: #f0f4ff;
+  border-left: 3px solid var(--ss-azul-noche);
+  border-radius: 0 var(--ss-radio) var(--ss-radio) 0;
+  padding: 0.875rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #333;
+}
+.nota-pedagogica strong {
+  color: var(--ss-azul-noche);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Separador de sección con borde superior */
+.seccion-demo {
+  border-top: 1px solid var(--ss-gris-borde);
+  padding-top: 2.5rem;
+  margin-top: 2.5rem;
+}
+
+/* Etiqueta de sección en mayúsculas */
+.seccion-titulo {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
+  margin-bottom: 0.25rem;
+}
+
+/* Chip que muestra el nombre de una variable CSS */
+.chip-variable {
+  display: inline-block;
+  background: #1a1a2e0d;
+  color: var(--ss-azul-noche);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 0.72rem;
+  font-family: 'Courier New', monospace;
+  border: 1px solid #1a1a2e22;
+}
+
+/* Primera columna en monospace para tablas de variables */
+.tabla-comparacion td:first-child,
+.tabla-comparacion th:first-child {
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem;
+}

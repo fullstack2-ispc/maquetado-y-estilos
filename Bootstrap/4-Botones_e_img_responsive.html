@@ -132,7 +132,11 @@
     </div>
 
 
-    <!-- btn-group: selector de talle -->
+    <!-- btn-group: selector de talle 
+     IMPORTANTE: Para que los talles cambien se debe al clickearlos se debe usar JS o
+     en caso de usar Angular, se modificaría el HTML y el .ts del componente
+     A continuación se muestra el uso de los botones usando solamente Bootstrap y al final de este archivo
+     se indica un ejemplo de Angular -->
     <h3 class="h6 text-muted text-uppercase mb-3">Grupo — Selector de talle</h3>
     <div class="btn-group mb-2" role="group" aria-label="Selección de talle">
       <!--
@@ -411,4 +415,48 @@
   object-position    → controla qué parte se recorta
   ratio ratio-1x1    → aspect ratio fijo (Bootstrap)
   overflow-hidden    → en el article para respetar border-radius
+-->
+
+<!--EJEMPLO DE FUNCIONAMIENTO DE BOTONES SELECTORES EN ANGULAR-->
+
+<!-- Archivo .ts del componente:
+ @Component({
+  selector: 'app-talle-selector',
+  templateUrl: './talle-selector.component.html',
+})
+export class TalleSelectorComponent {
+  talles = [
+    { label: 'XS', disponible: true },
+    { label: 'S',  disponible: true },
+    { label: 'M',  disponible: true },
+    { label: 'L',  disponible: true },
+    { label: 'XL', disponible: false }, // sin stock
+  ];
+
+  talleSeleccionado: string = 'M'; // estado inicial
+
+  seleccionar(talle: { label: string; disponible: boolean }) {
+    if (!talle.disponible) return;
+    this.talleSeleccionado = talle.label;
+  }
+}
+Archivo html del componente:
+<div class="btn-group" role="group" aria-label="Selección de talle">
+  <button
+    *ngFor="let talle of talles"
+    type="button"
+    class="btn btn-sm"
+    [disabled]="!talle.disponible"
+    [class.btn-dark]="talle.label === talleSeleccionado"
+    [class.btn-outline-dark]="talle.label !== talleSeleccionado"
+    [attr.aria-pressed]="talle.label === talleSeleccionado"
+    (click)="seleccionar(talle)"
+  >
+    {{ talle.label }}
+  </button>
+</div>
+
+<p class="small text-muted">
+  Talle seleccionado: {{ talleSeleccionado }}
+</p>  
 -->
